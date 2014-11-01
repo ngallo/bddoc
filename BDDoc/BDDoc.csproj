@@ -39,8 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Feature.cs" />
+    <Compile Include="AsAAttribute.cs" />
+    <Compile Include="BDDocAttribute.cs" />
+    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="IWantToAttribute.cs" />
+    <Compile Include="StoryAttribute.cs" />
+    <Compile Include="InOrderToAttribute.cs" />
+    <Compile Include="FluentScenario.cs" />
+    <Compile Include="PlainScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenario.cs" />
+    <Compile Include="ScenarioAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

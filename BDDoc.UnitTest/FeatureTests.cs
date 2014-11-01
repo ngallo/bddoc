@@ -2,12 +2,11 @@
 
 namespace BDDoc.UnitTest
 {
-    public class FeatureTests
+    public class ScenarioTests
     {
         [Test]
         public void FirstTest()
         {
-            var feature = new Feature();
         }
     }
 }

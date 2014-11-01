@@ -1,0 +1,88 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup>
+    <SolutionFullPath>$(CheckoutDir)\$(SolutionRelativePath)</SolutionFullPath>
+    <CoverageOutputDir>$(OutputDir)\coverage</CoverageOutputDir>
+    <CoverageOutput>$(CoverageOutputDir)\BDDocCoverageReport.xml</CoverageOutput>
+  </PropertyGroup>
+  
+  <!--  Setup (EnvironmentValidation) -->
+  <Target Name="EnvironmentValidation">
+    <Error Condition="'$(CheckoutDir)' == ''" Text="Invalid %CheckoutDir% variable."/>
+    <Error Condition="'$(BinDirectories)' == ''" Text="Invalid %BinDirectories% variable."/>
+    <Error Condition="'$(NugetDir)' == ''" Text="Invalid %NugetDir% variable."/>
+    <Error Condition="'$(OutputDir)' == ''" Text="Invalid %OutputDir% variable."/>
+    <Error Condition="'$(NUnit)' == ''" Text="Invalid %NUnit% variable."/>
+    <Error Condition="'$(OpenCover)' == ''" Text="Invalid %OpenCover% variable."/>
+    <Error Condition="'$(ReportGenerator)' == ''" Text="Invalid %ReportGenerator% variable."/>
+    <Error Condition="'$(TestDllList)' == ''" Text="Invalid %TestDllList% variable."/>
+    <Error Condition="'$(BDDDocRepoFiles)' == ''" Text="Invalid %BDDDocRepoFiles% variable."/>
+    <Error Condition="'$(BDDDocRepoOut)' == ''" Text="Invalid %BDDDocRepoOut% variable."/>
+    <Error Condition="'$(NuGetEXE)' == ''" Text="Invalid %NuGetEXE% variable."/>
+    <Error Condition="'$(SolutionConfiguration)' == ''" Text="Invalid %SolutionConfiguration% variable."/>
+    <Error Condition="'$(SolutionPlatform)' == ''" Text="Invalid %SolutionPlatform% variable."/>
+    <Error Condition="'$(SolutionRelativePath)' == ''" Text="Invalid %SolutionRelativePath% variable."/>
+    <Error Condition="'$(SolutionFullPath)' == ''" Text="Invalid %SolutionFullPath% variable."/>
+  </Target>
+
+  <!-- NuGet -->
+  <Target Name="NuGet">
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <Exec Command="$(NuGetEXE) restore $(CheckoutDir)$(SolutionRelativePath)"/>
+  </Target>
+  
+    <!-- Clean NuGet -->
+  <Target Name="CleanNuGet">
+    <ItemGroup>
+			<FilesToDelete Include="$(NugetDir)\**\*"/>
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)"/>
+		<RemoveDir Directories="$(NugetDir)"/>
+  </Target>
+
+  <!-- Clean Output -->
+  <Target Name="CleanOutput">
+    <ItemGroup>
+			<FilesToDelete Include="$(OutputDir)\**\*"/>
+		</ItemGroup>
+		<Delete Files="@(FilesToDelete)"/>
+		<RemoveDir Directories="$(OutputDir)"/>
+  </Target>
+  
+  <!-- Solution Clean -->
+  <Target Name="SLClean">
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <MSBuild Projects="$(SolutionFullPath)" Targets="CLEAN" Properties="Configuration=$(SolutionConfiguration);Platform=$(SolutionPlatform)" BuildInParallel="true" />
+  </Target>
+
+  <!-- Solution Compile -->
+  <Target Name="SLCompile">
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <MSBuild Projects="$(SolutionFullPath)" Targets="BUILD" Properties="Configuration=$(SolutionConfiguration);Platform=$(SolutionPlatform)" BuildInParallel="true"/>
+  </Target>
+
+  <!-- Nunit continuous integration tests -->
+  <Target Name="NunitCITests">
+    <ItemGroup>
+      <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
+    </ItemGroup>
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <Exec Command="$(NUnit) /framework:net-4.5 @(TestsAssemblies , ' ')"/>
+  </Target>
+
+  <!-- Nunit continuous integration tests with code coverage -->
+  <Target Name="NunitCITestsCoverage">
+    <ItemGroup>
+      <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
+    </ItemGroup>
+    <PropertyGroup>
+      <OpenCoverExe>$(OpenCover) -register:user -target:$(NUnit) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverExe>
+	    <ReportGenExe>$(ReportGenerator) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenExe>
+    </PropertyGroup>
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <Exec Command="if not exist $(CoverageOutputDir) ( mkdir $(CoverageOutputDir))"/>
+    <Exec Command="$(OpenCoverExe)"/>
+	<Exec Command="$(ReportGenExe)"/>
+  </Target>
+  
+</Project>

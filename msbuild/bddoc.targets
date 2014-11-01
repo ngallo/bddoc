@@ -1,0 +1,23 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <BinDirectories>\**\bin\$(SolutionConfiguration)</BinDirectories>
+    <NugetDir>$(CheckoutDir)\packages</NugetDir>
+    <OutputDir>$(CheckoutDir)\output</OutputDir>
+    <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
+    <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
+    <CoverageFilter>"+[BDDoc*]* -[*UnitTest*]*"</CoverageFilter>
+    <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
+    <TestDllList>$(BinDirectories)\*.dll</TestDllList>
+    <BDDDocRepoFiles>$(BinDirectories)\*.bddoc</BDDDocRepoFiles>
+    <BDDDocRepoOut>$(OutputDir)\documentation</BDDDocRepoOut>
+  </PropertyGroup>
+
+  <Import Project="bddoc-shared.targets"></Import>
+
+  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet"></Target>
+  <Target Name="Setup" DependsOnTargets="NuGet"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests"></Target>
+  <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage"></Target>
+
+</Project>

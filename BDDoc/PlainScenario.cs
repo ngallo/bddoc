@@ -1,8 +1,14 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace BDDoc
 {
     public sealed class PlainScenario : Scenario
     {
+        //Constructors
+
+        public PlainScenario(IList<IStoryAttrib> storyAttributes, IList<IScenarioAttrib> scenarioAttributes)
+            : base(storyAttributes, scenarioAttributes) { }
+
         //Methods
 
         public void Given(string text) { }

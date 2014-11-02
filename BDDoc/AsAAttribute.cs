@@ -3,10 +3,10 @@
 namespace BDDoc
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class AsAAttribute : BDDocAttribute
+    public class AsAAttribute : BDDocAttribute, IStoryAttrib
     {
         //Constructors
 
-        public AsAAttribute(string text) : base(text) { }
+        public AsAAttribute(string text) : base(text, 3) { }
     }
 }

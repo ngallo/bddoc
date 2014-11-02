@@ -3,10 +3,10 @@
 namespace BDDoc
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class InOrderToAttribute : BDDocAttribute
+    public class InOrderToAttribute : BDDocAttribute, IStoryAttrib
     {
         //Constructors
 
-        public InOrderToAttribute(string text) : base(text) { }
+        public InOrderToAttribute(string text) : base(text, 2) { }
     }
 }

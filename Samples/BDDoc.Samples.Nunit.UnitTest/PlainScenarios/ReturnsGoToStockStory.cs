@@ -12,7 +12,7 @@ namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
         [Scenario("Refunded items should be returned to stock")]
         public void RefundedItemsReturnedToStockTest()
         {
-            var scenario = this.CreatePlainScenario();
+            var scenario = this.CreateScenario();
             scenario.Given("a customer previously bought a black sweater from me");
             //----------------------------------------------------------------------------------------------------------------//
 
@@ -30,7 +30,7 @@ namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
         [Scenario("Replaced items should be returned to stock")]
         public void ReplacedItemsReturnedToStockTest()
         {
-            var scenario = this.CreatePlainScenario();
+            var scenario = this.CreateScenario();
             scenario.Given("that a customer buys a blue garment");
             //----------------------------------------------------------------------------------------------------------------//
 

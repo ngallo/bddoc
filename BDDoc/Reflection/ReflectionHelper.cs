@@ -1,4 +1,4 @@
-﻿using System;
+﻿using BDDoc.Core;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,10 +22,6 @@ namespace BDDoc.Reflection
 
             //Get story's attributes
             var declaringType = method.DeclaringType;
-            if (declaringType == null)
-            {
-                throw new InvalidOperationException();
-            }
             var declaringTypeAttribs = declaringType.GetCustomAttributes(typeof(BDDocAttribute), true);
             storyAttributes = (from attrib in declaringTypeAttribs
                                 where attrib is IStoryAttrib

@@ -40,20 +40,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsAAttribute.cs" />
-    <Compile Include="BDDocAttribute.cs" />
-    <Compile Include="IBDDocAttrib.cs" />
-    <Compile Include="IScenarioAttrib.cs" />
-    <Compile Include="IStoryAttrib.cs" />
+    <Compile Include="Core\BDDocAttribute.cs" />
+    <Compile Include="Core\IBDDocAttrib.cs" />
+    <Compile Include="Core\IScenarioAttrib.cs" />
+    <Compile Include="Core\IStoryAttrib.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="IWantToAttribute.cs" />
     <Compile Include="Reflection\IReflectionHelper.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
-    <Compile Include="ScenarioFactory.cs" />
+    <Compile Include="Core\ScenarioFactory.cs" />
     <Compile Include="StoryAttribute.cs" />
     <Compile Include="InOrderToAttribute.cs" />
     <Compile Include="PlainScenario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scenario.cs" />
+    <Compile Include="Core\Scenario.cs" />
     <Compile Include="ScenarioAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

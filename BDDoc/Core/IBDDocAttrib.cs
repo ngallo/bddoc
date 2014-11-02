@@ -1,5 +1,5 @@
 ﻿
-namespace BDDoc
+namespace BDDoc.Core
 {
     public interface IBDDocAttrib 
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BDDoc
+namespace BDDoc.Core
 {
     public abstract class BDDocAttribute : Attribute, IBDDocAttrib
     {

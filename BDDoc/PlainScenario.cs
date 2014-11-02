@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BDDoc.Core;
 
 namespace BDDoc
 {

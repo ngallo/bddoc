@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BDDoc
+namespace BDDoc.Core
 {
     public abstract class Scenario
     {

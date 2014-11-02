@@ -1,7 +1,8 @@
-﻿using System.Linq;
+﻿using BDDoc.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BDDoc.UnitTest
 {

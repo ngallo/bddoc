@@ -1,4 +1,5 @@
 ﻿using System;
+using BDDoc.Core;
 
 namespace BDDoc
 {

@@ -1,5 +1,4 @@
-﻿
-using BDDoc.Reflection;
+﻿using BDDoc.Core;
 
 namespace BDDoc
 {

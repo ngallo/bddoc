@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using BDDoc.Reflection;
+﻿using BDDoc.Reflection;
 using System;
+using System.Collections.Generic;
 
-namespace BDDoc
+namespace BDDoc.Core
 {
     internal sealed class ScenarioFactory
     {
@@ -33,8 +33,7 @@ namespace BDDoc
         {
             IList<IStoryAttrib> storyAttribs;
             IList<IScenarioAttrib> scenarioAttribs;
-            var refHelper = new ReflectionHelper();
-            refHelper.RetrieveCallingMethodAttributes(++skipFrames, out storyAttribs, out scenarioAttribs);
+            _reflectionHelper.RetrieveCallingMethodAttributes(++skipFrames, out storyAttribs, out scenarioAttribs);
             return new PlainScenario(storyAttribs, scenarioAttribs);
         }
     }

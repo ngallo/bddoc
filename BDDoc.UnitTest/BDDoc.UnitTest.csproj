@@ -61,8 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributesTests.cs" />
+    <Compile Include="Fakes\ReflectionHelperFake.cs" />
     <Compile Include="ObjectExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScenarioFactoryTests.cs" />
     <Compile Include="ScenarioTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -44,6 +44,8 @@
     <Compile Include="Core\IBDDocAttrib.cs" />
     <Compile Include="Core\IScenarioAttrib.cs" />
     <Compile Include="Core\IStoryAttrib.cs" />
+    <Compile Include="Core\ScenarioStep.cs" />
+    <Compile Include="Core\ScenarioStepType.cs" />
     <Compile Include="ObjectExtensions.cs" />
     <Compile Include="IWantToAttribute.cs" />
     <Compile Include="Reflection\IReflectionHelper.cs" />

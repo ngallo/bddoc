@@ -1,5 +1,5 @@
-﻿using System;
-using BDDoc.Core;
+﻿using BDDoc.Core;
+using System;
 
 namespace BDDoc
 {

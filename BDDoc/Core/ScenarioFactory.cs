@@ -12,7 +12,7 @@ namespace BDDoc.Core
 
         //Constructors
 
-        public ScenarioFactory(IReflectionHelper reflectionHelper)
+        internal ScenarioFactory(IReflectionHelper reflectionHelper)
         {
             if (reflectionHelper == null)
             {

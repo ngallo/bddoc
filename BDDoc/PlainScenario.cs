@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BDDoc.Core;
+﻿using BDDoc.Core;
+using System.Collections.Generic;
 
 namespace BDDoc
 {
@@ -12,12 +12,24 @@ namespace BDDoc
 
         //Methods
 
-        public void Given(string text) { }
+        public void Given(string text)
+        {
+            AddGivenStep(text);
+        }
 
-        public void And(string text) { }
+        public void And(string text)
+        {
+            AddAndStep(text);
+        }
 
-        public void When(string text) { }
+        public void When(string text)
+        {
+            AddWhenStep(text);
+        }
 
-        public void Then(string text) { }
+        public void Then(string text)
+        {
+            AddThenStep(text);
+        }
     }
 }

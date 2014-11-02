@@ -2,24 +2,25 @@
 
 namespace BDDoc.Core
 {
-    public abstract class BDDocAttribute : Attribute, IBDDocAttrib
+    internal sealed class ScenarioStep
     {
         //Constructors
 
-        protected BDDocAttribute(string text, int order)
+        public ScenarioStep(ScenarioStepType stepType, int order, string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentNullException();
             }
-            Text = text;
+            StepType = stepType;
             Order = order;
+            Text = text;
         }
 
         //Properties
 
+        public ScenarioStepType StepType { get; private set; }
+        public int Order { get; private set; }
         public string Text { get; private set; }
-
-        public int Order { get; set; }
     }
 }

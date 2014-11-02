@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BDDoc.Core;
+﻿using BDDoc.Core;
+using System.Collections.Generic;
 
 namespace BDDoc.Reflection
 {

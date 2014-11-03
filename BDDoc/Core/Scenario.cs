@@ -10,8 +10,8 @@ namespace BDDoc.Core
     {
         //Fields
 
-        private int _isFrozen = 0;
-        private int _stepsCounter = 0;
+        private int _isFrozen;
+        private int _stepsCounter;
         private readonly IList<ScenarioStep> _steps;
 
         //Constructors
@@ -38,7 +38,7 @@ namespace BDDoc.Core
 
         private void CanUpdateScenario()
         {
-            if (_isFrozen == 1)
+            if (Interlocked.CompareExchange(ref _isFrozen, 1, 1) == 1)
             {
                 throw new InvalidOperationException();
             }
@@ -67,6 +67,10 @@ namespace BDDoc.Core
             {
                 throw new InvalidOperationException();
             }
+        }
+
+        protected void Save()
+        {
         }
 
         protected void AddGivenStep(string text)

@@ -1,5 +1,6 @@
 ﻿using BDDoc.Core;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +23,7 @@ namespace BDDoc.UnitTest
 
         //Methods
 
-        private void GetAttributes(out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
+        private static void GetAttributes(out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
             storyAttributes = new List<IStoryAttrib>
             {
@@ -38,7 +39,7 @@ namespace BDDoc.UnitTest
         //Tests
 
         [Test]
-        public void CallingGiven_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
+        public void CallingGivenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
         {
             const string text = "TEXT";
 
@@ -59,6 +60,77 @@ namespace BDDoc.UnitTest
             Assert.AreEqual(2, scenario.GetAllSteps().ElementAt(1).Order);
             Assert.AreEqual(ScenarioStepType.And, scenario.GetAllSteps().ElementAt(1).StepType);
             Assert.AreEqual(text, scenario.GetAllSteps().ElementAt(1).Text);
+        }
+
+        [Test]
+        public void CallingWhenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
+        {
+            const string text = "TEXT";
+
+            IList<IStoryAttrib> storyAttributes;
+            IList<IScenarioAttrib> scenarioAttributes;
+            GetAttributes(out storyAttributes, out scenarioAttributes);
+            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            scenario.When(text);
+
+            Assert.AreEqual(1, scenario.GetAllSteps().Length);
+            Assert.AreEqual(1, scenario.GetAllSteps().ElementAt(0).Order);
+            Assert.AreEqual(ScenarioStepType.When, scenario.GetAllSteps().ElementAt(0).StepType);
+            Assert.AreEqual(text, scenario.GetAllSteps().ElementAt(0).Text);
+
+            scenario.And(text);
+
+            Assert.AreEqual(2, scenario.GetAllSteps().Length);
+            Assert.AreEqual(2, scenario.GetAllSteps().ElementAt(1).Order);
+            Assert.AreEqual(ScenarioStepType.And, scenario.GetAllSteps().ElementAt(1).StepType);
+            Assert.AreEqual(text, scenario.GetAllSteps().ElementAt(1).Text);
+        }
+
+        [Test]
+        public void CallingThenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
+        {
+            const string text = "TEXT";
+
+            IList<IStoryAttrib> storyAttributes;
+            IList<IScenarioAttrib> scenarioAttributes;
+            GetAttributes(out storyAttributes, out scenarioAttributes);
+            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            scenario.Then(text);
+
+            Assert.AreEqual(1, scenario.GetAllSteps().Length);
+            Assert.AreEqual(1, scenario.GetAllSteps().ElementAt(0).Order);
+            Assert.AreEqual(ScenarioStepType.Then, scenario.GetAllSteps().ElementAt(0).StepType);
+            Assert.AreEqual(text, scenario.GetAllSteps().ElementAt(0).Text);
+
+            scenario.And(text);
+
+            Assert.AreEqual(2, scenario.GetAllSteps().Length);
+            Assert.AreEqual(2, scenario.GetAllSteps().ElementAt(1).Order);
+            Assert.AreEqual(ScenarioStepType.And, scenario.GetAllSteps().ElementAt(1).StepType);
+            Assert.AreEqual(text, scenario.GetAllSteps().ElementAt(1).Text);
+        }
+
+        [Test]
+        public void Scenario_MarkedAsCompleted_CanNotBeUpdated()
+        {
+            const string text = "TEXT";
+
+            IList<IStoryAttrib> storyAttributes;
+            IList<IScenarioAttrib> scenarioAttributes;
+            GetAttributes(out storyAttributes, out scenarioAttributes);
+            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            scenario.Given(text);
+            scenario.And(text);
+            scenario.When(text);
+            scenario.And(text);
+            scenario.Then(text);
+            scenario.And(text);
+            scenario.Complete();
+            Assert.Throws<InvalidOperationException>(() => scenario.Given(text));
+            Assert.Throws<InvalidOperationException>(() => scenario.And(text));
+            Assert.Throws<InvalidOperationException>(() => scenario.When(text));
+            Assert.Throws<InvalidOperationException>(() => scenario.Then(text));
+            Assert.Throws<InvalidOperationException>(scenario.Complete);
         }
     }
 }

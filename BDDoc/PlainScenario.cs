@@ -31,5 +31,11 @@ namespace BDDoc
         {
             AddThenStep(text);
         }
+
+        public void Complete()
+        {
+            Freeze();
+            Save();
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace BDDoc.Samples.MSTest.UnitTest.PlainScenarios
 
             scenario.Then("I should have four black sweaters in stock");
             //----------------------------------------------------------------------------------------------------------------//
+
+            scenario.Complete();
         }
 
         [TestMethod]
@@ -49,6 +51,8 @@ namespace BDDoc.Samples.MSTest.UnitTest.PlainScenarios
 
             scenario.And("two black garments in stock");
             //----------------------------------------------------------------------------------------------------------------//
+
+            scenario.Complete();
         }
     }
 }

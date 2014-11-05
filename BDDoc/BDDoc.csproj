@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsAAttribute.cs" />
+    <Compile Include="StoryInfoAttribute.cs" />
     <Compile Include="Core\BDDocAttribute.cs" />
     <Compile Include="Core\IBDDocAttrib.cs" />
     <Compile Include="Core\IScenarioAttrib.cs" />

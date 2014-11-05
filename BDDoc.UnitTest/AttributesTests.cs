@@ -10,6 +10,8 @@ namespace BDDoc.UnitTest
         [Test]
         public void CreateAttribute_UsingNotValidParameters_AnExceptionIsThrown()
         {
+            Assert.Throws<ArgumentNullException>(() => new StoryInfoAttribute(null));
+            Assert.Throws<ArgumentNullException>(() => new StoryInfoAttribute(string.Empty));
             Assert.Throws<ArgumentNullException>(() => new StoryAttribute(null));
             Assert.Throws<ArgumentNullException>(() => new StoryAttribute(string.Empty));
             Assert.Throws<ArgumentNullException>(() => new InOrderToAttribute(null));
@@ -27,6 +29,9 @@ namespace BDDoc.UnitTest
         {
             const string txt = "TEXT";
             const int order = 83;
+
+            var storyInfoAttrib = new StoryInfoAttribute(txt);
+            Assert.AreEqual(txt, storyInfoAttrib.StoryId);
 
             var storyAttrib = new StoryAttribute(txt) { Order = order };
             Assert.AreEqual(txt, storyAttrib.Text);

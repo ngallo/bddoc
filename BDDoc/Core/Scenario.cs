@@ -16,19 +16,22 @@ namespace BDDoc.Core
 
         //Constructors
 
-        protected Scenario(IList<IStoryAttrib> storyAttributes, IList<IScenarioAttrib> scenarioAttributes)
+        protected Scenario(StoryInfoAttribute storyInfoAttribute, IList<IStoryAttrib> storyAttributes, IList<IScenarioAttrib> scenarioAttributes)
         {
-            if (storyAttributes == null || (storyAttributes.Count == 0) 
+            if ((storyInfoAttribute == null) || (storyAttributes == null) || (storyAttributes.Count == 0) 
                 || (scenarioAttributes == null) || (scenarioAttributes.Count == 0))
             {
                 throw new ArgumentNullException();
             }
+            _steps = new List<ScenarioStep>();
+            StoryInfoAttribute = storyInfoAttribute;
             StoryAttributes = new ReadOnlyCollection<IStoryAttrib>(storyAttributes);
             ScenarioAttributes = new ReadOnlyCollection<IScenarioAttrib>(scenarioAttributes);
-            _steps = new List<ScenarioStep>();
         }
 
         //Properties
+
+        public StoryInfoAttribute StoryInfoAttribute { get; private set; }
 
         public ReadOnlyCollection<IStoryAttrib> StoryAttributes { get; private set; }
 

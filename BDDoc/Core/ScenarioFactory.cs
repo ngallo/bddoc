@@ -31,10 +31,11 @@ namespace BDDoc.Core
 
         public PlainScenario CreateScenario(int skipFrames)
         {
+            StoryInfoAttribute storyInfoAttribute;
             IList<IStoryAttrib> storyAttribs;
             IList<IScenarioAttrib> scenarioAttribs;
-            _reflectionHelper.RetrieveCallingMethodAttributes(++skipFrames, out storyAttribs, out scenarioAttribs);
-            return new PlainScenario(storyAttribs, scenarioAttribs);
+            _reflectionHelper.RetrieveStoryAttributes(++skipFrames, out storyInfoAttribute, out storyAttribs, out scenarioAttribs);
+            return new PlainScenario(storyInfoAttribute, storyAttribs, scenarioAttribs);
         }
     }
 }

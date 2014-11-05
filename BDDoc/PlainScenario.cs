@@ -7,8 +7,8 @@ namespace BDDoc
     {
         //Constructors
 
-        public PlainScenario(IList<IStoryAttrib> storyAttributes, IList<IScenarioAttrib> scenarioAttributes)
-            : base(storyAttributes, scenarioAttributes) { }
+        internal PlainScenario(StoryInfoAttribute storyInfoAttribute, IList<IStoryAttrib> storyAttributes, IList<IScenarioAttrib> scenarioAttributes)
+            : base(storyInfoAttribute, storyAttributes, scenarioAttributes) { }
 
         //Methods
 

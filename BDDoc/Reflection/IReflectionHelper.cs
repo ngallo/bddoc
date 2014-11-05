@@ -7,6 +7,6 @@ namespace BDDoc.Reflection
     {
         //Methods
 
-        void RetrieveCallingMethodAttributes(int skipFrames, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes);
+        void RetrieveStoryAttributes(int skipFrames, out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes);
     }
 }

@@ -9,7 +9,7 @@ namespace BDDoc.Reflection
     {
         //Methods
 
-        public void RetrieveCallingMethodAttributes(int skipFrames, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
+        public void RetrieveStoryAttributes(int skipFrames, out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
             var frame = new StackFrame(++skipFrames);
             var method = frame.GetMethod();
@@ -26,6 +26,13 @@ namespace BDDoc.Reflection
             storyAttributes = (from attrib in declaringTypeAttribs
                                 where attrib is IStoryAttrib
                                     select attrib as IStoryAttrib).ToArray();
+
+            //Get story's info attribute
+
+            storyInfoAttribute = declaringType.GetCustomAttributes(typeof(StoryInfoAttribute), true).FirstOrDefault() as StoryInfoAttribute;
+            if (storyInfoAttribute != null) return;
+            var storyId = declaringType.AssemblyQualifiedName;
+            storyInfoAttribute = new StoryInfoAttribute(storyId);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace BDDoc.UnitTest
         [Test]
         public void UsingTheScenarioFactory_ToCreateAPlainScenario_UsesTheReflectionHelper()
         {
+            const string storyId = "STORYID";
             const string storyTxt = "STORY";
             const int storyOrder = 11;
             const string inOrderToTxt = "INORDERTO";
@@ -31,6 +32,8 @@ namespace BDDoc.UnitTest
             const string scenarioTxt = "SCENARIO";
             const int scenarioOrder = 15;
 
+            var storyInfoAttrib = new StoryInfoAttribute(storyId);
+
             IList<IStoryAttrib> storyAttribs = new List<IStoryAttrib>();
             storyAttribs.Add(new StoryAttribute(storyTxt) { Order = storyOrder});
             storyAttribs.Add(new InOrderToAttribute(inOrderToTxt) { Order = inOrderToOrder });
@@ -40,11 +43,12 @@ namespace BDDoc.UnitTest
             IList<IScenarioAttrib> scenarioAttribs = new List<IScenarioAttrib>();
             scenarioAttribs.Add(new ScenarioAttribute(scenarioTxt) { Order = scenarioOrder });
 
-            var reflectionFake = new ReflectionHelperFake(storyAttribs, scenarioAttribs);
+            var reflectionFake = new ReflectionHelperFake(storyInfoAttrib, storyAttribs, scenarioAttribs);
             var scenarioFactory = new ScenarioFactory(reflectionFake);
             var plainScenario = scenarioFactory.CreateScenario(1);
 
             Assert.NotNull(plainScenario);
+            Assert.AreEqual(storyInfoAttrib, plainScenario.StoryInfoAttribute);
             Assert.AreEqual(4, plainScenario.StoryAttributes.Count);
             Assert.AreEqual(storyTxt, plainScenario.StoryAttributes.ElementAt(0).Text);
             Assert.AreEqual(storyOrder, plainScenario.StoryAttributes.ElementAt(0).Order);

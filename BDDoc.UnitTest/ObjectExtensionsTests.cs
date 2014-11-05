@@ -3,11 +3,13 @@ using System.Linq;
 
 namespace BDDoc.UnitTest
 {
+    [StoryInfo(StoryId)]
     [Story(StoryText, Order = StoryOrder)]
     public class ObjectExtensionsTests
     {
         //Constants
 
+        private const string StoryId = "StoryID";
         private const string StoryText = "This story's text is used just for testing purpose";
         private const int StoryOrder = 11;
         private const string ScenarioText = "This scenario's text is used just for testing purpose";
@@ -21,6 +23,7 @@ namespace BDDoc.UnitTest
         {
             var scenario = this.CreateScenario();
             Assert.NotNull(scenario);
+            Assert.AreEqual(StoryId, scenario.StoryInfoAttribute.StoryId);
             Assert.AreEqual(1, scenario.StoryAttributes.Count);
             Assert.AreEqual(StoryText, scenario.StoryAttributes.First().Text);
             Assert.AreEqual(StoryOrder, scenario.StoryAttributes.First().Order);

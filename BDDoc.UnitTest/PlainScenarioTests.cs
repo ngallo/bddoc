@@ -42,11 +42,13 @@ namespace BDDoc.UnitTest
         public void CallingGivenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
         {
             const string text = "TEXT";
+            const string storyId = "STORYID";
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
 
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             GetAttributes(out storyAttributes, out scenarioAttributes);
-            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
             scenario.Given(text);
 
             Assert.AreEqual(1, scenario.GetAllSteps().Length);
@@ -66,11 +68,13 @@ namespace BDDoc.UnitTest
         public void CallingWhenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
         {
             const string text = "TEXT";
+            const string storyId = "STORYID";
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
 
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             GetAttributes(out storyAttributes, out scenarioAttributes);
-            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
             scenario.When(text);
 
             Assert.AreEqual(1, scenario.GetAllSteps().Length);
@@ -90,11 +94,13 @@ namespace BDDoc.UnitTest
         public void CallingThenOrAnd_WithANotEmptyParameter_ANewStepIsAddedToTheScenario()
         {
             const string text = "TEXT";
+            const string storyId = "STORYID";
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
 
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             GetAttributes(out storyAttributes, out scenarioAttributes);
-            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
             scenario.Then(text);
 
             Assert.AreEqual(1, scenario.GetAllSteps().Length);
@@ -114,11 +120,13 @@ namespace BDDoc.UnitTest
         public void Scenario_MarkedAsCompleted_CanNotBeUpdated()
         {
             const string text = "TEXT";
+            const string storyId = "STORYID";
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
 
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             GetAttributes(out storyAttributes, out scenarioAttributes);
-            var scenario = new PlainScenario(storyAttributes, scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
             scenario.Given(text);
             scenario.And(text);
             scenario.When(text);

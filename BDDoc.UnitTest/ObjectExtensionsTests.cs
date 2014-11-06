@@ -19,7 +19,8 @@ namespace BDDoc.UnitTest
 
         //Tests
 
-        [Test]
+        [Ignore]
+        //[Test]
         [Scenario(ScenarioText, Order = ScenarioOrder)]
         public void CreatePlainScenario_UsingTheObjectExtensions_ANewPlainScenarioHasToBeInstanced()
         {

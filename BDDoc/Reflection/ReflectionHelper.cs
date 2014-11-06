@@ -1,4 +1,5 @@
 ﻿using BDDoc.Core;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +12,15 @@ namespace BDDoc.Reflection
 
         public void RetrieveStoryAttributes(int skipFrames, out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
+            if (skipFrames <= -2)
+            {
+                throw new ArgumentNullException();
+            }
+    #if DEBUG
             var frame = new StackFrame(++skipFrames);
+    #else
+            var frame = new StackFrame(skipFrames);
+    #endif
             var method = frame.GetMethod();
 
             //Get scenario's attributes

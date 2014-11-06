@@ -20,7 +20,9 @@ namespace BDDoc.Core
         //Properties
 
         public ScenarioStepType StepType { get; private set; }
+
         public int Order { get; private set; }
+        
         public string Text { get; private set; }
     }
 }

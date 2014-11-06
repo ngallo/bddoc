@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BDDoc.Core.Models
 {
-    internal abstract class Document
+    internal abstract class Document : IEnumerable<Tuple<string,string>>
     {
         //Fields
 
-        private Dictionary<string, string> _items;
+        private IList<Tuple<string,string>> _items;
 
         //Constructors
 
@@ -22,28 +24,38 @@ namespace BDDoc.Core.Models
 
         //Properties
 
-        private Dictionary<string, string> Items
+        private IList<Tuple<string, string>> Items
         {
-            get { return _items ?? (_items = new Dictionary<string, string>()); }
+            get { return _items ?? (_items = new List<Tuple<string, string>>()); }
         }
 
         public string Text { get; private set; }
 
         //Methods
 
+        IEnumerator<Tuple<string, string>> IEnumerable<Tuple<string, string>>.GetEnumerator()
+        {
+            return Items.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return Items.GetEnumerator();
+        }
+
         public bool AddItem(string key, string text)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if ((string.IsNullOrWhiteSpace(key)) || (string.IsNullOrWhiteSpace(text)))
             {
                 throw new ArgumentNullException();
             }
-            if (!Items.ContainsKey(key))
+            if (Items.Select((i) => i.Item1.Equals(key)).Any())
             {
                 return false;
             }
-            _items.Add(key, text);
+            var keyValue = new Tuple<string, string>(key, text);
+            Items.Add(keyValue);
             return true;
         }
     }
 }
-

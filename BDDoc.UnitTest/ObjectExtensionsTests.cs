@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace BDDoc.UnitTest
 {
+    [ExcludeFromCodeCoverage]
     [StoryInfo(StoryId)]
     [Story(StoryText, Order = StoryOrder)]
     public class ObjectExtensionsTests

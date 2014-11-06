@@ -1,9 +1,11 @@
 ﻿using BDDoc.Core;
 using BDDoc.Reflection;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.UnitTest.Fakes
 {
+    [ExcludeFromCodeCoverage]
     public class ReflectionHelperFake : IReflectionHelper
     {
         //Fields

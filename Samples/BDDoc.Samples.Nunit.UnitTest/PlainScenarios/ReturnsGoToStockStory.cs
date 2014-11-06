@@ -1,7 +1,9 @@
 ﻿using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
 {
+    [ExcludeFromCodeCoverage]
     [Story("Returns go to stock")]
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]

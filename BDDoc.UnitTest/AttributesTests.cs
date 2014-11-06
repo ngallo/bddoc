@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.UnitTest
 {
+    [ExcludeFromCodeCoverage]
     public class AttributesTests
     {
         //Tests

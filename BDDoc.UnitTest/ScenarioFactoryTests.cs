@@ -3,10 +3,12 @@ using BDDoc.UnitTest.Fakes;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace BDDoc.UnitTest
 {
+    [ExcludeFromCodeCoverage]
     public class ScenarioFactoryTests
     {
         //Tests

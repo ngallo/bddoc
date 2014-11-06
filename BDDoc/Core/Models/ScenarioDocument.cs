@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace BDDoc.Core.Models
 {
@@ -7,7 +8,7 @@ namespace BDDoc.Core.Models
     {
         //Fields
 
-        private IList<StepDocument> _steps;
+        private IList<StepDocument> _items;
 
         //Constructors
 
@@ -15,9 +16,14 @@ namespace BDDoc.Core.Models
 
         //Properties
 
-        private IList<StepDocument> Steps
+        private IList<StepDocument> Items
         {
-            get { return _steps ?? (_steps = new List<StepDocument>()); }
+            get { return _items ?? (_items = new List<StepDocument>()); }
+        }
+
+        public ReadOnlyCollection<StepDocument> Steps
+        {
+            get { return new ReadOnlyCollection<StepDocument>(_items); }
         }
 
         //Methods
@@ -29,7 +35,7 @@ namespace BDDoc.Core.Models
                 throw new ArgumentNullException();
             }
             var document = new StepDocument(stepType, text);
-            Steps.Add(document);
+            Items.Add(document);
         }
     }
 }

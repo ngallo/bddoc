@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BDDoc.Reflection;
+using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -19,8 +20,7 @@ namespace BDDoc.UnitTest
 
         //Tests
 
-        [Ignore]
-        //[Test]
+        [Test]
         [Scenario(ScenarioText, Order = ScenarioOrder)]
         public void CreatePlainScenario_UsingTheObjectExtensions_ANewPlainScenarioHasToBeInstanced()
         {
@@ -33,6 +33,12 @@ namespace BDDoc.UnitTest
             Assert.AreEqual(1, scenario.ScenarioAttributes.Count);
             Assert.AreEqual(ScenarioText, scenario.ScenarioAttributes.First().Text);
             Assert.AreEqual(ScenarioOrder, scenario.ScenarioAttributes.First().Order);
+        }
+
+        [Test]
+        public void CreatePlainScenario_UsingTheObjectExtensionsWithoutDecorateWithAScenarioAttribute_AnExceptionIsThrown()
+        {
+            Assert.Throws<BDDocConfigurationException>(() => this.CreateScenario(), ReflectionHelper.CMissingScenarioAttributeExceptionMessage);
         }
     }
 }

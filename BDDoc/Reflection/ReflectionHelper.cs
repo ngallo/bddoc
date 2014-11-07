@@ -1,46 +1,68 @@
 ﻿using BDDoc.Core;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 namespace BDDoc.Reflection
 {
-    public class ReflectionHelper : IReflectionHelper
+    internal class ReflectionHelper : IReflectionHelper
     {
+        //Constants
+
+        public const string CMissingStoryAttributeAttributeExceptionMessage ="Missing StoryAttribute. Please decorate your test class with StoryAttribute.";
+        public const string CMissingScenarioAttributeExceptionMessage = "Missing ScenarioAttribute. Please decorate your test method with ScenarioAttribute.";
+
         //Methods
 
-        public void RetrieveStoryAttributes(int skipFrames, out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
+        public void RetrieveStoryAttributes(out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
-            if (skipFrames <= -2)
+            storyAttributes = null;
+            storyInfoAttribute = null;
+
+            var skipFrames = 0;
+            do
             {
-                throw new ArgumentNullException();
-            }
-    #if DEBUG
-            var frame = new StackFrame(++skipFrames);
-    #else
-            var frame = new StackFrame(skipFrames);
-    #endif
-            var method = frame.GetMethod();
+                skipFrames++;
+                var frame = new StackFrame(skipFrames);
 
-            //Get scenario's attributes
-            var methodAttribs = method.GetCustomAttributes(typeof(BDDocAttribute), true);
-            scenarioAttributes = (from attrib in methodAttribs
-                                    where attrib is IScenarioAttrib
-                                        select attrib as IScenarioAttrib).ToArray();
+                var method = frame.GetMethod();
+                if (method == null)
+                {
+                    throw new BDDocConfigurationException(CMissingScenarioAttributeExceptionMessage);
+                }
 
-            //Get story's attributes
-            var declaringType = method.DeclaringType;
-            var declaringTypeAttribs = declaringType.GetCustomAttributes(typeof(BDDocAttribute), true);
-            storyAttributes = (from attrib in declaringTypeAttribs
-                                where attrib is IStoryAttrib
-                                    select attrib as IStoryAttrib).ToArray();
+                //Get scenario's attributes
+                var methodAttribs = method.GetCustomAttributes(typeof(BDDocAttribute), true);
+                scenarioAttributes = (from attrib in methodAttribs
+                                      where attrib is IScenarioAttrib
+                                      select attrib as IScenarioAttrib).ToArray();
 
-            //Get story's info attribute
-            storyInfoAttribute = declaringType.GetCustomAttributes(typeof(StoryInfoAttribute), true).FirstOrDefault() as StoryInfoAttribute;
-            if (storyInfoAttribute != null) return;
-            var storyId = declaringType.AssemblyQualifiedName;
-            storyInfoAttribute = new StoryInfoAttribute(storyId);
+                if (scenarioAttributes.Count == 0) continue;
+                
+                var declaringType = method.DeclaringType;
+
+                if (declaringType == null) continue;
+
+                //Get story's attributes
+                var declaringTypeAttribs = declaringType.GetCustomAttributes(typeof(BDDocAttribute), true);
+                storyAttributes = (from attrib in declaringTypeAttribs
+                                   where attrib is IStoryAttrib
+                                   select attrib as IStoryAttrib).ToArray();
+
+                if (!storyAttributes.Any(i => i is StoryAttribute))
+                {
+                    throw new BDDocConfigurationException(CMissingStoryAttributeAttributeExceptionMessage);
+                }
+
+                //Get story's info attribute
+                storyInfoAttribute = declaringType.GetCustomAttributes(typeof(StoryInfoAttribute), true).FirstOrDefault() as StoryInfoAttribute;
+                if (storyInfoAttribute != null) return;
+                var storyId = declaringType.AssemblyQualifiedName;
+                storyInfoAttribute = new StoryInfoAttribute(storyId);
+
+                return;
+
+            } while (true);
         }
     }
 }

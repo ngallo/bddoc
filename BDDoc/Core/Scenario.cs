@@ -49,11 +49,11 @@ namespace BDDoc.Core
 
         private void AddStep(ScenarioStepType stepType, string text)
         {
-            CanUpdateScenario();
             if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentNullException();
             }
+            CanUpdateScenario();
             var stepIndex = Interlocked.Increment(ref _stepsCounter);
             var scenarioStep = new ScenarioStep(stepType, stepIndex, text);
             _steps.Add(scenarioStep);

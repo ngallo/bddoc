@@ -9,7 +9,7 @@ namespace BDDoc
         public static PlainScenario CreateScenario(this object instance)
         {
             var scenarioFactory = ScenarioFactory.CreateInstance();
-            return scenarioFactory.CreateScenario(1);
+            return scenarioFactory.CreateScenario();
         }
     }
 }

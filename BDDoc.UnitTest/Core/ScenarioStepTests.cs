@@ -1,7 +1,7 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using BDDoc.Core;
+﻿using BDDoc.Core;
 using NUnit.Framework;
+using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.UnitTest.Core
 {
@@ -13,6 +13,7 @@ namespace BDDoc.UnitTest.Core
         [Test]
         public void CreateScenarioStep_WithInvalidParameters_AnExecptionIsThrown()
         {
+            Assert.Throws<ArgumentException>(() => { new ScenarioStep(ScenarioStepType.Given, -1, "TEXT"); });
             Assert.Throws<ArgumentNullException>(() => { new ScenarioStep(ScenarioStepType.Given, 1, null); });
             Assert.Throws<ArgumentNullException>(() => { new ScenarioStep(ScenarioStepType.Given, 1, string.Empty); });
         }

@@ -8,6 +8,10 @@ namespace BDDoc.Core
 
         public ScenarioStep(ScenarioStepType stepType, int order, string text)
         {
+            if (order < 0)
+            {
+                throw new ArgumentException();
+            }
             if (string.IsNullOrWhiteSpace(text))
             {
                 throw new ArgumentNullException();

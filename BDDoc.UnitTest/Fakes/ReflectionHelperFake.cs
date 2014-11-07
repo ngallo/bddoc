@@ -25,7 +25,7 @@ namespace BDDoc.UnitTest.Fakes
 
         //Methods
 
-        public void RetrieveStoryAttributes(int skipFrames, out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
+        public void RetrieveStoryAttributes(out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
             storyInfoAttribute = _storyInfoAttribute;
             storyAttributes = _storyAttributes;

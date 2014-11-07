@@ -4,7 +4,7 @@ using System;
 namespace BDDoc
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class StoryAttribute : BDDocAttribute, IStoryAttrib
+    public sealed class StoryAttribute : BDDocAttribute, IStoryAttrib
     {
         //Constructors
         

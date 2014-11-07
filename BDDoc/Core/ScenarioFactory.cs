@@ -29,12 +29,12 @@ namespace BDDoc.Core
             return new ScenarioFactory(reflectionHelper);
         }
 
-        public PlainScenario CreateScenario(int skipFrames)
+        public PlainScenario CreateScenario()
         {
             StoryInfoAttribute storyInfoAttribute;
             IList<IStoryAttrib> storyAttribs;
             IList<IScenarioAttrib> scenarioAttribs;
-            _reflectionHelper.RetrieveStoryAttributes(++skipFrames, out storyInfoAttribute, out storyAttribs, out scenarioAttribs);
+            _reflectionHelper.RetrieveStoryAttributes(out storyInfoAttribute, out storyAttribs, out scenarioAttribs);
             return new PlainScenario(storyInfoAttribute, storyAttribs, scenarioAttribs);
         }
     }

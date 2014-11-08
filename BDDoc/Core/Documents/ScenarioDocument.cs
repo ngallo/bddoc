@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace BDDoc.Core.Models
+namespace BDDoc.Core.Documents
 {
     internal class ScenarioDocument : Document
     {

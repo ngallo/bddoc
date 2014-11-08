@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BDDoc.Core.Models
+namespace BDDoc.Core.Documents
 {
     internal class StoryDocument : Document
     {
@@ -9,7 +9,7 @@ namespace BDDoc.Core.Models
         public StoryDocument(string fileName, string text)
             : base(text)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ArgumentNullException();
             }

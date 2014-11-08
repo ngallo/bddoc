@@ -1,8 +1,10 @@
 ﻿using BDDoc.Core;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.UnitTest.Fakes
 {
+    [ExcludeFromCodeCoverage]
     public class ScenarioFake : Scenario
     {
         //Constructors

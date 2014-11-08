@@ -1,4 +1,4 @@
-﻿using BDDoc.Core.Models;
+﻿using BDDoc.Core.Documents;
 
 namespace BDDoc.Core
 {

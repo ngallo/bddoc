@@ -1,4 +1,4 @@
-﻿using BDDoc.Core.Models;
+﻿using BDDoc.Core.Documents;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

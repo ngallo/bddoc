@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BDDoc.Core.Models
+namespace BDDoc.Core.Documents
 {
     internal class StepDocument
     {

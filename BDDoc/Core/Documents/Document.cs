@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace BDDoc.Core.Models
+namespace BDDoc.Core.Documents
 {
     internal abstract class Document : IEnumerable<Tuple<string,string>>
     {

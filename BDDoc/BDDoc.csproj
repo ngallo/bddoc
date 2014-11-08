@@ -43,10 +43,10 @@
     <Compile Include="BDDocException.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core\IDataStore.cs" />
-    <Compile Include="Core\Models\Document.cs" />
-    <Compile Include="Core\Models\ScenarioDocument.cs" />
-    <Compile Include="Core\Models\StepDocument.cs" />
-    <Compile Include="Core\Models\StoryDocument.cs" />
+    <Compile Include="Core\Documents\Document.cs" />
+    <Compile Include="Core\Documents\ScenarioDocument.cs" />
+    <Compile Include="Core\Documents\StepDocument.cs" />
+    <Compile Include="Core\Documents\StoryDocument.cs" />
     <Compile Include="Core\DataStore.cs" />
     <Compile Include="StoryInfoAttribute.cs" />
     <Compile Include="Core\BDDocAttribute.cs" />

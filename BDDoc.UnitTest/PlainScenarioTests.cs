@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using BDDoc.Core;
-using BDDoc.Core.Models;
+using BDDoc.Core.Documents;
 using BDDoc.UnitTest.Fakes;
 using Moq;
 using NUnit.Framework;

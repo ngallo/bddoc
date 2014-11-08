@@ -18,6 +18,19 @@ namespace BDDoc.Core
 
         //Properties
 
+        public string Key
+        {
+            get
+            {
+                var key = GetType().Name;
+                if (key.ToUpper().EndsWith("ATTRIBUTE"))
+                {
+                    key = key.Substring(0, key.Length - 9);
+                }
+                return key;
+            }
+        }
+
         public string Text { get; private set; }
 
         public int Order { get; set; }

@@ -8,7 +8,6 @@ namespace BDDoc.Core
 
         public void Save(StoryDocument storyDocument, ScenarioDocument scenarioDocument)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

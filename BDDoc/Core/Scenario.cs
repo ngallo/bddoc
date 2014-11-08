@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BDDoc.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace BDDoc.Core
     {
         //Fields
 
+        private readonly IList<ScenarioStep> _steps;
+
+        private IDataStore _dataStore;
         private int _isFrozen;
         private int _stepsCounter;
-        private readonly IList<ScenarioStep> _steps;
 
         //Constructors
 
@@ -59,6 +62,15 @@ namespace BDDoc.Core
             _steps.Add(scenarioStep);
         }
 
+        internal void AttachDataStore(IDataStore dataStore)
+        {
+            if (dataStore == null)
+            {
+                throw new ArgumentNullException();
+            }
+            _dataStore = dataStore;
+        }
+
         internal ScenarioStep[] GetAllSteps()
         {
             return _steps.ToArray();
@@ -74,6 +86,34 @@ namespace BDDoc.Core
 
         protected void Save()
         {
+            if (_dataStore == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            var storyAttrib = StoryAttributes.First(a => a is StoryAttribute);
+            var storyDocument = new StoryDocument(StoryInfoAttribute.StoryId, storyAttrib.Text);
+            var orderedStoryAttrib = StoryAttributes.Where((a) => a != storyAttrib).OrderBy((a) => a.Order);
+            foreach (var attrib in orderedStoryAttrib)
+            {
+                storyDocument.AddItem(attrib.Key, attrib.Text);
+            }
+
+            var scenarioAttrib = ScenarioAttributes.First(a => a is ScenarioAttribute);
+            var scenarioDocument = new ScenarioDocument(scenarioAttrib.Text);
+            var orderedScenarioAttrib = ScenarioAttributes.Where((a) => a != scenarioAttrib).OrderBy((a) => a.Order);
+            foreach (var attrib in orderedScenarioAttrib)
+            {
+                scenarioDocument.AddItem(attrib.Key, attrib.Text);
+            }
+
+            var orderdSteps = _steps.OrderBy((s) => s.Order);
+            foreach (var scenarioStep in orderdSteps)
+            {
+                scenarioDocument.AddStep(scenarioStep.StepType, scenarioStep.Text);
+            }
+
+            _dataStore.Save(storyDocument, scenarioDocument);
         }
 
         protected void AddGivenStep(string text)

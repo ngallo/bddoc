@@ -1,4 +1,6 @@
 ﻿using BDDoc.Core;
+using BDDoc.Core.Models;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -204,16 +206,36 @@ namespace BDDoc.UnitTest
         }
 
         [Test]
-        public void Scenario_MarkedAsCompleted_CanNotBeUpdated()
+        public void Scenario_MarkedAsCompleted_WithoutAttachingDataStore_AnExceptionIsThrown()
         {
             const string text = "TEXT";
             const string storyId = "STORYID";
+            
             var storyInfoAttribute = new StoryInfoAttribute(storyId);
-
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             GetAttributes(out storyAttributes, out scenarioAttributes);
             var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
+            
+            Assert.Throws<ArgumentNullException>(() => scenario.AttachDataStore(null));
+            Assert.Throws<InvalidOperationException>(scenario.Complete);
+        }
+
+        [Test]
+        public void Scenario_MarkedAsCompleted_CanNotBeUpdated()
+        {
+            const string text = "TEXT";
+            const string storyId = "STORYID";
+
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
+            IList<IStoryAttrib> storyAttributes;
+            IList<IScenarioAttrib> scenarioAttributes;
+            GetAttributes(out storyAttributes, out scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
+
+            var dataStoreMock = new Mock<IDataStore>();
+            scenario.AttachDataStore(dataStoreMock.Object);
+
             scenario.Given(text);
             scenario.And(text);
             scenario.When(text);
@@ -221,11 +243,29 @@ namespace BDDoc.UnitTest
             scenario.Then(text);
             scenario.And(text);
             scenario.Complete();
+
             Assert.Throws<InvalidOperationException>(() => scenario.Given(text));
             Assert.Throws<InvalidOperationException>(() => scenario.And(text));
             Assert.Throws<InvalidOperationException>(() => scenario.When(text));
             Assert.Throws<InvalidOperationException>(() => scenario.Then(text));
             Assert.Throws<InvalidOperationException>(scenario.Complete);
+        }
+
+        public void Scenario_MarkedAsCompleted_SaveResults()
+        {
+            const string storyId = "STORYID";
+
+            var storyInfoAttribute = new StoryInfoAttribute(storyId);
+            IList<IStoryAttrib> storyAttributes;
+            IList<IScenarioAttrib> scenarioAttributes;
+            GetAttributes(out storyAttributes, out scenarioAttributes);
+            var scenario = new PlainScenario(storyInfoAttribute, storyAttributes, scenarioAttributes);
+
+            var dataStoreMock = new Mock<IDataStore>();
+            dataStoreMock.Setup((m) => m.Save(It.IsAny<StoryDocument>(), It.IsAny<ScenarioDocument>()));
+            scenario.AttachDataStore(dataStoreMock.Object);
+            scenario.Complete();
+            dataStoreMock.Verify((m) => m.Save(It.IsAny<StoryDocument>(), It.IsAny<ScenarioDocument>()), Times.Once);
         }
     }
 }

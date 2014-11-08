@@ -5,6 +5,8 @@ namespace BDDoc.Core
     {
         //Properties
 
+        string Key { get; }
+
         string Text { get; }
 
         int Order { get; set; }

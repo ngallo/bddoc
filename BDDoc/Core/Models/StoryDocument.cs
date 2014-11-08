@@ -11,7 +11,7 @@ namespace BDDoc.Core.Models
         {
             if (string.IsNullOrWhiteSpace(text))
             {
-                throw new Exception();
+                throw new ArgumentNullException();
             }
             FileName = fileName;
         }

@@ -9,16 +9,18 @@ namespace BDDoc.Core
         //Fields
 
         private readonly IReflectionHelper _reflectionHelper;
+        private readonly IDataStore _dataStore;
 
         //Constructors
 
-        internal ScenarioFactory(IReflectionHelper reflectionHelper)
+        internal ScenarioFactory(IReflectionHelper reflectionHelper, IDataStore dataStore)
         {
-            if (reflectionHelper == null)
+            if ((reflectionHelper == null) || (dataStore == null))
             {
                 throw new ArgumentNullException();
             }
             _reflectionHelper = reflectionHelper;
+            _dataStore = dataStore;
         }
 
         //Methods
@@ -26,7 +28,8 @@ namespace BDDoc.Core
         public static ScenarioFactory CreateInstance()
         {
             var reflectionHelper = new ReflectionHelper();
-            return new ScenarioFactory(reflectionHelper);
+            var dataStore = new DataStore();
+            return new ScenarioFactory(reflectionHelper, dataStore);
         }
 
         public PlainScenario CreateScenario()
@@ -35,7 +38,9 @@ namespace BDDoc.Core
             IList<IStoryAttrib> storyAttribs;
             IList<IScenarioAttrib> scenarioAttribs;
             _reflectionHelper.RetrieveStoryAttributes(out storyInfoAttribute, out storyAttribs, out scenarioAttribs);
-            return new PlainScenario(storyInfoAttribute, storyAttribs, scenarioAttribs);
+            var plainScenario = new PlainScenario(storyInfoAttribute, storyAttribs, scenarioAttribs);
+            plainScenario.AttachDataStore(_dataStore);
+            return plainScenario;
         }
     }
 }

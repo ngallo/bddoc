@@ -17,7 +17,7 @@ namespace BDDoc.Core.Models
         {
             if (string.IsNullOrWhiteSpace(text))
             {
-                throw new Exception();
+                throw new ArgumentNullException();
             }
             Text = text;
         }
@@ -49,7 +49,7 @@ namespace BDDoc.Core.Models
             {
                 throw new ArgumentNullException();
             }
-            if (Items.Select((i) => i.Item1.Equals(key)).Any())
+            if (Items.Any((i) => i.Item1.Equals(key)))
             {
                 return false;
             }

@@ -18,18 +18,23 @@ namespace BDDoc.UnitTest.Core
         [Test]
         public void CreateScenarioFactory_WithInvalidParameters_AnExecptionIsThrown()
         {
-            Assert.Throws<ArgumentNullException>(() => new ScenarioFactory(null));
+            var reflectionHelperMock = new Mock<IReflectionHelper>();
+            var dataStoreMock = new Mock<IDataStore>();
+            Assert.Throws<ArgumentNullException>(() => new ScenarioFactory(reflectionHelperMock.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ScenarioFactory(null, dataStoreMock.Object));
+            Assert.Throws<ArgumentNullException>(() => new ScenarioFactory(null, null));
         }
 
         [Test]
         public void CreateScenario_WhenReflectionHelperReturnsInvalidValue_AnExceptionIsThrown()
         {
             var reflectionHelperMock = new Mock<IReflectionHelper>();
+            var dataStoreMock = new Mock<IDataStore>();
             StoryInfoAttribute storyInfoAttribute;
             IList<IStoryAttrib> storyAttributes;
             IList<IScenarioAttrib> scenarioAttributes;
             reflectionHelperMock.Setup((m) => m.RetrieveStoryAttributes(out storyInfoAttribute, out storyAttributes, out scenarioAttributes));
-            var plainScenario = new ScenarioFactory(reflectionHelperMock.Object);
+            var plainScenario = new ScenarioFactory(reflectionHelperMock.Object, dataStoreMock.Object);
             Assert.Throws<ArgumentNullException>(() => plainScenario.CreateScenario());
             reflectionHelperMock.Verify((m) => m.RetrieveStoryAttributes(out storyInfoAttribute, out storyAttributes, out scenarioAttributes), Times.Once);
         }
@@ -60,8 +65,9 @@ namespace BDDoc.UnitTest.Core
             IList<IScenarioAttrib> scenarioAttribs = new List<IScenarioAttrib>();
             scenarioAttribs.Add(new ScenarioAttribute(scenarioTxt) { Order = scenarioOrder });
 
+            var dataStoreMock = new Mock<IDataStore>();
             var reflectionFake = new ReflectionHelperFake(storyInfoAttrib, storyAttribs, scenarioAttribs);
-            var scenarioFactory = new ScenarioFactory(reflectionFake);
+            var scenarioFactory = new ScenarioFactory(reflectionFake, dataStoreMock.Object);
             var plainScenario = scenarioFactory.CreateScenario();
 
             Assert.NotNull(plainScenario);

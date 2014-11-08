@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BDDoc.Reflection
 {
-    interface IReflectionHelper
+    internal interface IReflectionHelper
     {
         //Methods
 

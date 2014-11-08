@@ -57,7 +57,7 @@ namespace BDDoc.Reflection
                 //Get story's info attribute
                 storyInfoAttribute = declaringType.GetCustomAttributes(typeof(StoryInfoAttribute), true).FirstOrDefault() as StoryInfoAttribute;
                 if (storyInfoAttribute != null) return;
-                var storyId = declaringType.AssemblyQualifiedName;
+                var storyId = declaringType.FullName.Replace(".", "_");
                 storyInfoAttribute = new StoryInfoAttribute(storyId);
 
                 return;

@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using BDDoc.Core;
-using BDDoc.Core.Documents;
+﻿using BDDoc.Core.Documents;
 using NUnit.Framework;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using NUnit.Framework.Constraints;
+using System.Linq;
 
 namespace BDDoc.UnitTest.Core.Documents
 {

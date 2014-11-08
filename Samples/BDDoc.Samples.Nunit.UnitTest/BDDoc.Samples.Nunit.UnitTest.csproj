@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlainScenarios\CustomScenarioAttribute1.cs" />
+    <Compile Include="PlainScenarios\CustomScenarioAttribute2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlainScenarios\ReturnsGoToStockStory.cs" />
   </ItemGroup>

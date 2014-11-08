@@ -13,9 +13,13 @@ namespace BDDoc.Core
 
         private readonly IList<ScenarioStep> _steps;
 
-        private IDataStore _dataStore;
+        private readonly object _syncRoot = new object();
         private int _isFrozen;
+        private bool _isInvalidState;
         private int _stepsCounter;
+        private int _lstStepType = -1;
+        private int _lstBaseStepType = -1;
+        private IDataStore _dataStore;
 
         //Constructors
 
@@ -46,7 +50,7 @@ namespace BDDoc.Core
         {
             if (Interlocked.CompareExchange(ref _isFrozen, 1, 1) == 1)
             {
-                throw new InvalidOperationException();
+                throw new BDDocException(Constants.CExceptionMessageFrozenScenario);
             }
         }
 
@@ -57,9 +61,35 @@ namespace BDDoc.Core
                 throw new ArgumentNullException();
             }
             CanUpdateScenario();
-            var stepIndex = Interlocked.Increment(ref _stepsCounter);
+            var lastStep = -1;
+            var stepIndex = -1;
+            lock (_syncRoot)
+            {
+                lastStep = _lstStepType;
+                _lstStepType = (int)stepType;
+                stepIndex = ++_stepsCounter;
+            }
+            if (lastStep != (int)ScenarioStepType.And)
+            {
+                _lstBaseStepType = lastStep;
+            }
+            if (((lastStep == -1) && (stepType != ScenarioStepType.Given))
+                || ((_lstBaseStepType >= (int)stepType) && ((int)stepType != (int)ScenarioStepType.And))
+                || ((_lstBaseStepType == (int)ScenarioStepType.Given) && (stepType == ScenarioStepType.Then)))
+            {
+                Freeze();
+                SetInvalidState();
+                var stepName = Enum.GetName(typeof (ScenarioStepType), stepType);
+                var message = string.Format(Constants.CExceptionMessageInvalidStep, stepName);
+                throw new BDDocException(message);
+            }
             var scenarioStep = new ScenarioStep(stepType, stepIndex, text);
             _steps.Add(scenarioStep);
+        }
+
+        protected void SetInvalidState()
+        {
+            _isInvalidState = true;
         }
 
         internal void AttachDataStore(IDataStore dataStore)
@@ -80,12 +110,20 @@ namespace BDDoc.Core
         {
             if (Interlocked.Exchange(ref _isFrozen, 1) == 1)
             {
-                throw new InvalidOperationException();
+                throw new BDDocException(Constants.CExceptionMessageFrozenScenario);
             }
         }
 
         protected void Save()
         {
+            if (_isInvalidState)
+            {
+                throw new BDDocException(Constants.CExceptionMessageInvalidState);
+            }
+            if (Interlocked.CompareExchange(ref _isFrozen, 1, 1) == 0)
+            {
+                throw new BDDocException(Constants.CExceptionMessageCanNotSaveNotCompleted);
+            }
             if (_dataStore == null)
             {
                 throw new InvalidOperationException();

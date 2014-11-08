@@ -11,9 +11,9 @@ namespace BDDoc.UnitTest
         [Test]
         public void CreateCustomException_UsingValidParameters_InstanceIsInitialized()
         {
-            Assert.DoesNotThrow(() => new BDDocConfigurationException());
+            Assert.DoesNotThrow(() => new BDDocException());
             const string text = "TEXT";
-            var exception = new BDDocConfigurationException(text);
+            var exception = new BDDocException(text);
             Assert.AreEqual(text, exception.Message);
         }
     }

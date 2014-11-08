@@ -38,7 +38,8 @@ namespace BDDoc.UnitTest
         [Test]
         public void CreatePlainScenario_UsingTheObjectExtensionsWithoutDecorateWithAScenarioAttribute_AnExceptionIsThrown()
         {
-            Assert.Throws<BDDocConfigurationException>(() => this.CreateScenario(), ReflectionHelper.CMissingScenarioAttributeExceptionMessage);
+            var ex = Assert.Throws<BDDocException>(() => this.CreateScenario());
+            Assert.AreEqual(Constants.CExceptionMessageMissingScenarioAttribute, ex.Message);
         }
     }
 }

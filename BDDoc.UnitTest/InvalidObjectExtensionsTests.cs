@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using BDDoc.Reflection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BDDoc.UnitTest
 {
@@ -16,18 +15,19 @@ namespace BDDoc.UnitTest
 
         //Tests
 
+        [Test]
         [Scenario(ScenarioText, Order = ScenarioOrder)]
+        public void CreatePlainScenario_UsingTheObjectExtensionsWithoutDecorateWithAScenarioAttributeAndStoryAttribute_AnExceptionIsThrown()
+        {
+            var ex = Assert.Throws<BDDocException>(() => this.CreateScenario());
+            Assert.AreEqual(Constants.CExceptionMessageMissingStoryAttribute, ex.Message);
+        }
+
         [Test]
         public void CreatePlainScenario_UsingTheObjectExtensionsWithoutDecorateWithAScenarioAttribute_AnExceptionIsThrown()
         {
-            Assert.Throws<BDDocConfigurationException>(() => this.CreateScenario(), ReflectionHelper.CMissingStoryAttributeAttributeExceptionMessage);
-        }
-
-        [Scenario(ScenarioText, Order = ScenarioOrder)]
-        [Test]
-        public void CreatePlainScenario_UsingTheObjectExtensionsWithoutDecorateWithAScenarioAttributeAndStoryAttribute_AnExceptionIsThrown()
-        {
-            Assert.Throws<BDDocConfigurationException>(() => this.CreateScenario(), ReflectionHelper.CMissingStoryAttributeAttributeExceptionMessage);
+            var ex = Assert.Throws<BDDocException>(() => this.CreateScenario());
+            Assert.AreEqual(Constants.CExceptionMessageMissingScenarioAttribute, ex.Message);
         }
     }
 }

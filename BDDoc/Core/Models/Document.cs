@@ -43,19 +43,14 @@ namespace BDDoc.Core.Models
             return Items.GetEnumerator();
         }
 
-        public bool AddItem(string key, string text)
+        public void AddItem(string key, string text)
         {
             if ((string.IsNullOrWhiteSpace(key)) || (string.IsNullOrWhiteSpace(text)))
             {
                 throw new ArgumentNullException();
             }
-            if (Items.Any((i) => i.Item1.Equals(key)))
-            {
-                return false;
-            }
             var keyValue = new Tuple<string, string>(key, text);
             Items.Add(keyValue);
-            return true;
         }
     }
 }

@@ -6,6 +6,10 @@ namespace BDDoc.Core
     {
         //Constructors
 
+        private const string CAttribute = "ATTRIBUTE";
+
+        //Constructors
+
         protected BDDocAttribute(string text, int order)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -23,7 +27,7 @@ namespace BDDoc.Core
             get
             {
                 var key = GetType().Name;
-                if (key.ToUpper().EndsWith("ATTRIBUTE"))
+                if (key.ToUpper().EndsWith(CAttribute))
                 {
                     key = key.Substring(0, key.Length - 9);
                 }

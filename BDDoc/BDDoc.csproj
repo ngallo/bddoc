@@ -40,7 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsAAttribute.cs" />
-    <Compile Include="BDDocConfigurationException.cs" />
+    <Compile Include="BDDocException.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Core\IDataStore.cs" />
     <Compile Include="Core\Models\Document.cs" />
     <Compile Include="Core\Models\ScenarioDocument.cs" />

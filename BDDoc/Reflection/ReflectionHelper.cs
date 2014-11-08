@@ -7,11 +7,6 @@ namespace BDDoc.Reflection
 {
     internal class ReflectionHelper : IReflectionHelper
     {
-        //Constants
-
-        public const string CMissingStoryAttributeAttributeExceptionMessage ="Missing StoryAttribute. Please decorate your test class with StoryAttribute.";
-        public const string CMissingScenarioAttributeExceptionMessage = "Missing ScenarioAttribute. Please decorate your test method with ScenarioAttribute.";
-
         //Methods
 
         public void RetrieveStoryAttributes(out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
@@ -22,13 +17,12 @@ namespace BDDoc.Reflection
             var skipFrames = 0;
             do
             {
-                skipFrames++;
-                var frame = new StackFrame(skipFrames);
+                var frame = new StackFrame(++skipFrames);
 
                 var method = frame.GetMethod();
                 if (method == null)
                 {
-                    throw new BDDocConfigurationException(CMissingScenarioAttributeExceptionMessage);
+                    throw new BDDocException(Constants.CExceptionMessageMissingScenarioAttribute);
                 }
 
                 //Get scenario's attributes
@@ -51,7 +45,7 @@ namespace BDDoc.Reflection
 
                 if (!storyAttributes.Any(i => i is StoryAttribute))
                 {
-                    throw new BDDocConfigurationException(CMissingStoryAttributeAttributeExceptionMessage);
+                    throw new BDDocException(Constants.CExceptionMessageMissingStoryAttribute);
                 }
 
                 //Get story's info attribute

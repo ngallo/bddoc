@@ -65,7 +65,9 @@
     <Compile Include="Core\ScenarioFactoryTests.cs" />
     <Compile Include="Core\ScenarioStepTests.cs" />
     <Compile Include="CustomExceptionTests.cs" />
+    <Compile Include="Fakes\CustomScenarioAttribute.cs" />
     <Compile Include="Fakes\ReflectionHelperFake.cs" />
+    <Compile Include="Fakes\ScenarioFake.cs" />
     <Compile Include="InvalidObjectExtensionsTests.cs" />
     <Compile Include="ObjectExtensionsTests.cs" />
     <Compile Include="PlainScenarioTests.cs" />

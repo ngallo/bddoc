@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BDDoc")]
+[assembly: AssemblyTitle("BDDoc.IntegrationTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Nicola Gallo")]
-[assembly: AssemblyProduct("BDDoc")]
-[assembly: AssemblyCopyright("Copyright © Nicola Gallo 2014")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("BDDoc.IntegrationTest")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("535e841b-201f-4fdc-a6f8-5705b406ccd5")]
+[assembly: Guid("84b672bc-648f-444b-befc-763b884be264")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,6 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("BDDoc.UnitTest")]
-[assembly: InternalsVisibleTo("BDDoc.IntegrationTest")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

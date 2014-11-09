@@ -62,7 +62,7 @@ namespace BDDoc.UnitTest
         {
             var scenario = this.CreateScenario();
             Assert.NotNull(scenario);
-            Assert.AreEqual(StoryId, scenario.StoryInfoAttribute.StoryId);
+            Assert.AreEqual("BDDoc_UnitTest_ObjectExtensionsTests1", scenario.StoryInfoAttribute.StoryId);
             Assert.AreEqual(1, scenario.StoryAttributes.Count);
             Assert.AreEqual(StoryText, scenario.StoryAttributes.First().Text);
             Assert.AreEqual(StoryOrder, scenario.StoryAttributes.First().Order);

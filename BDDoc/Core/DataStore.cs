@@ -87,12 +87,16 @@ namespace BDDoc.Core
             return string.Format("{0}.{1}", fileName, Constants.CDataStoreFileExtension);
         }
 
-        protected virtual XDocument CreateNewDocument(XElement storyElement)
+        protected XDocument CreateNewDocument(XElement storyElement)
         {
+            if (storyElement == null)
+            {
+                throw new ArgumentNullException();
+            }
             return new XDocument(new XDeclaration("1.0", "utf-8", "yes"), storyElement);
         }
 
-        protected virtual bool FileExist(string path)
+        protected bool FileExist(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -101,7 +105,7 @@ namespace BDDoc.Core
             return File.Exists(path);
         }
 
-        protected virtual void Save(XDocument document, string path)
+        protected void Save(XDocument document, string path)
         {
             if ((document == null) || (string.IsNullOrEmpty(path)))
             {

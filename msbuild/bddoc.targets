@@ -6,7 +6,7 @@
     <OutputDir>$(CheckoutDir)\output</OutputDir>
     <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
     <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
-    <CoverageFilter>"+[BDDoc*]* -[*BDDoc.Samples.*]* -[*UnitTest*]*"</CoverageFilter>
+    <CoverageFilter>"+[BDDoc*]* -[*BDDoc.Samples.*]* -[*UnitTest*]* -[*IntegrationTest*]*"</CoverageFilter>
     <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
     <TestDllList>$(BinDirectories)\*.dll</TestDllList>
     <BDDDocRepoFiles>$(BinDirectories)\*.bddoc</BDDDocRepoFiles>

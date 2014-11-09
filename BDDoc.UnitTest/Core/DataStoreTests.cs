@@ -1,6 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
 using BDDoc.Core;
 using BDDoc.Core.Documents;
+using BDDoc.UnitTest.Fakes;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -51,10 +55,10 @@ namespace BDDoc.UnitTest.Core
             Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == storyDoc.Text));
             //Only an child element named "items" should have been created
             Assert.AreEqual(1, xElement.Elements().Count());
-            var items = xElement.Elements().ElementAt(0);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, items.Name.LocalName);
-            Assert.IsNotNull(items);
-            Assert.AreEqual(0, items.Elements().Count());
+            var itemsElement = xElement.Elements().ElementAt(0);
+            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.IsNotNull(itemsElement);
+            Assert.AreEqual(0, itemsElement.Elements().Count());
         }
 
         [Test]
@@ -80,19 +84,19 @@ namespace BDDoc.UnitTest.Core
             Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == storyDoc.Text));
             //Only an child element named "items" should have been created
             Assert.AreEqual(1, xElement.Elements().Count());
-            var items = xElement.Elements().ElementAt(0);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, items.Name.LocalName);
-            Assert.IsNotNull(items);
-            Assert.AreEqual(2, items.Elements().Count());
+            var itemsElement = xElement.Elements().ElementAt(0);
+            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.IsNotNull(itemsElement);
+            Assert.AreEqual(2, itemsElement.Elements().Count());
 
-            var item1 = items.Elements().ElementAt(0);
+            var item1 = itemsElement.Elements().ElementAt(0);
             //Check an item element has been created for added item (ke1 and value1)
             Assert.AreEqual(Constants.CDataStoreItemElement, item1.Name.LocalName);
             //Check key and value attribute has been assigned
             Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key1));
             Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value1));
 
-            var item2 = items.Elements().ElementAt(1);
+            var item2 = itemsElement.Elements().ElementAt(1);
             //Check an item element has been created for added item (ke2 and value2)
             Assert.AreEqual(Constants.CDataStoreItemElement, item2.Name.LocalName);
             //Check key and value attribute has been assigned
@@ -118,10 +122,10 @@ namespace BDDoc.UnitTest.Core
             Assert.AreEqual(2, xElement.Elements().Count());
             
             //Check items element
-            var items = xElement.Elements().ElementAt(0);
-            Assert.IsNotNull(items);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, items.Name.LocalName);
-            Assert.AreEqual(0, items.Elements().Count());
+            var itemsElement = xElement.Elements().ElementAt(0);
+            Assert.IsNotNull(itemsElement);
+            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(0, itemsElement.Elements().Count());
 
             //Check steps element
             var steps = xElement.Elements().ElementAt(1);
@@ -163,19 +167,19 @@ namespace BDDoc.UnitTest.Core
             Assert.AreEqual(2, xElement.Elements().Count());
 
             //Check items element
-            var items = xElement.Elements().ElementAt(0);
-            Assert.IsNotNull(items);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, items.Name.LocalName);
-            Assert.AreEqual(2, items.Elements().Count());
+            var itemsElement = xElement.Elements().ElementAt(0);
+            Assert.IsNotNull(itemsElement);
+            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(2, itemsElement.Elements().Count());
 
-            var item1 = items.Elements().ElementAt(0);
+            var item1 = itemsElement.Elements().ElementAt(0);
             //Check an item element has been created for added item (ke1 and value1)
             Assert.AreEqual(Constants.CDataStoreItemElement, item1.Name.LocalName);
             //Check key and value attribute has been assigned
             Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key1));
             Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value1));
 
-            var item2 = items.Elements().ElementAt(1);
+            var item2 = itemsElement.Elements().ElementAt(1);
             //Check an item element has been created for added item (ke2 and value2)
             Assert.AreEqual(Constants.CDataStoreItemElement, item2.Name.LocalName);
             //Check key and value attribute has been assigned
@@ -297,6 +301,66 @@ namespace BDDoc.UnitTest.Core
             const string fileName = "FileName";
             var relativeFileName = DataStore.GetFileRelativePath(fileName);
             Assert.AreEqual(string.Format("{0}.{1}", fileName, Constants.CDataStoreFileExtension), relativeFileName);
+        }
+
+        [Test]
+        public void CreateNewDocument_WithInvalidParameter_AnExceptionIsThronw()
+        {
+            var dataStore = new DataStoreFake();
+            Assert.Throws<ArgumentNullException>(() => dataStore.InvokeCreateNewDocument(null));
+        }
+
+        [Test]
+        public void CreateNewDocument_WithValidParameter_AnInstanceIsInitialized()
+        {
+            const string text = "TXT";
+
+            var dataStore = new DataStoreFake();
+            var xElement = new XElement(text);
+            var document = dataStore.InvokeCreateNewDocument(xElement);
+            Assert.IsNotNull(document);
+            Assert.AreEqual("1.0", document.Declaration.Version);
+            Assert.AreEqual("utf-8", document.Declaration.Encoding);
+            Assert.AreEqual("yes", document.Declaration.Standalone);
+            Assert.AreEqual(1, document.Elements().Count());
+            Assert.AreEqual(xElement, document.Elements().FirstOrDefault());
+            Assert.AreEqual(xElement.Name.LocalName, document.Elements().First().Name.LocalName);
+        }
+
+        [Test]
+        public void CheckIfAFileExist()
+        {
+            var dataStore = new DataStoreFake();
+
+            Assert.Throws<ArgumentNullException>(() => dataStore.InvokeFileExist(null));
+
+            var exist = dataStore.InvokeFileExist(Assembly.GetExecutingAssembly().Location);
+            Assert.IsTrue(exist);
+        }
+
+        [Test]
+        public void SaveADocument()
+        {
+            var dataStore = new DataStoreFake();
+
+            var path = Assembly.GetExecutingAssembly().Location;
+            
+            Assert.Throws<ArgumentNullException>(() => dataStore.InvokeSave(null, null));
+            Assert.Throws<ArgumentNullException>(() => dataStore.InvokeSave(null, path));
+            Assert.Throws<ArgumentNullException>(() => dataStore.InvokeSave(null, null));
+
+            const string path2 = "tests.txt";
+
+            if (File.Exists(path2))
+            {
+                File.Delete(path2);
+            }
+
+            var xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("TEST"));
+            dataStore.InvokeSave(xDocument, path2);
+
+            Assert.IsTrue(File.Exists(path2));
+            File.Delete(path2);
         }
     }
 }

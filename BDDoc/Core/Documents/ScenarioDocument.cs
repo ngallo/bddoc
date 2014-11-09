@@ -23,7 +23,7 @@ namespace BDDoc.Core.Documents
 
         public ReadOnlyCollection<StepDocument> Steps
         {
-            get { return new ReadOnlyCollection<StepDocument>(_items); }
+            get { return new ReadOnlyCollection<StepDocument>(Items); }
         }
 
         //Methods

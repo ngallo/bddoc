@@ -9,11 +9,11 @@ namespace BDDoc.Reflection
     {
         //Methods
 
-        public void RetrieveStoryAttributes(out StoryInfoAttribute storyInfoAttribute, out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
+        public void RetrieveStoryAttributes(out StoryInfoAttribute storyInfoAttribute
+            , out IList<IStoryAttrib> storyAttributes, out IList<IScenarioAttrib> scenarioAttributes)
         {
             storyAttributes = null;
             storyInfoAttribute = null;
-
             var skipFrames = 0;
             do
             {

@@ -12,10 +12,6 @@ namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
     public class ReturnsGoToStockStory
     {
         [Test]
-        [CustomScenarioAttribute1("Custom1.1d", Order = 4)]
-        [CustomScenarioAttribute2("Custom2.1b", Order = 2)]
-        [CustomScenarioAttribute1("Custom1.2a", Order = 1)]
-        [CustomScenarioAttribute2("Custom2.2c", Order = 3)]
         [Scenario("Refunded items should be returned to stock", Order = 5)]
         public void RefundedItemsReturnedToStockTest()
         {
@@ -37,6 +33,10 @@ namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
 
         [Test]
         [Scenario("Replaced items should be returned to stock")]
+        [CustomScenarioAttribute1("Custom1.1d", Order = 4)]
+        [CustomScenarioAttribute2("Custom2.1b", Order = 2)]
+        [CustomScenarioAttribute1("Custom1.2a", Order = 1)]
+        [CustomScenarioAttribute2("Custom2.2c", Order = 3)]
         public void ReplacedItemsReturnedToStockTest()
         {
             var scenario = this.CreateScenario();

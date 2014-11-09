@@ -6,70 +6,57 @@ using System.Xml.Linq;
 
 namespace BDDoc.Core
 {
-    internal sealed class DataStore : IDataStore
+    internal class DataStore : IDataStore
     {
-        //Constans
-
-        private const string CStoryElement = "Story";
-        private const string CScenarioElement = "Scenario";
-        private const string CStepElementCollection = "Steps";
-        private const string CStepElement = "Step";
-        private const string CItemElementCollection = "Items";
-        private const string CItemElement = "Item";
-        private const string CKeyAttribute = "Key";
-        private const string CTextAttribute = "Text";
-
-        public const string CFileExtension = "bddoc";
-
         //Fields
 
         private readonly object _syncObj = new object();
 
         //Methods
 
-        private static XElement CreateItemElement(Tuple<string, string> item)
+        internal static XElement CreateItemElement(Tuple<string, string> item)
         {
             if (item == null)
             {
                 throw new ArgumentNullException();
             }
-            return new XElement(CItemElement
-                , new XAttribute(CKeyAttribute, item.Item1)
-                , new XAttribute(CTextAttribute, item.Item2));
+            return new XElement(Constants.CDataStoreItemElement
+                , new XAttribute(Constants.CDataStoreKeyAttribute, item.Item1)
+                , new XAttribute(Constants.CDataStoreTextAttribute, item.Item2));
         }
 
-        private static XElement CreateStory(StoryDocument storyDocument)
+        internal static XElement CreateStory(StoryDocument storyDocument)
         {
             if (storyDocument == null)
             {
                 throw new ArgumentNullException();
             }
-            return new XElement(CStoryElement
-                , new XAttribute(CTextAttribute, storyDocument.Text)
-                , new XElement(CItemElementCollection, from item in storyDocument
+            return new XElement(Constants.CDataStoreStoryElement
+                , new XAttribute(Constants.CDataStoreTextAttribute, storyDocument.Text)
+                , new XElement(Constants.CDataStoreItemElementCollection, from item in storyDocument
                     select CreateItemElement(item)));
         }
 
-        private static XElement CreateScenario(ScenarioDocument scenarioDocument)
+        internal static XElement CreateScenario(ScenarioDocument scenarioDocument)
         {
             if (scenarioDocument == null)
             {
                 throw new ArgumentNullException();
             }
-            return new XElement(CScenarioElement
-                , new XAttribute(CTextAttribute, scenarioDocument.Text)
-                , new XElement(CItemElementCollection, from item in scenarioDocument
-                    select new XElement(CItemElement
-                        , new XAttribute(CKeyAttribute, item.Item1)
-                        , new XAttribute(CTextAttribute, item.Item2)))
-                , new XElement(CStepElementCollection, from step in scenarioDocument.Steps
-                    select new XElement(CStepElement
-                        , new XAttribute(CKeyAttribute, step.StepType)
-                        , new XAttribute(CTextAttribute, step.Text)
+            return new XElement(Constants.CDataStoreScenarioElement
+                , new XAttribute(Constants.CDataStoreTextAttribute, scenarioDocument.Text)
+                , new XElement(Constants.CDataStoreItemElementCollection, from item in scenarioDocument
+                    select new XElement(Constants.CDataStoreItemElement
+                        , new XAttribute(Constants.CDataStoreKeyAttribute, item.Item1)
+                        , new XAttribute(Constants.CDataStoreTextAttribute, item.Item2)))
+                , new XElement(Constants.CDataStoreStepElementCollection, from step in scenarioDocument.Steps
+                    select new XElement(Constants.CDataStoreStepElement
+                        , new XAttribute(Constants.CDataStoreKeyAttribute, step.StepType)
+                        , new XAttribute(Constants.CDataStoreTextAttribute, step.Text)
                         )));
         }
 
-        private static XElement GetStoryElement(XContainer document)
+        internal static XElement GetStoryElement(XContainer document)
         {
             if (document == null)
             {
@@ -78,26 +65,49 @@ namespace BDDoc.Core
             var xElements = document.Elements();
             var enumerable = xElements as XElement[] ?? xElements.ToArray();
             return (from element in enumerable
-                where element.Name == CStoryElement
+                where element.Name ==Constants.CDataStoreStoryElement
                 select element).FirstOrDefault();
         }
         
-        private static XElement GetItemsElement(XContainer element)
+        internal static XElement GetItemsElement(XContainer element)
         {
             if (element == null)
             {
                 throw new ArgumentNullException();
             }
-            return element.Elements().FirstOrDefault(xElement => xElement.Name == CItemElementCollection);
+            return element.Elements().FirstOrDefault(xElement => xElement.Name == Constants.CDataStoreItemElementCollection);
         }
 
-        public static string GetFileRelativePath(string fileName)
+        internal static string GetFileRelativePath(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 throw new ArgumentNullException();
             }
-            return string.Format("{0}.{1}", fileName, CFileExtension);
+            return string.Format("{0}.{1}", fileName, Constants.CDataStoreFileExtension);
+        }
+
+        protected virtual XDocument CreateNewDocument(XElement storyElement)
+        {
+            return new XDocument(new XDeclaration("1.0", "utf-8", "yes"), storyElement);
+        }
+
+        protected virtual bool FileExist(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentNullException();
+            }
+            return File.Exists(path);
+        }
+
+        protected virtual void Save(XDocument document, string path)
+        {
+            if ((document == null) || (string.IsNullOrEmpty(path)))
+            {
+                throw new ArgumentNullException();
+            }
+            document.Save(path);    
         }
 
         public void Save(StoryDocument storyDocument, ScenarioDocument scenarioDocument)
@@ -109,7 +119,7 @@ namespace BDDoc.Core
                 XDocument document = null;
                 XElement storyXElement = null;
 
-                if (File.Exists(fileRelativePath))
+                if (FileExist(fileRelativePath))
                 {
                     try
                     {
@@ -119,7 +129,7 @@ namespace BDDoc.Core
                         {
                             //Sets the story text.
                             var textAElement = (from attrib in storyXElement.Attributes()
-                                                where attrib.Name == CTextAttribute
+                                                where attrib.Name == Constants.CDataStoreTextAttribute
                                                 select attrib).FirstOrDefault();
                             if (textAElement != null)
                             {
@@ -131,11 +141,11 @@ namespace BDDoc.Core
                             foreach (Tuple<string, string> item in storyDocument)
                             {
                                 var contains = (from itemElement in items.Elements()
-                                                where (itemElement.Name == CItemElement) 
-                                                let key = (from x in itemElement.Attributes() 
-                                                           where ((x.Name.LocalName.Equals(CKeyAttribute)) && (x.Value == item.Item1)) 
-                                                           select x).Any() let value = (from x in itemElement.Attributes() 
-                                                                                        where ((x.Name.LocalName.Equals(CTextAttribute)) && (x.Value == item.Item2)) 
+                                                where (itemElement.Name == Constants.CDataStoreItemElement) 
+                                                let key = (from x in itemElement.Attributes()
+                                                           where ((x.Name.LocalName.Equals(Constants.CDataStoreKeyAttribute)) && (x.Value == item.Item1)) 
+                                                           select x).Any() let value = (from x in itemElement.Attributes()
+                                                                                        where ((x.Name.LocalName.Equals(Constants.CDataStoreTextAttribute)) && (x.Value == item.Item2)) 
                                                                                         select x).Any() where key && value select value).Any();
                                 if (!contains)
                                 {
@@ -153,13 +163,13 @@ namespace BDDoc.Core
                 if ((document == null) || (storyXElement == null))
                 {
                     storyXElement = CreateStory(storyDocument);
-                    document = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), storyXElement);    
+                    document = CreateNewDocument(storyXElement);
                 }
 
                 var scenarioXElement = CreateScenario(scenarioDocument);
                 storyXElement.Add(scenarioXElement);
 
-                document.Save(fileRelativePath);                
+                Save(document, fileRelativePath);
             }
         }
     }

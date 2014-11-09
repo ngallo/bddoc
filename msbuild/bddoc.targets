@@ -15,9 +15,31 @@
 
   <Import Project="bddoc-shared.targets"></Import>
 
+  <!-- Copy DLLs and PDBs files to the output lib directory -->
+  <Target Name="CopyFilesToOutput">
+    <PropertyGroup>
+      <BDDocLibFolder>$(OutputDir)\Libs\BDDoc\$(SolutionPlatform)\</BDDocLibFolder>
+      <BDDocGeneratorLibFolder>$(OutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\</BDDocGeneratorLibFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <BDDocFilesToDelete Include="$(BDDocLibFolder)\*"/>
+      <BDDocFilesToDelete Include="$(BDDocGeneratorLibFolder)\*"/>
+      <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.dll" />
+      <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.pdb" />
+      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.exe" />
+      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.dll" />
+      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(BDDocFilesToDelete)"/>
+    <Copy SourceFiles="@(BDDocLibFiles)" DestinationFolder="$(BDDocLibFolder)\" ContinueOnError="false" />
+    <Copy SourceFiles="@(BDDocGeneratorLibFiles)" DestinationFolder="$(BDDocGeneratorLibFolder)\" ContinueOnError="false" />
+  </Target>
+
+  <!-- Targets definitions -->
+
   <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyFilesToOutput"></Target>
   <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage"></Target>
 
 </Project>

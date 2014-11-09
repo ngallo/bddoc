@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDDoc", "BDDoc\BDDoc.csproj", "{13DD4B7F-3642-4BF4-84D8-970DB67B6879}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDDoc.Samples.Nunit.UnitTest", "Samples\BDDoc.Samples.Nunit.UnitTest\BDDoc.Samples.Nunit.UnitTest.csproj", "{694F8D7A-EC99-4E4C-A9C0-B38EA81C1897}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDDoc.Samples.MSTest.UnitTest", "Samples\BDDoc.Samples.MSTest.UnitTest\BDDoc.Samples.MSTest.UnitTest.csproj", "{9063F1B6-A12F-4F5C-BB15-B35DAAED25AB}"
@@ -27,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{13DD4B7F-3642-4BF4-84D8-970DB67B6879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13DD4B7F-3642-4BF4-84D8-970DB67B6879}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13DD4B7F-3642-4BF4-84D8-970DB67B6879}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13DD4B7F-3642-4BF4-84D8-970DB67B6879}.Release|Any CPU.Build.0 = Release|Any CPU
 		{694F8D7A-EC99-4E4C-A9C0-B38EA81C1897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{694F8D7A-EC99-4E4C-A9C0-B38EA81C1897}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{694F8D7A-EC99-4E4C-A9C0-B38EA81C1897}.Release|Any CPU.ActiveCfg = Release|Any CPU

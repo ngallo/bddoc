@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BDDoc">
+      <HintPath>..\..\output\Libs\BDDoc\Any CPU\BDDoc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -55,12 +58,6 @@
   <ItemGroup>
     <Compile Include="PlainScenarios\ReturnsGoToStockStory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BDDoc\BDDoc.csproj">
-      <Project>{13dd4b7f-3642-4bf4-84d8-970db67b6879}</Project>
-      <Name>BDDoc</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -18,7 +18,3 @@ if "%1" EQU "" (
 )else (
 	%bddocbuild% /t:%*
 )
-
-if "%1" EQU "coverage" (
-	start %CheckoutDir%\output\coverage\index.htm
-)

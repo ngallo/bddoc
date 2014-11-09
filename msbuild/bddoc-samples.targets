@@ -3,21 +3,39 @@
   <PropertyGroup>
     <BinDirectories>\**\bin\$(SolutionConfiguration)</BinDirectories>
     <NugetDir>$(CheckoutDir)\packages</NugetDir>
-    <OutputDir>$(CheckoutDir)\output</OutputDir>
+    <OutputDir>$(CheckoutDir)\output-samples</OutputDir>
     <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
     <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
-    <CoverageFilter>"+[BDDoc*]* -[*BDDoc.Samples.*]* -[*UnitTest*]*"</CoverageFilter>
     <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
     <TestDllList>$(BinDirectories)\*.dll</TestDllList>
     <BDDDocRepoFiles>$(BinDirectories)\*.bddoc</BDDDocRepoFiles>
-    <BDDDocRepoOut>$(OutputDir)\documentation</BDDDocRepoOut>
+    <BDDDocRepoOut>$(OutputDir)\Documentation</BDDDocRepoOut>
   </PropertyGroup>
 
   <Import Project="bddoc-shared.targets"></Import>
 
-  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet"></Target>
+  <!-- Clean BDDoc files -->
+  <Target Name="CleanBDDocFiles">
+    <ItemGroup>
+      <BDDocFilesToDelete Include="$(CheckoutDir)\Samples\**\*.bddoc"/>
+    </ItemGroup>
+    <Delete Files="@(BDDocFilesToDelete)"/>
+  </Target>
+
+  <!-- Copy BDDoc files to the output lib directory -->
+  <Target Name="CopyBDDocFilesToOutput">
+    <ItemGroup>
+      <BDDocFilesToDelete Include="$(BDDDocRepoOut)\*"/>
+      <BDDocFiles Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc" />
+    </ItemGroup>
+    <Delete Files="@(BDDocFilesToDelete)"/>
+    <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDDocRepoOut)\" ContinueOnError="false" />
+  </Target>
+  
+  <!-- Targets definitions -->
+
+  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests"></Target>
-  <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyBDDocFilesToOutput"></Target>
 
 </Project>

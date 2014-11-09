@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BDDoc.Samples.MSTest.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
+    [StoryInfo("MSTest-ReturnsGoToStockStory")]
     [Story("Returns go to stock")]
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]

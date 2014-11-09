@@ -7,7 +7,7 @@
     <ProjectGuid>{3E68F842-3DDA-4AAB-A74A-9D582392EFFF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BDDoc.Generator</RootNamespace>
+    <RootNamespace>BDDoc</RootNamespace>
     <AssemblyName>BDDocGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -41,6 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\BDDoc\Core\BDDocXmlConstants.cs">
+      <Link>Core\BDDocXmlConstants.cs</Link>
+    </Compile>
+    <Compile Include="Core\Arguments\ArgumentsParser.cs" />
+    <Compile Include="Core\Arguments\IArgumentsParser.cs" />
+    <Compile Include="Core\HtmlDocGenerator.cs" />
+    <Compile Include="Core\IDocGenerator.cs" />
+    <Compile Include="Core\IHtmlDocGenerator.cs" />
+    <Compile Include="Core\ILogger.cs" />
+    <Compile Include="Core\ConsoleLogger.cs" />
+    <Compile Include="Core\IoC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -11,6 +11,7 @@
     <TestDllList>$(BinDirectories)\*.dll</TestDllList>
     <BDDocGenerator>"$(BDDocOutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\BDDocGenerator.exe"</BDDocGenerator>
     <BDDocDocumentationDir>$(OutputDir)\Documentation</BDDocDocumentationDir>
+	<BDDocHtmlDocumentationDir>$(BDDocDocumentationDir)\HTML</BDDocHtmlDocumentationDir>
   </PropertyGroup>
 
   <Import Project="bddoc-shared.targets"></Import>
@@ -39,7 +40,7 @@
       <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
     </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <Exec Command="$(BDDocGenerator) /BDDocFolder:$(BDDocDocumentationDir)"/>
+    <Exec Command="$(BDDocGenerator) -inputdir:$(BDDocDocumentationDir) -outputdir:$(BDDocHtmlDocumentationDir)"/>
   </Target>
   
   <!-- Targets definitions -->

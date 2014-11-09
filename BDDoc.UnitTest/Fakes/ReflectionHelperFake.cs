@@ -1,5 +1,5 @@
 ﻿using BDDoc.Core;
-using BDDoc.Reflection;
+using BDDoc.Core.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 

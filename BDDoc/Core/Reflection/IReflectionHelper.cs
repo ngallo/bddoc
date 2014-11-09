@@ -1,7 +1,6 @@
-﻿using BDDoc.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace BDDoc.Reflection
+namespace BDDoc.Core.Reflection
 {
     internal interface IReflectionHelper
     {

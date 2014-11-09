@@ -32,10 +32,10 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateItemElement(tuple);
 
             //Check an item element has been created
-            Assert.AreEqual(Constants.CDataStoreItemElement, xElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElement, xElement.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == tuple.Item1));
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == tuple.Item2));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == tuple.Item1));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == tuple.Item2));
         }
 
         [Test]
@@ -50,13 +50,13 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateStory(storyDoc);
 
             //Check a story element has been created
-            Assert.AreEqual(Constants.CDataStoreStoryElement, xElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStoryElement, xElement.Name.LocalName);
             //Check text attribute has been assigned
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == storyDoc.Text));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == storyDoc.Text));
             //Only an child element named "items" should have been created
             Assert.AreEqual(1, xElement.Elements().Count());
             var itemsElement = xElement.Elements().ElementAt(0);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
             Assert.IsNotNull(itemsElement);
             Assert.AreEqual(0, itemsElement.Elements().Count());
         }
@@ -79,29 +79,29 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateStory(storyDoc);
 
             //Check a story element has been created
-            Assert.AreEqual(Constants.CDataStoreStoryElement, xElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStoryElement, xElement.Name.LocalName);
             //Check text attribute has been assigned
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == storyDoc.Text));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == storyDoc.Text));
             //Only an child element named "items" should have been created
             Assert.AreEqual(1, xElement.Elements().Count());
             var itemsElement = xElement.Elements().ElementAt(0);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
             Assert.IsNotNull(itemsElement);
             Assert.AreEqual(2, itemsElement.Elements().Count());
 
             var item1 = itemsElement.Elements().ElementAt(0);
             //Check an item element has been created for added item (ke1 and value1)
-            Assert.AreEqual(Constants.CDataStoreItemElement, item1.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElement, item1.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key1));
-            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value1));
+            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == key1));
+            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == value1));
 
             var item2 = itemsElement.Elements().ElementAt(1);
             //Check an item element has been created for added item (ke2 and value2)
-            Assert.AreEqual(Constants.CDataStoreItemElement, item2.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElement, item2.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key2));
-            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value2));
+            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == key2));
+            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == value2));
         }
 
         [Test]
@@ -115,22 +115,22 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateScenario(scenarioDoc);
 
             //Check a scenario element has been created
-            Assert.AreEqual(Constants.CDataStoreScenarioElement, xElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CScenarioElement, xElement.Name.LocalName);
             //Check text attribute has been assigned
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == scenarioDoc.Text));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == scenarioDoc.Text));
             //Two children element named "items" and "steps" should have been created
             Assert.AreEqual(2, xElement.Elements().Count());
             
             //Check items element
             var itemsElement = xElement.Elements().ElementAt(0);
             Assert.IsNotNull(itemsElement);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
             Assert.AreEqual(0, itemsElement.Elements().Count());
 
             //Check steps element
             var steps = xElement.Elements().ElementAt(1);
             Assert.IsNotNull(steps);
-            Assert.AreEqual(Constants.CDataStoreStepElementCollection, steps.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStepElementCollection, steps.Name.LocalName);
             Assert.AreEqual(0, steps.Elements().Count());
         }
 
@@ -160,51 +160,51 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateScenario(scenarioDoc);
 
             //Check a scenario element has been created
-            Assert.AreEqual(Constants.CDataStoreScenarioElement, xElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CScenarioElement, xElement.Name.LocalName);
             //Check text attribute has been assigned
-            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == scenarioDoc.Text));
+            Assert.IsTrue(xElement.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == scenarioDoc.Text));
             //Two children element named "items" and "steps" should have been created
             Assert.AreEqual(2, xElement.Elements().Count());
 
             //Check items element
             var itemsElement = xElement.Elements().ElementAt(0);
             Assert.IsNotNull(itemsElement);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
             Assert.AreEqual(2, itemsElement.Elements().Count());
 
             var item1 = itemsElement.Elements().ElementAt(0);
             //Check an item element has been created for added item (ke1 and value1)
-            Assert.AreEqual(Constants.CDataStoreItemElement, item1.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElement, item1.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key1));
-            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value1));
+            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == key1));
+            Assert.IsTrue(item1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == value1));
 
             var item2 = itemsElement.Elements().ElementAt(1);
             //Check an item element has been created for added item (ke2 and value2)
-            Assert.AreEqual(Constants.CDataStoreItemElement, item2.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElement, item2.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == key2));
-            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == value2));
+            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == key2));
+            Assert.IsTrue(item2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == value2));
 
             //Check steps element
             var steps = xElement.Elements().ElementAt(1);
             Assert.IsNotNull(steps);
-            Assert.AreEqual(Constants.CDataStoreStepElementCollection, steps.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStepElementCollection, steps.Name.LocalName);
             Assert.AreEqual(2, steps.Elements().Count());
 
             var step1 = steps.Elements().ElementAt(0);
             //Check an step element has been created for added step (ke1 and value1)
-            Assert.AreEqual(Constants.CDataStoreStepElement, step1.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStepElement, step1.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(step1.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == scenarioStepTypeStr1));
-            Assert.IsTrue(step1.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == stepValue1));
+            Assert.IsTrue(step1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == scenarioStepTypeStr1));
+            Assert.IsTrue(step1.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == stepValue1));
 
             var step2 = steps.Elements().ElementAt(1);
             //Check an step element has been created for added step (ke2 and value2)
-            Assert.AreEqual(Constants.CDataStoreStepElement, step2.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CStepElement, step2.Name.LocalName);
             //Check key and value attribute has been assigned
-            Assert.IsTrue(step2.Attributes().Any((a) => a.Name == Constants.CDataStoreKeyAttribute && a.Value == scenarioStepTypeStr2));
-            Assert.IsTrue(step2.Attributes().Any((a) => a.Name == Constants.CDataStoreTextAttribute && a.Value == stepValue2));
+            Assert.IsTrue(step2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CKeyAttribute && a.Value == scenarioStepTypeStr2));
+            Assert.IsTrue(step2.Attributes().Any((a) => a.Name == BDDocXmlConstants.CTextAttribute && a.Value == stepValue2));
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateStory(storyDoc);
 
             var itemsElement = DataStore.GetItemsElement(xElement);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
         }
 
         [Test]
@@ -275,7 +275,7 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateStory(storyDoc);
 
             var itemsElement = DataStore.GetItemsElement(xElement);
-            Assert.AreEqual(Constants.CDataStoreItemElementCollection, itemsElement.Name.LocalName);
+            Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace BDDoc.UnitTest.Core
         {
             const string fileName = "FileName";
             var relativeFileName = DataStore.GetFileRelativePath(fileName);
-            Assert.AreEqual(string.Format("{0}.{1}", fileName, Constants.CDataStoreFileExtension), relativeFileName);
+            Assert.AreEqual(string.Format("{0}.{1}", fileName, BDDocXmlConstants.CBDDocFileExtension), relativeFileName);
         }
 
         [Test]

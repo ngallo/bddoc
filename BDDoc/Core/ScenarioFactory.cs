@@ -1,4 +1,4 @@
-﻿using BDDoc.Reflection;
+﻿using BDDoc.Core.Reflection;
 using System;
 using System.Collections.Generic;
 

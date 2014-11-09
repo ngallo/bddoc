@@ -1,28 +1,42 @@
-﻿using System;
-using System.Linq;
+﻿using BDDoc.Core;
+using BDDoc.Core.Arguments;
+using System;
 
-namespace BDDoc.Generator
+namespace BDDoc
 {
     class Program
     {
-        private const string CBDDocFolderArgName = "/BDDocFolder:";
-
         static void Main(string[] args)
         {
-            Console.WriteLine(args.FirstOrDefault());
-            var bddocFolderArg = args.FirstOrDefault(s => s.ToUpper().StartsWith(CBDDocFolderArgName.ToUpper()));
-            if (string.IsNullOrWhiteSpace(bddocFolderArg))
+            var logger = IoC.Resolve<ILogger>();
+
+            try
             {
-                Console.WriteLine("Invalid arguments.");
+                ArgumentsParser argumentsParser;
+                if (!ArgumentsParser.TryParse(args, out argumentsParser))
+                {
+                    logger.Error(argumentsParser.ErrorMessage);
+                    Environment.Exit(1);
+                }
+
+                logger.Info("BDDoc HTML documentation generation started.");
+
+                var inputDir = argumentsParser[ArgumentsParser.CInputDir];
+                var outputDir = argumentsParser[ArgumentsParser.COutputDir];
+                var docGenerator = new HtmlDocGenerator((string)inputDir, (string)outputDir);
+                
+                docGenerator.Generate();
+                
+                logger.Info("BDDoc HTML documentation generation completed.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error("An error has occurred during the BDDoc HTML documentation generation.");
+                var errorMessage = string.Format("ErrorMessage: {0}.", ex.Message);
+                logger.Error(errorMessage);
                 Environment.Exit(1);
             }
-            var bddocFolder = bddocFolderArg.Remove(0, CBDDocFolderArgName.Length);
-            if (string.IsNullOrWhiteSpace(bddocFolder))
-            {
-                Console.WriteLine("Invalid BDDocFolder argument.");
-                Console.WriteLine("Error");
-                Environment.Exit(1);
-            }
+
             Environment.Exit(0);
         }
     }

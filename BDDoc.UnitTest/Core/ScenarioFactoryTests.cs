@@ -1,5 +1,5 @@
 ﻿using BDDoc.Core;
-using BDDoc.Reflection;
+using BDDoc.Core.Reflection;
 using BDDoc.UnitTest.Fakes;
 using Moq;
 using NUnit.Framework;

@@ -16,8 +16,6 @@
     <Error Condition="'$(OpenCover)' == ''" Text="Invalid %OpenCover% variable."/>
     <Error Condition="'$(ReportGenerator)' == ''" Text="Invalid %ReportGenerator% variable."/>
     <Error Condition="'$(TestDllList)' == ''" Text="Invalid %TestDllList% variable."/>
-    <Error Condition="'$(BDDDocRepoFiles)' == ''" Text="Invalid %BDDDocRepoFiles% variable."/>
-    <Error Condition="'$(BDDDocRepoOut)' == ''" Text="Invalid %BDDDocRepoOut% variable."/>
     <Error Condition="'$(NuGetEXE)' == ''" Text="Invalid %NuGetEXE% variable."/>
     <Error Condition="'$(SolutionConfiguration)' == ''" Text="Invalid %SolutionConfiguration% variable."/>
     <Error Condition="'$(SolutionPlatform)' == ''" Text="Invalid %SolutionPlatform% variable."/>

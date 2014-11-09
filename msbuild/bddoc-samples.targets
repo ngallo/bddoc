@@ -3,13 +3,14 @@
   <PropertyGroup>
     <BinDirectories>\**\bin\$(SolutionConfiguration)</BinDirectories>
     <NugetDir>$(CheckoutDir)\packages</NugetDir>
+    <BDDocOutputDir>$(CheckoutDir)\output</BDDocOutputDir>
     <OutputDir>$(CheckoutDir)\output-samples</OutputDir>
     <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
     <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
     <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
     <TestDllList>$(BinDirectories)\*.dll</TestDllList>
-    <BDDDocRepoFiles>$(BinDirectories)\*.bddoc</BDDDocRepoFiles>
-    <BDDDocRepoOut>$(OutputDir)\Documentation</BDDDocRepoOut>
+    <BDDocGenerator>"$(BDDocOutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\BDDocGenerator.exe"</BDDocGenerator>
+    <BDDocDocumentationDir>$(OutputDir)\Documentation</BDDocDocumentationDir>
   </PropertyGroup>
 
   <Import Project="bddoc-shared.targets"></Import>
@@ -25,17 +26,26 @@
   <!-- Copy BDDoc files to the output lib directory -->
   <Target Name="CopyBDDocFilesToOutput">
     <ItemGroup>
-      <BDDocFilesToDelete Include="$(BDDDocRepoOut)\*"/>
+      <BDDocFilesToDelete Include="$(BDDocDocumentationDir)\*"/>
       <BDDocFiles Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc" />
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)"/>
-    <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDDocRepoOut)\" ContinueOnError="false" />
+    <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDocDocumentationDir)\" ContinueOnError="false" />
+  </Target>
+
+  <!-- Generates HTML documentation using BDDocGenerator -->
+  <Target Name="BDDocGenerator">
+    <ItemGroup>
+      <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
+    </ItemGroup>
+    <CallTarget  Targets="EnvironmentValidation;"/>
+    <Exec Command="$(BDDocGenerator) /BDDocFolder:$(BDDocDocumentationDir)"/>
   </Target>
   
   <!-- Targets definitions -->
 
   <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyBDDocFilesToOutput"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyBDDocFilesToOutput;BDDocGenerator"></Target>
 
 </Project>

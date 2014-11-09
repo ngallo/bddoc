@@ -9,6 +9,8 @@
 #TaskBuild
 output/
 output/**/*
+output-samples/
+output-samples/**/*
 msbuild/TestResult.xml
 
 # Build results

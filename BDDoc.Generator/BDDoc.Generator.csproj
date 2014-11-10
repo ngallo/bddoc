@@ -44,6 +44,9 @@
     <Compile Include="..\BDDoc\Core\BDDocXmlConstants.cs">
       <Link>Core\BDDocXmlConstants.cs</Link>
     </Compile>
+    <Compile Include="..\BDDoc\Core\BDDocXmlHelper.cs">
+      <Link>Core\BDDocXmlHelper.cs</Link>
+    </Compile>
     <Compile Include="Core\Arguments\ArgumentsParser.cs" />
     <Compile Include="Core\Arguments\IArgumentsParser.cs" />
     <Compile Include="Core\HtmlDocGenerator.cs" />
@@ -52,8 +55,19 @@
     <Compile Include="Core\ILogger.cs" />
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\IoC.cs" />
+    <Compile Include="Core\Resources\BDDocTemplates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDDocTemplates.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Core\Resources\BDDocTemplates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BDDocTemplates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

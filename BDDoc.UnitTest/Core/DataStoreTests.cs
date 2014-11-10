@@ -28,7 +28,7 @@ namespace BDDoc.UnitTest.Core
             const string key = "KEY";
             const string value = "VALUE";
             tuple = new Tuple<string, string>(key, value);
-            
+
             var xElement = DataStore.CreateItemElement(tuple);
 
             //Check an item element has been created
@@ -210,7 +210,7 @@ namespace BDDoc.UnitTest.Core
         [Test]
         public void DataStoreXml_GetStoryElement()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetStoryElement(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetStoryElement(null));
 
             const string fileName = "FILENAME";
             const string text = "TXT";
@@ -219,14 +219,14 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateStory(storyDoc);
             var parentElement = new XDocument(xElement);
 
-            var storyElement = DataStore.GetStoryElement(parentElement);
+            var storyElement = BDDocXmlHelper.GetStoryElement(parentElement);
             Assert.AreEqual(xElement, storyElement);
         }
 
         [Test]
         public void DataStoreXml_GetStoryElement_WithInvalidElement()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetStoryElement(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetStoryElement(null));
 
             const string text = "TXT";
 
@@ -234,14 +234,14 @@ namespace BDDoc.UnitTest.Core
             var xElement = DataStore.CreateScenario(storyDoc);
             var parentElement = new XDocument(xElement);
 
-            var storyElement = DataStore.GetStoryElement(parentElement);
+            var storyElement = BDDocXmlHelper.GetStoryElement(parentElement);
             Assert.IsNull(storyElement);
         }
 
         [Test]
         public void DataStoreXml_GetItemsElement()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetItemsElement(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetItemsElement(null));
 
             const string fileName = "FILENAME";
             const string text = "TXT";
@@ -255,14 +255,14 @@ namespace BDDoc.UnitTest.Core
             storyDoc.AddItem(key2, value2);
             var xElement = DataStore.CreateStory(storyDoc);
 
-            var itemsElement = DataStore.GetItemsElement(xElement);
+            var itemsElement = BDDocXmlHelper.GetItemsElement(xElement);
             Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
         }
 
         [Test]
         public void DataStoreXml_GetItemsElement_WithEmptyItems()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetItemsElement(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetItemsElement(null));
 
             const string fileName = "FILENAME";
             const string text = "TXT";
@@ -274,32 +274,32 @@ namespace BDDoc.UnitTest.Core
             var storyDoc = new StoryDocument(fileName, text);
             var xElement = DataStore.CreateStory(storyDoc);
 
-            var itemsElement = DataStore.GetItemsElement(xElement);
+            var itemsElement = BDDocXmlHelper.GetItemsElement(xElement);
             Assert.AreEqual(BDDocXmlConstants.CItemElementCollection, itemsElement.Name.LocalName);
         }
 
         [Test]
         public void DataStoreXml_GetItemsElement_WithInvalidElement()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetItemsElement(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetItemsElement(null));
 
             var xElement = new XElement(new XElement("TEST"));
 
-            var itemsElement = DataStore.GetItemsElement(xElement);
+            var itemsElement = BDDocXmlHelper.GetItemsElement(xElement);
             Assert.IsNull(itemsElement);
         }
 
         [Test]
         public void GetFileRelativePath_InvalidFileName_AnExceptionIsThrown()
         {
-            Assert.Throws<ArgumentNullException>(() => DataStore.GetFileRelativePath(null));
+            Assert.Throws<ArgumentNullException>(() => BDDocXmlHelper.GetFileRelativePath(null));
         }
 
         [Test]
         public void GetFileRelativePath_WithValidFileName()
         {
             const string fileName = "FileName";
-            var relativeFileName = DataStore.GetFileRelativePath(fileName);
+            var relativeFileName = BDDocXmlHelper.GetFileRelativePath(fileName);
             Assert.AreEqual(string.Format("{0}.{1}", fileName, BDDocXmlConstants.CBDDocFileExtension), relativeFileName);
         }
 

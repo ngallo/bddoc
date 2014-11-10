@@ -34,7 +34,7 @@ namespace BDDoc.Core
             return new XElement(BDDocXmlConstants.CStoryElement
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)
                 , new XElement(BDDocXmlConstants.CItemElementCollection, from item in storyDocument
-                    select CreateItemElement(item)));
+                                                                         select CreateItemElement(item)));
         }
 
         internal static XElement CreateScenario(ScenarioDocument scenarioDocument)
@@ -46,45 +46,14 @@ namespace BDDoc.Core
             return new XElement(BDDocXmlConstants.CScenarioElement
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, scenarioDocument.Text)
                 , new XElement(BDDocXmlConstants.CItemElementCollection, from item in scenarioDocument
-                    select new XElement(BDDocXmlConstants.CItemElement
-                        , new XAttribute(BDDocXmlConstants.CKeyAttribute, item.Item1)
-                        , new XAttribute(BDDocXmlConstants.CTextAttribute, item.Item2)))
+                                                                         select new XElement(BDDocXmlConstants.CItemElement
+                                                                             , new XAttribute(BDDocXmlConstants.CKeyAttribute, item.Item1)
+                                                                             , new XAttribute(BDDocXmlConstants.CTextAttribute, item.Item2)))
                 , new XElement(BDDocXmlConstants.CStepElementCollection, from step in scenarioDocument.Steps
-                    select new XElement(BDDocXmlConstants.CStepElement
-                        , new XAttribute(BDDocXmlConstants.CKeyAttribute, step.StepType)
-                        , new XAttribute(BDDocXmlConstants.CTextAttribute, step.Text)
-                        )));
-        }
-
-        internal static XElement GetStoryElement(XContainer document)
-        {
-            if (document == null)
-            {
-                throw new ArgumentNullException();
-            }
-            var xElements = document.Elements();
-            var enumerable = xElements as XElement[] ?? xElements.ToArray();
-            return (from element in enumerable
-                where element.Name ==BDDocXmlConstants.CStoryElement
-                select element).FirstOrDefault();
-        }
-        
-        internal static XElement GetItemsElement(XContainer element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException();
-            }
-            return element.Elements().FirstOrDefault(xElement => xElement.Name == BDDocXmlConstants.CItemElementCollection);
-        }
-
-        internal static string GetFileRelativePath(string fileName)
-        {
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentNullException();
-            }
-            return string.Format("{0}.{1}", fileName, BDDocXmlConstants.CBDDocFileExtension);
+                                                                         select new XElement(BDDocXmlConstants.CStepElement
+                                                                             , new XAttribute(BDDocXmlConstants.CKeyAttribute, step.StepType)
+                                                                             , new XAttribute(BDDocXmlConstants.CTextAttribute, step.Text)
+                                                                             )));
         }
 
         protected XDocument CreateNewDocument(XElement storyElement)
@@ -118,7 +87,7 @@ namespace BDDoc.Core
         {
             lock (_syncObj)
             {
-                var fileRelativePath = GetFileRelativePath(storyDocument.FileName);
+                var fileRelativePath = BDDocXmlHelper.GetFileRelativePath(storyDocument.FileName);
 
                 XDocument document = null;
                 XElement storyXElement = null;
@@ -128,7 +97,7 @@ namespace BDDoc.Core
                     try
                     {
                         document = XDocument.Load(fileRelativePath);
-                        storyXElement = GetStoryElement(document);
+                        storyXElement = BDDocXmlHelper.GetStoryElement(document);
                         if (storyXElement != null)
                         {
                             //Sets the story text.
@@ -141,7 +110,7 @@ namespace BDDoc.Core
                             }
 
                             //Gets list of items
-                            var items = GetItemsElement(storyXElement);
+                            var items = BDDocXmlHelper.GetItemsElement(storyXElement);
                             foreach (Tuple<string, string> item in storyDocument)
                             {
                                 var contains = (from itemElement in items.Elements()

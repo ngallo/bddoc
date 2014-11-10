@@ -33,7 +33,7 @@ namespace BDDoc.IntegrationTest
         [Scenario(ScenarioText, Order = ScenarioOrder)]
         public void CreatePlainScenario_UsingTheObjectExtensions_ANewPlainScenarioHasToBeInstanced()
         {
-            var path = DataStore.GetFileRelativePath(StoryId);
+            var path = BDDocXmlHelper.GetFileRelativePath(StoryId);
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -53,7 +53,7 @@ namespace BDDoc.IntegrationTest
 
             var xDocument = XDocument.Load(path);
 
-            var storyElement = DataStore.GetStoryElement(xDocument);
+            var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
             Assert.IsNotNull(storyElement);
             //Check a story element has been created
             Assert.AreEqual(BDDocXmlConstants.CStoryElement, storyElement.Name.LocalName);

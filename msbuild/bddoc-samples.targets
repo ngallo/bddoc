@@ -23,7 +23,7 @@
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)"/>
   </Target>
-
+  
   <!-- Copy BDDoc files to the output lib directory -->
   <Target Name="CopyBDDocFilesToOutput">
     <ItemGroup>
@@ -32,6 +32,14 @@
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)"/>
     <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDocDocumentationDir)\" ContinueOnError="false" />
+  </Target>
+  
+  <!-- Clean BDDoc-Generator output folder -->
+  <Target Name="CleanBDDocGeneratorOutput">
+    <ItemGroup>
+      <BDDocFilesToDelete Include="$(BDDocHtmlDocumentationDir)\*.*"/>
+    </ItemGroup>
+    <Delete Files="@(BDDocFilesToDelete)"/>
   </Target>
 
   <!-- Generates HTML documentation using BDDocGenerator -->
@@ -45,8 +53,8 @@
   
   <!-- Targets definitions -->
 
-  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles"></Target>
+  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles;CleanBDDocGeneratorOutput"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyBDDocFilesToOutput;BDDocGenerator"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;CopyBDDocFilesToOutput;CleanBDDocGeneratorOutput;BDDocGenerator"></Target>
 
 </Project>

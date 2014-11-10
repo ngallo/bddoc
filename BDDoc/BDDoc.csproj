@@ -43,6 +43,7 @@
     <Compile Include="BDDocException.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Core\BDDocXmlConstants.cs" />
+    <Compile Include="Core\BDDocXmlHelper.cs" />
     <Compile Include="Core\IDataStore.cs" />
     <Compile Include="Core\Documents\Document.cs" />
     <Compile Include="Core\Documents\ScenarioDocument.cs" />

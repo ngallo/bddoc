@@ -40,6 +40,6 @@
   <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
   <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyFilesToOutput"></Target>
-  <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage"></Target>
+  <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage;CopyFilesToOutput"></Target>
 
 </Project>

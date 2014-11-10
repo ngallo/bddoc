@@ -55,6 +55,6 @@
 
   <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles;CleanBDDocGeneratorOutput"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;CopyBDDocFilesToOutput;CleanBDDocGeneratorOutput;BDDocGenerator"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyBDDocFilesToOutput;CleanBDDocGeneratorOutput;BDDocGenerator"></Target>
 
 </Project>

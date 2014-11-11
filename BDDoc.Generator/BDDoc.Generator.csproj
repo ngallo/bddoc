@@ -59,19 +59,25 @@
     <Compile Include="Core\ILogger.cs" />
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\IoC.cs" />
-    <Compile Include="Core\Resources\BDDocTemplates.Designer.cs">
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\BDDocTemplates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BDDocTemplates.resx</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Core\Resources\BDDocTemplates.resx">
+    <EmbeddedResource Include="Resources\BDDocTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>BDDocTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\story.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

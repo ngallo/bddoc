@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BDDoc.Core.Resources {
+namespace BDDoc.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BDDoc.Core.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BDDoc.Core.Resources.BDDocTemplates", typeof(BDDocTemplates).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BDDoc.Resources.BDDocTemplates", typeof(BDDocTemplates).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

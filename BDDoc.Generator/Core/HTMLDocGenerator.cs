@@ -1,9 +1,8 @@
 ﻿using System.Web.UI;
-using BDDoc.Core.Resources;
+using BDDoc.Resources;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace BDDoc.Core
@@ -279,8 +278,9 @@ namespace BDDoc.Core
                     storyHtml = storyHtml.Replace("{StoryBody}", stringWriter.ToString());
                 }
 
-                fileName = string.Format(@"{0}\{1}.html", OutputDir, Guid.NewGuid().ToString());
-                using (var outfile = new StreamWriter(fileName, true))
+                fileName = string.Format(@"{0}.html", Guid.NewGuid().ToString());
+                var fullPath = string.Format(@"{0}\{1}", OutputDir, fileName);
+                using (var outfile = new StreamWriter(fullPath, true))
                 {
                     outfile.Write(storyHtml);
                 }

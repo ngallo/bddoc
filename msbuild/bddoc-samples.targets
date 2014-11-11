@@ -28,8 +28,7 @@
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="true"/>
   </Target>
-  
-  
+    
   <!-- Clean BDDoc-Generator output folder -->
   <Target Name="CleanBDDocGeneratorOutput">
     <ItemGroup>

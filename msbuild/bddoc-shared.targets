@@ -15,7 +15,6 @@
     <Error Condition="'$(NUnit)' == ''" Text="Invalid %NUnit% variable."/>
     <Error Condition="'$(OpenCover)' == ''" Text="Invalid %OpenCover% variable."/>
     <Error Condition="'$(ReportGenerator)' == ''" Text="Invalid %ReportGenerator% variable."/>
-    <Error Condition="'$(TestDllList)' == ''" Text="Invalid %TestDllList% variable."/>
     <Error Condition="'$(NuGetEXE)' == ''" Text="Invalid %NuGetEXE% variable."/>
     <Error Condition="'$(SolutionConfiguration)' == ''" Text="Invalid %SolutionConfiguration% variable."/>
     <Error Condition="'$(SolutionPlatform)' == ''" Text="Invalid %SolutionPlatform% variable."/>
@@ -34,6 +33,7 @@
     <ItemGroup>
 			<FilesToDelete Include="$(NugetDir)\**\*"/>
 		</ItemGroup>
+    <CallTarget  Targets="EnvironmentValidation;"/>
 		<Delete Files="@(FilesToDelete)"/>
 		<RemoveDir Directories="$(NugetDir)"/>
   </Target>
@@ -43,6 +43,7 @@
     <ItemGroup>
 			<FilesToDelete Include="$(OutputDir)\**\*"/>
 		</ItemGroup>
+    <CallTarget  Targets="EnvironmentValidation;"/>
 		<Delete Files="@(FilesToDelete)"/>
 		<RemoveDir Directories="$(OutputDir)"/>
   </Target>
@@ -62,7 +63,7 @@
   <!-- Nunit continuous integration tests -->
   <Target Name="NunitCITests">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
+      <TestsAssemblies Include="$(CheckoutDir)$(BinDirectories)\*.dll"/>
     </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
     <Exec Command="$(NUnit) /framework:net-4.5 @(TestsAssemblies , ' ')"/>
@@ -71,7 +72,7 @@
   <!-- Nunit continuous integration tests with code coverage -->
   <Target Name="NunitCITestsCoverage">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)$(TestDllList)"/>
+      <TestsAssemblies Include="$(CheckoutDir)$(BinDirectories)\*.dll"/>
     </ItemGroup>
     <PropertyGroup>
       <OpenCoverExe>$(OpenCover) -register:user -target:$(NUnit) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverExe>

@@ -29,7 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDDoc.IntegrationTest", "BD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".resources", ".resources", "{8AF1A160-5F7D-4E43-B4C1-C01485B68C8F}"
 	ProjectSection(SolutionItems) = preProject
+		.resources\index.html = .resources\index.html
 		.resources\Readme.txt = .resources\Readme.txt
+		.resources\story.html = .resources\story.html
 	EndProjectSection
 EndProject
 Global

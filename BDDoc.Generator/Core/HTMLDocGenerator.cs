@@ -83,13 +83,44 @@ namespace BDDoc.Core
                 _logger.Info(message);
                 return;
             }
-            foreach (var file in files)
+            var indexHtml = GetIndexHtml();
+            indexHtml = indexHtml.Replace("{ProjectText}", "BDDoc");
+
+            var stringWriter = new StringWriter();
+            using (var writer = new HtmlTextWriter(stringWriter))
             {
-                GenerateFile(file);
+                foreach (var file in files)
+                {
+                    writer.RenderBeginTag(HtmlTextWriterTag.P);
+                    string storyText;
+                    string fileName;
+                    GenerateFile(file, out storyText, out fileName);
+                    writer.AddAttribute(HtmlTextWriterAttribute.Href, fileName);
+                    writer.RenderBeginTag(HtmlTextWriterTag.A);
+                    if (storyText.Length > 100)
+                    {
+                        storyText = storyText.Remove(100, storyText.Length - 100);
+                        storyText = string.Format("{0}...", storyText);
+                    }
+                    writer.Write(storyText);
+                    writer.RenderEndTag();
+                    writer.RenderEndTag();
+                }
+            }
+
+            indexHtml = indexHtml.Replace("{Stories}", stringWriter.ToString());
+            string indexFileName = string.Format(@"{0}\index.html", OutputDir);
+            if (File.Exists(indexFileName))
+            {
+                File.Delete(indexFileName);
+            }
+            using (var outfile = new StreamWriter(indexFileName, true))
+            {
+                outfile.Write(indexHtml);
             }
         }
 
-        public void GenerateFile(string uri)
+        public void GenerateFile(string uri, out string storyText, out string fileName)
         {
             try
             {
@@ -107,7 +138,7 @@ namespace BDDoc.Core
                 var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
                 ValidateValue(() => storyElement.Name.LocalName == BDDocXmlConstants.CStoryElement, uri);
 
-                var storyText = storyElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                storyText = storyElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
                 ValidateValue(storyText, uri);
                 
                 var storyHtml = GetStoryHtml();
@@ -131,7 +162,9 @@ namespace BDDoc.Core
                         var element = xElement;
                         ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CItemElement, uri);
                         var key = element.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                        ValidateValue(key, uri);
                         var value = element.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                        ValidateValue(value, uri);
                         writer.RenderBeginTag(HtmlTextWriterTag.P);
                         writer.RenderBeginTag(HtmlTextWriterTag.B);
                         writer.Write(" {0}", key);
@@ -146,59 +179,110 @@ namespace BDDoc.Core
                         var scenarioElement = storyElement.Elements().ElementAt(i);
                         ValidateValue(() => scenarioElement.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
                         var value = scenarioElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel panel-default");
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel panel-default");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-body");
+                        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                        
                         //Scenario title
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-heading");
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.RenderBeginTag(HtmlTextWriterTag.H3);
                         writer.Write(" {0}", value);
                         writer.RenderEndTag();
+
                         writer.RenderEndTag();
 
                         //Scenario body
-                        writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-body");
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.RenderBeginTag(HtmlTextWriterTag.P);
 
                         //Scenario items
-                        //TODO: Complete code
+                        var scenarioItemsElement = scenarioElement.Elements().ElementAt(0);
+                        ValidateValue(() => scenarioItemsElement != null, uri);
+                        foreach (var scenarioItemElement in scenarioItemsElement.Elements())
+                        {
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            writer.RenderBeginTag(HtmlTextWriterTag.P);
+
+                            var scenarioItemKey = scenarioItemElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                            ValidateValue(scenarioItemKey, uri);
+                            var scenarioItemValue = scenarioItemElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                            ValidateValue(scenarioItemValue, uri);
+
+                            writer.RenderBeginTag(HtmlTextWriterTag.B);
+                            writer.Write(" {0}", scenarioItemKey);
+                            writer.RenderEndTag();
+                            writer.Write(" {0}", scenarioItemValue);
+
+                            writer.RenderEndTag();
+                            writer.RenderEndTag();
+                        }
                         
                         //Scenario steps
-                        var stepsElements = scenarioElement.Elements().ElementAt(1);
-                        ValidateValue(() =>  stepsElements!= null, uri);
+                        var scenarioStepsElement = scenarioElement.Elements().ElementAt(1);
+                        ValidateValue(() =>  scenarioStepsElement!= null, uri);
                         var stepCounter = 0;
-                        foreach (var stepElement in stepsElements.Elements())
+                        foreach (var stepElement in scenarioStepsElement.Elements())
                         {
                             writer.AddAttribute(HtmlTextWriterAttribute.Style, String.Format("margin-left:{0}px;", stepCounter));
                             stepCounter += 20;
                             writer.RenderBeginTag(HtmlTextWriterTag.Div);
                             writer.RenderBeginTag(HtmlTextWriterTag.P);
 
-                            var stepKey = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
-                            var stepValue = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                            var scenarioStepKey = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                            ValidateValue(scenarioStepKey, uri);
+                            var scenarioStepValue = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                            ValidateValue(scenarioStepValue, uri);
 
-                            writer.Write(" {0}", stepKey);
-                            writer.Write(" {0}", stepValue);
+                            string stepClass = string.Empty;
+                            if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.Given).Equals(scenarioStepKey))
+                            {
+                                stepClass = "label label-success";
+                            }
+                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.When).Equals(scenarioStepKey)) 
+                            {
+                                stepClass = "label label-primary";
+                            }
+                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.Then).Equals(scenarioStepKey))
+                            {
+                                stepClass = "label label-danger";
+                            }
+                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.And).Equals(scenarioStepKey))
+                            {
+                                stepClass = "label label-warning";
+                            }
+                            else
+                            {
+                                stepClass = "label label-info";
+                            }
+                            writer.AddAttribute(HtmlTextWriterAttribute.Class, stepClass);
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            writer.Write(" {0}", scenarioStepKey);
+                            writer.RenderEndTag();
+                            writer.Write("  {0}", scenarioStepValue);
 
                             writer.RenderEndTag();
                             writer.RenderEndTag();
                         }
-                        
+                       
                         writer.RenderEndTag();
                         writer.RenderEndTag();
 
+                        writer.RenderEndTag();
+
+                        writer.RenderEndTag();
                         writer.RenderEndTag();
                     }
 
                     storyHtml = storyHtml.Replace("{StoryBody}", stringWriter.ToString());
                 }
 
-                var htmlFileName = string.Format(@"{0}\{1}.html", OutputDir, Guid.NewGuid().ToString());
-                using (var outfile = new StreamWriter(htmlFileName, true))
+                fileName = string.Format(@"{0}\{1}.html", OutputDir, Guid.NewGuid().ToString());
+                using (var outfile = new StreamWriter(fileName, true))
                 {
-                    outfile.Write(" {0}", storyHtml);
+                    outfile.Write(storyHtml);
                 }
             }
             catch (Exception)

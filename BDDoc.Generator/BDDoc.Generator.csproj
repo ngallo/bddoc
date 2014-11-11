@@ -48,6 +48,9 @@
     <Compile Include="..\BDDoc\Core\BDDocXmlHelper.cs">
       <Link>Core\BDDocXmlHelper.cs</Link>
     </Compile>
+    <Compile Include="..\BDDoc\Core\ScenarioStepType.cs">
+      <Link>Core\ScenarioStepType.cs</Link>
+    </Compile>
     <Compile Include="Core\Arguments\ArgumentsParser.cs" />
     <Compile Include="Core\Arguments\IArgumentsParser.cs" />
     <Compile Include="Core\HtmlDocGenerator.cs" />

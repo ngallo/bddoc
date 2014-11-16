@@ -9,12 +9,11 @@
   <!--  Setup (EnvironmentValidation) -->
   <Target Name="EnvironmentValidation">
     <Error Condition="'$(CheckoutDir)' == ''" Text="Invalid %CheckoutDir% variable."/>
-    <Error Condition="'$(BinDirectories)' == ''" Text="Invalid %BinDirectories% variable."/>
-    <Error Condition="'$(NugetDir)' == ''" Text="Invalid %NugetDir% variable."/>
     <Error Condition="'$(OutputDir)' == ''" Text="Invalid %OutputDir% variable."/>
-    <Error Condition="'$(NUnit)' == ''" Text="Invalid %NUnit% variable."/>
-    <Error Condition="'$(OpenCover)' == ''" Text="Invalid %OpenCover% variable."/>
-    <Error Condition="'$(ReportGenerator)' == ''" Text="Invalid %ReportGenerator% variable."/>
+    <Error Condition="'$(NuGetDir)' == ''" Text="Invalid %NuGetDir% variable."/>
+    <Error Condition="'$(NUnitEXE)' == ''" Text="Invalid %NUnitEXE% variable."/>
+    <Error Condition="'$(OpenCoverEXE)' == ''" Text="Invalid %OpenCoverEXE% variable."/>
+    <Error Condition="'$(ReportGeneratorEXE)' == ''" Text="Invalid %ReportGeneratorEXE% variable."/>
     <Error Condition="'$(NuGetEXE)' == ''" Text="Invalid %NuGetEXE% variable."/>
     <Error Condition="'$(SolutionConfiguration)' == ''" Text="Invalid %SolutionConfiguration% variable."/>
     <Error Condition="'$(SolutionPlatform)' == ''" Text="Invalid %SolutionPlatform% variable."/>
@@ -31,11 +30,11 @@
     <!-- Clean NuGet -->
   <Target Name="CleanNuGet">
     <ItemGroup>
-			<FilesToDelete Include="$(NugetDir)\**\*"/>
+			<FilesToDelete Include="$(NuGetDir)\**\*"/>
 		</ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
 		<Delete Files="@(FilesToDelete)"/>
-		<RemoveDir Directories="$(NugetDir)"/>
+		<RemoveDir Directories="$(NuGetDir)"/>
   </Target>
 
   <!-- Clean Output -->
@@ -57,31 +56,31 @@
   <!-- Solution Compile -->
   <Target Name="SLCompile">
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <MSBuild Projects="$(SolutionFullPath)" Targets="BUILD" Properties="Configuration=$(SolutionConfiguration);Platform=$(SolutionPlatform)" BuildInParallel="true"/>
+    <MSBuild Projects="$(SolutionFullPath)" Targets="BUILD" Properties="Configuration=$(SolutionConfiguration);Platform=$(SolutionPlatform)" BuildInParallel="false"/>
   </Target>
 
   <!-- Nunit continuous integration tests -->
   <Target Name="NunitCITests">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)$(BinDirectories)\*.dll"/>
+      <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <Exec Command="$(NUnit) /framework:net-4.5 @(TestsAssemblies , ' ')"/>
+    <Exec Command="$(NUnitEXE) /framework:net-4.5 @(TestsAssemblies , ' ')"/>
   </Target>
 
   <!-- Nunit continuous integration tests with code coverage -->
   <Target Name="NunitCITestsCoverage">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)$(BinDirectories)\*.dll"/>
+      <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <PropertyGroup>
-      <OpenCoverExe>$(OpenCover) -register:user -target:$(NUnit) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverExe>
-	    <ReportGenExe>$(ReportGenerator) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenExe>
+      <OpenCoverCommand>$(OpenCoverEXE) -register:user -target:$(NUnitEXE) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverCommand>
+	    <ReportGenCommand>$(ReportGeneratorEXE) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenCommand>
     </PropertyGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <Exec Command="if not exist $(CoverageOutputDir) ( mkdir $(CoverageOutputDir))"/>
-    <Exec Command="$(OpenCoverExe)"/>
-	<Exec Command="$(ReportGenExe)"/>
+    <Exec Command="if not exist $(CoverageOutputDir) (mkdir $(CoverageOutputDir))"/>
+    <Exec Command="$(OpenCoverCommand)"/>
+    <Exec Command="$(ReportGenCommand)"/>
   </Target>
   
 </Project>

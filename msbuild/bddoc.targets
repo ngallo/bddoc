@@ -1,15 +1,12 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <BinDirectories>\**\bin\$(SolutionConfiguration)</BinDirectories>
-    <NugetDir>$(CheckoutDir)\packages</NugetDir>
     <OutputDir>$(CheckoutDir)\output</OutputDir>
-    <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
-    <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
+    <NuGetDir>$(CheckoutDir)\packages</NuGetDir>
+    <NUnitEXE>$(NuGetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnitEXE>
+    <OpenCoverEXE>$(NuGetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCoverEXE>
     <CoverageFilter>"+[BDDoc*]* -[*BDDoc.Samples.*]* -[*UnitTest*]* -[*IntegrationTest*]*"</CoverageFilter>
-    <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
-    <BDDDocRepoFiles>$(BinDirectories)\*.bddoc</BDDDocRepoFiles>
-    <BDDDocRepoOut>$(OutputDir)\documentation</BDDDocRepoOut>
+    <ReportGeneratorExe>$(NuGetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGeneratorExe>
   </PropertyGroup>
 
   <Import Project="bddoc-shared.targets"></Import>
@@ -21,8 +18,8 @@
       <BDDocGeneratorLibFolder>$(OutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\</BDDocGeneratorLibFolder>
     </PropertyGroup>
     <ItemGroup>
-      <BDDocFilesToDelete Include="$(BDDocLibFolder)\*"/>
-      <BDDocFilesToDelete Include="$(BDDocGeneratorLibFolder)\*"/>
+      <BDDocFilesToDelete Include="$(BDDocLibFolder)\**\*"/>
+      <BDDocFilesToDelete Include="$(BDDocGeneratorLibFolder)\**\*"/>
       <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.dll" />
       <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.pdb" />
       <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.exe" />
@@ -39,6 +36,6 @@
   <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
   <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CopyFilesToOutput"></Target>
-  <Target Name="Coverage" DependsOnTargets="Setup;SLCompile;NunitCITestsCoverage;CopyFilesToOutput"></Target>
+  <Target Name="Coverage" DependsOnTargets="NunitCITestsCoverage"></Target>
 
 </Project>

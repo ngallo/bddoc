@@ -1,53 +1,53 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <BinDirectories>\**\bin\$(SolutionConfiguration)</BinDirectories>
-    <NugetDir>$(CheckoutDir)\packages</NugetDir>
-    <BDDocOutputDir>$(CheckoutDir)\output</BDDocOutputDir>
     <OutputDir>$(CheckoutDir)\output-samples</OutputDir>
-    <NUnit>$(NugetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnit>
-    <OpenCover>$(NugetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCover>
-    <ReportGenerator>$(NugetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGenerator>
-    <BDDocGenerator>"$(BDDocOutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\BDDocGenerator.exe"</BDDocGenerator>
+    <BDDocOutputDir>$(CheckoutDir)\output</BDDocOutputDir>
+    <NuGetDir>$(CheckoutDir)\packages</NuGetDir>
+    <NUnitEXE>$(NuGetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnitEXE>
+    <OpenCoverEXE>$(NuGetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCoverEXE>
+    <ReportGeneratorEXE>$(NuGetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGeneratorEXE>
+    <BDDocGeneratorEXE>"$(BDDocOutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\BDDocGenerator.exe"</BDDocGeneratorEXE>
     <BDDocDocumentationDir>$(OutputDir)\Documentation</BDDocDocumentationDir>
-	<BDDocHtmlDocumentationDir>$(BDDocDocumentationDir)\HTML</BDDocHtmlDocumentationDir>
+    <BDDocHtmlDocumentationDir>$(BDDocDocumentationDir)\HTML</BDDocHtmlDocumentationDir>
   </PropertyGroup>
 
   <Import Project="bddoc-shared.targets"></Import>
- 
+
   <!-- Targets definitions -->
 
-  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles;CleanBDDocGeneratorOutput;"></Target>
+  <Target Name="Clean" DependsOnTargets="SLClean;CleanOutput;CleanNuGet;CleanBDDocFiles;CleanBDDocDocumentationDir;"></Target>
   <Target Name="Setup" DependsOnTargets="NuGet"></Target>
-  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CleanBDDocGeneratorOutput;CopyBDDocFilesToOutput;BDDocGenerator"></Target>
+  <Target Name="Compile" DependsOnTargets="Setup;SLCompile;NunitCITests;CleanBDDocDocumentationDir;CopyBDDocFilesToOutput;BDDocGenerator"></Target>
 
   <!-- Clean BDDoc files -->
   <Target Name="CleanBDDocFiles">
     <ItemGroup>
       <BDDocFilesToDelete Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc"/>
     </ItemGroup>
-    <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="true"/>
+    <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="false"/>
   </Target>
-    
-  <!-- Clean BDDoc-Generator output folder -->
-  <Target Name="CleanBDDocGeneratorOutput">
+
+  <!-- Clean documentation directory -->
+  <Target Name="CleanBDDocDocumentationDir">
     <ItemGroup>
       <BDDocFilesToDelete Include="$(BDDocDocumentationDir)\**\*.*"/>
     </ItemGroup>
-    <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="true"/>
+    <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="false"/>
+    <RemoveDir Directories="$(BDDocDocumentationDir)" ContinueOnError="false"/>
   </Target>
- 
-  <!-- Copy BDDoc files to the output lib directory -->
+
+  <!-- Copy BDDoc files to documentation directory -->
   <Target Name="CopyBDDocFilesToOutput">
     <ItemGroup>
       <BDDocFiles Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc" />
     </ItemGroup>
-    <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDocDocumentationDir)\" ContinueOnError="true" />
+    <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDocDocumentationDir)\" ContinueOnError="false" />
   </Target>
- 
+
   <!-- Generates HTML documentation using BDDocGenerator -->
   <Target Name="BDDocGenerator">
-    <Exec Command="$(BDDocGenerator) -inputdir:$(BDDocDocumentationDir) -outputdir:$(BDDocHtmlDocumentationDir)"/>
+    <Exec Command="$(BDDocGeneratorEXE) -inputdir:$(BDDocDocumentationDir) -outputdir:$(BDDocHtmlDocumentationDir)"/>
   </Target>
 
 </Project>

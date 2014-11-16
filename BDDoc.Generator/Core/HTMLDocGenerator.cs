@@ -181,7 +181,8 @@ namespace BDDoc.Core
                                 });
                     foreach (var scenarioElement in scenarios.Select(scenario => scenario.Scenarios.First()))
                     {
-                        ValidateValue(() => scenarioElement.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
+                        var element = scenarioElement;
+                        ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
                         var value = scenarioElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
@@ -227,47 +228,37 @@ namespace BDDoc.Core
                         //Scenario steps
                         var scenarioStepsElement = scenarioElement.Elements().ElementAt(1);
                         ValidateValue(() => scenarioStepsElement != null, uri);
-                        var stepCounter = 0;
+                        var lastStepName = string.Empty;
+                        var stepCounter = -20;
                         foreach (var stepElement in scenarioStepsElement.Elements())
                         {
-                            writer.AddAttribute(HtmlTextWriterAttribute.Style, String.Format("margin-left:{0}px;", stepCounter));
-                            stepCounter += 20;
-                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                            writer.RenderBeginTag(HtmlTextWriterTag.P);
-
                             var scenarioStepKey = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
                             ValidateValue(scenarioStepKey, uri);
                             var scenarioStepValue = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
                             ValidateValue(scenarioStepValue, uri);
 
-                            string stepClass = string.Empty;
-                            if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.Given).Equals(scenarioStepKey))
+                            if (string.IsNullOrWhiteSpace(lastStepName) || (!lastStepName.Equals(scenarioStepKey)))
                             {
-                                stepClass = "label label-success";
+                                lastStepName = scenarioStepKey;
+                                stepCounter += 20;
                             }
-                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.When).Equals(scenarioStepKey))
-                            {
-                                stepClass = "label label-primary";
-                            }
-                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.Then).Equals(scenarioStepKey))
-                            {
-                                stepClass = "label label-danger";
-                            }
-                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.And).Equals(scenarioStepKey))
-                            {
-                                stepClass = "label label-warning";
-                            }
-                            else
-                            {
-                                stepClass = "label label-info";
-                            }
-                            writer.AddAttribute(HtmlTextWriterAttribute.Class, stepClass);
+                            writer.AddAttribute(HtmlTextWriterAttribute.Style, String.Format("margin-left:{0}px;", stepCounter));
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                            
+                            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+                            writer.AddAttribute(HtmlTextWriterAttribute.Class, "label label-default");
                             writer.RenderBeginTag(HtmlTextWriterTag.Div);
                             writer.Write(" {0}", scenarioStepKey);
                             writer.RenderEndTag();
-                            writer.Write("  {0}", scenarioStepValue);
+
+                            writer.AddStyleAttribute(HtmlTextWriterStyle.MarginLeft, "5px");
+                            writer.RenderBeginTag(HtmlTextWriterTag.I);
+                            writer.Write("{0}", scenarioStepValue);
+                            writer.RenderEndTag();
 
                             writer.RenderEndTag();
+
                             writer.RenderEndTag();
                         }
 

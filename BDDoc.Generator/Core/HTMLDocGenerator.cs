@@ -1,8 +1,8 @@
-﻿using System.Web.UI;
-using BDDoc.Resources;
+﻿using BDDoc.Resources;
 using System;
 using System.IO;
 using System.Linq;
+using System.Web.UI;
 using System.Xml.Linq;
 
 namespace BDDoc.Core
@@ -108,7 +108,7 @@ namespace BDDoc.Core
             }
 
             indexHtml = indexHtml.Replace("{Stories}", stringWriter.ToString());
-            string indexFileName = string.Format(@"{0}\index.html", OutputDir);
+            var indexFileName = string.Format(@"{0}\index.html", OutputDir);
             if (File.Exists(indexFileName))
             {
                 File.Delete(indexFileName);
@@ -172,10 +172,15 @@ namespace BDDoc.Core
                         writer.RenderEndTag();
                     }
 
-                    var scenarioCount = storyElement.Elements().Count();
-                    for (var i = 1; i < scenarioCount; i++)
+                    var scenarioCollection = storyElement.Elements().Where(x => !x.Name.LocalName.Equals(BDDocXmlConstants.CItemElementCollection)).AsQueryable();
+                    var scenarios = scenarioCollection
+                        .GroupBy(x => x.Attribute(BDDocXmlConstants.CTextAttribute).Value)
+                            .Select(group => new
+                                {
+                                    Scenarios = group.OrderByDescending(x => x.Attribute(BDDocXmlConstants.CTimeStampAttribute).Value).ToArray()
+                                });
+                    foreach (var scenarioElement in scenarios.Select(scenario => scenario.Scenarios.First()))
                     {
-                        var scenarioElement = storyElement.Elements().ElementAt(i);
                         ValidateValue(() => scenarioElement.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
                         var value = scenarioElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -184,7 +189,7 @@ namespace BDDoc.Core
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-body");
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                        
+
                         //Scenario title
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.RenderBeginTag(HtmlTextWriterTag.H3);
@@ -218,10 +223,10 @@ namespace BDDoc.Core
                             writer.RenderEndTag();
                             writer.RenderEndTag();
                         }
-                        
+
                         //Scenario steps
                         var scenarioStepsElement = scenarioElement.Elements().ElementAt(1);
-                        ValidateValue(() =>  scenarioStepsElement!= null, uri);
+                        ValidateValue(() => scenarioStepsElement != null, uri);
                         var stepCounter = 0;
                         foreach (var stepElement in scenarioStepsElement.Elements())
                         {
@@ -240,7 +245,7 @@ namespace BDDoc.Core
                             {
                                 stepClass = "label label-success";
                             }
-                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.When).Equals(scenarioStepKey)) 
+                            else if (Enum.GetName(typeof(ScenarioStepType), ScenarioStepType.When).Equals(scenarioStepKey))
                             {
                                 stepClass = "label label-primary";
                             }
@@ -265,7 +270,7 @@ namespace BDDoc.Core
                             writer.RenderEndTag();
                             writer.RenderEndTag();
                         }
-                       
+
                         writer.RenderEndTag();
                         writer.RenderEndTag();
 
@@ -278,14 +283,18 @@ namespace BDDoc.Core
                     storyHtml = storyHtml.Replace("{StoryBody}", stringWriter.ToString());
                 }
 
-                fileName = string.Format(@"{0}.html", Guid.NewGuid().ToString());
+                fileName = string.Format(@"{0}.html", Path.GetFileNameWithoutExtension(uri));
                 var fullPath = string.Format(@"{0}\{1}", OutputDir, fileName);
+                if (File.Exists(fullPath))
+                {
+                    File.Delete(fullPath);
+                }
                 using (var outfile = new StreamWriter(fullPath, true))
                 {
                     outfile.Write(storyHtml);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var errorMessage = string.Format("Invalid bddoc file ({0}).", uri);
                 throw new InvalidDataException(errorMessage);

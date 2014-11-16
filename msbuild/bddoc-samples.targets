@@ -34,7 +34,7 @@
       <BDDocFilesToDelete Include="$(BDDocDocumentationDir)\**\*.*"/>
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="false"/>
-    <RemoveDir Directories="$(BDDocDocumentationDir)" ContinueOnError="false"/>
+    <RemoveDir Directories="$(BDDocDocumentationDir)" ContinueOnError="true"/>
   </Target>
 
   <!-- Copy BDDoc files to documentation directory -->

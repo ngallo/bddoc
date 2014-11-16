@@ -17,7 +17,9 @@ namespace BDDoc.Core
         internal const string CItemElement = "Item";
 
         //Attributes
-        internal const string CKeyAttribute = "Key";
-        internal const string CTextAttribute = "Text";
+        internal const string CVersionAttribute = "version";
+        internal const string CTimeStampAttribute = "timestamp";
+        internal const string CKeyAttribute = "key";
+        internal const string CTextAttribute = "text";
     }
 }

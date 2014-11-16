@@ -10,6 +10,7 @@ namespace BDDoc.Core
     {
         //Fields
 
+        private const string CurrentXmlVersion = "1.0";
         private readonly object _syncObj = new object();
 
         //Methods
@@ -32,6 +33,7 @@ namespace BDDoc.Core
                 throw new ArgumentNullException();
             }
             return new XElement(BDDocXmlConstants.CStoryElement
+                , new XAttribute(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion)
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)
                 , new XElement(BDDocXmlConstants.CItemElementCollection, from item in storyDocument
                                                                          select CreateItemElement(item)));
@@ -44,6 +46,7 @@ namespace BDDoc.Core
                 throw new ArgumentNullException();
             }
             return new XElement(BDDocXmlConstants.CScenarioElement
+                , new XAttribute(BDDocXmlConstants.CTimeStampAttribute, DateTime.UtcNow.ToString())
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, scenarioDocument.Text)
                 , new XElement(BDDocXmlConstants.CItemElementCollection, from item in scenarioDocument
                                                                          select new XElement(BDDocXmlConstants.CItemElement

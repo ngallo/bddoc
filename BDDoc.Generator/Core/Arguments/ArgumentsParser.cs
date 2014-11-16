@@ -26,8 +26,8 @@ namespace BDDoc.Core.Arguments
         {
             ErrorMessage = errorMessage;
         }
-        
-        internal ArgumentsParser(params Tuple<string, object>[] arguments)
+
+        internal ArgumentsParser(IEnumerable<Tuple<string, object>> arguments)
         {
             if (arguments == null)
             {
@@ -93,7 +93,7 @@ namespace BDDoc.Core.Arguments
             return true;
         }
 
-        public static bool TryParse(string[] args, out ArgumentsParser argumentsParser)
+        public static bool TryParse(string[] args, out IArgumentsParser argumentsParser)
         {
             var arguments = new List<Tuple<string, object>>();
 
@@ -105,19 +105,19 @@ namespace BDDoc.Core.Arguments
                 if (inputArg  == null)
                 {
                     errorMessage = string.Format("Missing argument {0}.", argName);
-                    argumentsParser = new ArgumentsParser(errorMessage);
+                    argumentsParser = IoC.Resolve<IArgumentsParser>(new object[] { errorMessage });
                     return false;
                 }
                 var inputArgValue = inputArg.Remove(0, argName.Length);
                 if (string.IsNullOrWhiteSpace(inputArgValue))
                 {
                     errorMessage = string.Format("Invalid argument ({0}).", argName);
-                    argumentsParser = new ArgumentsParser(errorMessage);
+                    argumentsParser = IoC.Resolve<IArgumentsParser>(new object[] { errorMessage });
                     return false;
                 }
                 if (!Validate(argument, inputArgValue, out errorMessage))
                 {
-                    argumentsParser = new ArgumentsParser(errorMessage);
+                    argumentsParser = IoC.Resolve<IArgumentsParser>(new object[] { errorMessage });
                     return false;
                 }
 
@@ -125,7 +125,9 @@ namespace BDDoc.Core.Arguments
                 arguments.Add(new Tuple<string, object>(argument, inputArgValue));
             }
 
-            argumentsParser = new ArgumentsParser(arguments.ToArray());
+            var parameters = arguments.ToArray();
+            argumentsParser = IoC.Resolve<IArgumentsParser>(new object[] { parameters});
+
             
             return true;
         }

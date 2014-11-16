@@ -1,11 +1,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  
+
   <PropertyGroup>
     <SolutionFullPath>$(CheckoutDir)\$(SolutionRelativePath)</SolutionFullPath>
     <CoverageOutputDir>$(OutputDir)\coverage</CoverageOutputDir>
     <CoverageOutput>$(CoverageOutputDir)\BDDocCoverageReport.xml</CoverageOutput>
   </PropertyGroup>
-  
+
   <!--  Setup (EnvironmentValidation) -->
   <Target Name="EnvironmentValidation">
     <Error Condition="'$(CheckoutDir)' == ''" Text="Invalid %CheckoutDir% variable."/>
@@ -26,27 +26,27 @@
     <CallTarget  Targets="EnvironmentValidation;"/>
     <Exec Command="$(NuGetEXE) restore $(CheckoutDir)$(SolutionRelativePath)"/>
   </Target>
-  
-    <!-- Clean NuGet -->
+
+  <!-- Clean NuGet -->
   <Target Name="CleanNuGet">
     <ItemGroup>
-			<FilesToDelete Include="$(NuGetDir)\**\*"/>
-		</ItemGroup>
+      <FilesToDelete Include="$(NuGetDir)\**\*"/>
+    </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-		<Delete Files="@(FilesToDelete)"/>
-		<RemoveDir Directories="$(NuGetDir)"/>
+    <Delete Files="@(FilesToDelete)"/>
+    <RemoveDir Directories="$(NuGetDir)"/>
   </Target>
 
   <!-- Clean Output -->
   <Target Name="CleanOutput">
     <ItemGroup>
-			<FilesToDelete Include="$(OutputDir)\**\*"/>
-		</ItemGroup>
+      <FilesToDelete Include="$(OutputDir)\**\*"/>
+    </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-		<Delete Files="@(FilesToDelete)"/>
-		<RemoveDir Directories="$(OutputDir)"/>
+    <Delete Files="@(FilesToDelete)"/>
+    <RemoveDir Directories="$(OutputDir)"/>
   </Target>
-  
+
   <!-- Solution Clean -->
   <Target Name="SLClean">
     <CallTarget  Targets="EnvironmentValidation;"/>
@@ -75,12 +75,12 @@
     </ItemGroup>
     <PropertyGroup>
       <OpenCoverCommand>$(OpenCoverEXE) -register:user -target:$(NUnitEXE) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverCommand>
-	    <ReportGenCommand>$(ReportGeneratorEXE) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenCommand>
+      <ReportGenCommand>$(ReportGeneratorEXE) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenCommand>
     </PropertyGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
     <Exec Command="if not exist $(CoverageOutputDir) (mkdir $(CoverageOutputDir))"/>
     <Exec Command="$(OpenCoverCommand)"/>
     <Exec Command="$(ReportGenCommand)"/>
   </Target>
-  
+
 </Project>

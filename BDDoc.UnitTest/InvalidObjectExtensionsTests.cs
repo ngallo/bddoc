@@ -5,7 +5,7 @@ namespace BDDoc.UnitTest
 {
     [ExcludeFromCodeCoverage]
     [StoryInfo(StoryId)]
-    public class InvalidObjectExtensionsTests
+    public class InvalidObjectExtensionsTests : IStory
     {
         //Constants
 

@@ -11,7 +11,7 @@ namespace BDDoc.IntegrationTest
     [ExcludeFromCodeCoverage]
     [StoryInfo(StoryId)]
     [Story(StoryText, Order = StoryOrder)]
-    public class ScenarioIntegration1Tests
+    public class ScenarioIntegration1Tests : IStory
     {
         //Constants
 

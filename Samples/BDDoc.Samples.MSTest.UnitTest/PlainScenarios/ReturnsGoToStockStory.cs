@@ -10,7 +10,7 @@ namespace BDDoc.Samples.MSTest.UnitTest.PlainScenarios
     [AsA("store owner")]
     [IWantTo("add items back to stock when they're returned")]
     [TestClass]
-    public class ReturnsGoToStockStory
+    public class ReturnsGoToStockStory : IStory
     {
         [TestMethod]
         [Scenario("Refunded items should be returned to stock")]

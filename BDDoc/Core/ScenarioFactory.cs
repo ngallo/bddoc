@@ -27,8 +27,8 @@ namespace BDDoc.Core
 
         public static ScenarioFactory CreateInstance()
         {
-            var reflectionHelper = new ReflectionHelper();
-            var dataStore = new DataStore();
+            var reflectionHelper = IoC.Resolve<IReflectionHelper>(); ;
+            var dataStore = IoC.Resolve<IDataStore>(); ;
             return new ScenarioFactory(reflectionHelper, dataStore);
         }
 

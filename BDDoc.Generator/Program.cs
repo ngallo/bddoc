@@ -8,11 +8,15 @@ namespace BDDoc
     {
         static void Main(string[] args)
         {
+            IoC.Map<ILogger, ConsoleLogger>();
+            IoC.Map<IHtmlDocGenerator, HtmlDocGenerator>();
+            IoC.Map<IArgumentsParser, ArgumentsParser>();
+
             var logger = IoC.Resolve<ILogger>();
 
             try
             {
-                ArgumentsParser argumentsParser;
+                IArgumentsParser argumentsParser;
                 if (!ArgumentsParser.TryParse(args, out argumentsParser))
                 {
                     logger.Error(argumentsParser.ErrorMessage);
@@ -23,7 +27,7 @@ namespace BDDoc
 
                 var inputDir = argumentsParser[ArgumentsParser.CInputDir];
                 var outputDir = argumentsParser[ArgumentsParser.COutputDir];
-                var docGenerator = new HtmlDocGenerator((string)inputDir, (string)outputDir);
+                var docGenerator = IoC.Resolve<IHtmlDocGenerator>(new[]{ inputDir, outputDir });
                 
                 docGenerator.Generate();
                 

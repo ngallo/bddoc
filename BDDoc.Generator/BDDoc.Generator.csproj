@@ -48,6 +48,9 @@
     <Compile Include="..\BDDoc\Core\BDDocXmlHelper.cs">
       <Link>Core\BDDocXmlHelper.cs</Link>
     </Compile>
+    <Compile Include="..\BDDoc\Core\IoC.cs">
+      <Link>Core\IoC.cs</Link>
+    </Compile>
     <Compile Include="..\BDDoc\Core\ScenarioStepType.cs">
       <Link>Core\ScenarioStepType.cs</Link>
     </Compile>
@@ -58,7 +61,6 @@
     <Compile Include="Core\IHtmlDocGenerator.cs" />
     <Compile Include="Core\ILogger.cs" />
     <Compile Include="Core\ConsoleLogger.cs" />
-    <Compile Include="Core\IoC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\BDDocTemplates.Designer.cs">

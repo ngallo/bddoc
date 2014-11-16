@@ -50,6 +50,8 @@
     <Compile Include="Core\Documents\StepDocument.cs" />
     <Compile Include="Core\Documents\StoryDocument.cs" />
     <Compile Include="Core\DataStore.cs" />
+    <Compile Include="Core\IoC.cs" />
+    <Compile Include="IStory.cs" />
     <Compile Include="StoryInfoAttribute.cs" />
     <Compile Include="Core\BDDocAttribute.cs" />
     <Compile Include="Core\IBDDocAttrib.cs" />

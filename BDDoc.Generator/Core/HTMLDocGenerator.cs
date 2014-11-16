@@ -137,7 +137,7 @@ namespace BDDoc.Core
                 var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
                 ValidateValue(() => storyElement.Name.LocalName == BDDocXmlConstants.CStoryElement, uri);
 
-                storyText = storyElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                storyText = storyElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
                 ValidateValue(storyText, uri);
                 
                 var storyHtml = GetStoryHtml();
@@ -148,7 +148,7 @@ namespace BDDoc.Core
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.H3);
                     writer.RenderBeginTag(HtmlTextWriterTag.B);
-                    writer.Write(" {0}", storyText);
+                    writer.Write("{0}", storyText);
                     writer.RenderEndTag();
                     writer.RenderEndTag();
 
@@ -160,15 +160,15 @@ namespace BDDoc.Core
                     {
                         var element = xElement;
                         ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CItemElement, uri);
-                        var key = element.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                        var key = element.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
                         ValidateValue(key, uri);
-                        var value = element.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                        var value = element.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
                         ValidateValue(value, uri);
                         writer.RenderBeginTag(HtmlTextWriterTag.P);
                         writer.RenderBeginTag(HtmlTextWriterTag.B);
-                        writer.Write(" {0}", key);
+                        writer.Write("{0}", key);
                         writer.RenderEndTag();
-                        writer.Write(" {0}", value);
+                        writer.Write("{0}", value);
                         writer.RenderEndTag();
                     }
 
@@ -183,7 +183,7 @@ namespace BDDoc.Core
                     {
                         var element = scenarioElement;
                         ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
-                        var value = scenarioElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                        var value = scenarioElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel panel-default");
@@ -194,7 +194,7 @@ namespace BDDoc.Core
                         //Scenario title
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.RenderBeginTag(HtmlTextWriterTag.H3);
-                        writer.Write(" {0}", value);
+                        writer.Write("{0}", value);
                         writer.RenderEndTag();
 
                         writer.RenderEndTag();
@@ -211,15 +211,15 @@ namespace BDDoc.Core
                             writer.RenderBeginTag(HtmlTextWriterTag.Div);
                             writer.RenderBeginTag(HtmlTextWriterTag.P);
 
-                            var scenarioItemKey = scenarioItemElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                            var scenarioItemKey = scenarioItemElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
                             ValidateValue(scenarioItemKey, uri);
-                            var scenarioItemValue = scenarioItemElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                            var scenarioItemValue = scenarioItemElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
                             ValidateValue(scenarioItemValue, uri);
 
                             writer.RenderBeginTag(HtmlTextWriterTag.B);
-                            writer.Write(" {0}", scenarioItemKey);
+                            writer.Write("{0}", scenarioItemKey);
                             writer.RenderEndTag();
-                            writer.Write(" {0}", scenarioItemValue);
+                            writer.Write("{0}", scenarioItemValue);
 
                             writer.RenderEndTag();
                             writer.RenderEndTag();
@@ -232,9 +232,9 @@ namespace BDDoc.Core
                         var stepCounter = -20;
                         foreach (var stepElement in scenarioStepsElement.Elements())
                         {
-                            var scenarioStepKey = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CKeyAttribute).Select((a) => a.Value).First();
+                            var scenarioStepKey = stepElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
                             ValidateValue(scenarioStepKey, uri);
-                            var scenarioStepValue = stepElement.Attributes().Where((a) => a.Name == BDDocXmlConstants.CTextAttribute).Select((a) => a.Value).First();
+                            var scenarioStepValue = stepElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
                             ValidateValue(scenarioStepValue, uri);
 
                             if (string.IsNullOrWhiteSpace(lastStepName) || (!lastStepName.Equals(scenarioStepKey)))
@@ -249,7 +249,7 @@ namespace BDDoc.Core
 
                             writer.AddAttribute(HtmlTextWriterAttribute.Class, "label label-default");
                             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-                            writer.Write(" {0}", scenarioStepKey);
+                            writer.Write("{0}", scenarioStepKey);
                             writer.RenderEndTag();
 
                             writer.AddStyleAttribute(HtmlTextWriterStyle.MarginLeft, "5px");
@@ -285,7 +285,7 @@ namespace BDDoc.Core
                     outfile.Write(storyHtml);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 var errorMessage = string.Format("Invalid bddoc file ({0}).", uri);
                 throw new InvalidDataException(errorMessage);

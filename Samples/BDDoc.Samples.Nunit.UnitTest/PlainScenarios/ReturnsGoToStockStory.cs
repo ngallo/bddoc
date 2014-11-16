@@ -9,7 +9,7 @@ namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]
     [IWantTo("add items back to stock when they're returned")]
-    public class ReturnsGoToStockStory
+    public class ReturnsGoToStockStory : IStory
     {
         [Test]
         [Scenario("Refunded items should be returned to stock", Order = 5)]

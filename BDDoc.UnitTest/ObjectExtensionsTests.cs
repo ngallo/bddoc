@@ -7,7 +7,7 @@ namespace BDDoc.UnitTest
     [ExcludeFromCodeCoverage]
     [StoryInfo(StoryId)]
     [Story(StoryText, Order = StoryOrder)]
-    public class ObjectExtensionsTests
+    public class ObjectExtensionsTests : IStory
     {
         //Constants
 
@@ -44,7 +44,7 @@ namespace BDDoc.UnitTest
 
     [ExcludeFromCodeCoverage]
     [Story(StoryText, Order = StoryOrder)]
-    public class ObjectExtensionsTests1
+    public class ObjectExtensionsTests1 : IStory
     {
         //Constants
 

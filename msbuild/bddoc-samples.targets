@@ -7,7 +7,7 @@
     <NUnitEXE>$(NuGetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnitEXE>
     <OpenCoverEXE>$(NuGetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCoverEXE>
     <ReportGeneratorEXE>$(NuGetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGeneratorEXE>
-    <BDDocGeneratorEXE>"$(BDDocOutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\BDDocGenerator.exe"</BDDocGeneratorEXE>
+    <BDDocGeneratorEXE>"$(BDDocOutputDir)\Libs\BDDoc-Generator\BDDocGenerator.exe"</BDDocGeneratorEXE>
     <BDDocDocumentationDir>$(OutputDir)\Documentation</BDDocDocumentationDir>
     <BDDocHtmlDocumentationDir>$(BDDocDocumentationDir)\HTML</BDDocHtmlDocumentationDir>
   </PropertyGroup>

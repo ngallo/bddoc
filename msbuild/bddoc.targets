@@ -14,8 +14,8 @@
   <!-- Copy DLLs and PDBs files to the output lib directory -->
   <Target Name="CopyFilesToOutput">
     <PropertyGroup>
-      <BDDocLibFolder>$(OutputDir)\Libs\BDDoc\$(SolutionPlatform)\</BDDocLibFolder>
-      <BDDocGeneratorLibFolder>$(OutputDir)\Libs\BDDoc-Generator\$(SolutionPlatform)\</BDDocGeneratorLibFolder>
+      <BDDocLibFolder>$(OutputDir)\Libs\BDDoc\</BDDocLibFolder>
+      <BDDocGeneratorLibFolder>$(OutputDir)\Libs\BDDoc-Generator\</BDDocGeneratorLibFolder>
     </PropertyGroup>
     <ItemGroup>
       <BDDocFilesToDelete Include="$(BDDocLibFolder)\**\*"/>

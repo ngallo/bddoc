@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BDDoc">
-      <HintPath>..\..\output\Libs\BDDoc\Any CPU\BDDoc.dll</HintPath>
+      <HintPath>..\..\output\Libs\BDDoc\BDDoc.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\..\packages\NUnitTestAdapter.1.2\lib\nunit.core.dll</HintPath>

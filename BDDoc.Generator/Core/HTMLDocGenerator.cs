@@ -1,4 +1,5 @@
-﻿using BDDoc.Resources;
+﻿using System.Globalization;
+using BDDoc.Resources;
 using System;
 using System.IO;
 using System.Linq;
@@ -51,6 +52,19 @@ namespace BDDoc.Core
             if (func()) return;
             var errorMessage = string.Format("Invalid bddoc file ({0}).", filePath);
             throw new InvalidDataException(errorMessage);
+        }
+
+        private static string BuildFooter(string html)
+        {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                throw new ArgumentNullException();
+            }
+            var assemblyName = typeof(HtmlDocGenerator).Assembly.GetName();
+            var assemblyNameText = string.Format("{0} {1}", assemblyName.Name, assemblyName.Version);
+            html = html.Replace("{BDDocGenerator_Name}", assemblyNameText);
+            html = html.Replace("{BDDocGenerator_DateTime}", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            return html;
         }
 
         protected virtual XDocument LoaDocument(string uri)
@@ -108,6 +122,7 @@ namespace BDDoc.Core
             }
 
             indexHtml = indexHtml.Replace("{Stories}", stringWriter.ToString());
+            indexHtml = BuildFooter(indexHtml);
             var indexFileName = string.Format(@"{0}\index.html", OutputDir);
             if (File.Exists(indexFileName))
             {
@@ -273,6 +288,8 @@ namespace BDDoc.Core
 
                     storyHtml = storyHtml.Replace("{StoryBody}", stringWriter.ToString());
                 }
+
+                storyHtml = BuildFooter(storyHtml);
 
                 fileName = string.Format(@"{0}.html", Path.GetFileNameWithoutExtension(uri));
                 var fullPath = string.Format(@"{0}\{1}", OutputDir, fileName);

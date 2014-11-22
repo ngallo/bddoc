@@ -90,18 +90,19 @@ namespace BDDoc.Core
             html = html.Replace("{BDDocGenerator_DateTime}", DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
 
-        protected virtual string BuildIndexHtml(string[] files)
+        protected virtual string BuildIndexHtml(string[] bDDocFiles)
         {
-            if (files == null)
+            if (bDDocFiles == null)
             {
                 throw new ArgumentNullException();
             }
+
             var generatedFiles = new List<Tuple<string, string>>();
-            foreach (var file in files)
+            foreach (var bDDocFile in bDDocFiles)
             {
                 string storyText;
                 string fileName;
-                GenerateStory(file, out storyText, out fileName);
+                GenerateStory(bDDocFile, out storyText, out fileName);
                 if (storyText.Length > 100)
                 {
                     storyText = storyText.Remove(100, storyText.Length - 100);
@@ -131,65 +132,83 @@ namespace BDDoc.Core
             return stringWriter.ToString();
         }
 
-        protected virtual string BuildStoryHtml(XDocument xDocument, string uri, out string storyText)
+        protected virtual string BuildStoryHtml(XDocument xDocument, string bDDocFile, out string storyText)
         {
             //Get Story Element
             var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
-            ValidateValue(() => storyElement.Name.LocalName == BDDocXmlConstants.CStoryElement, uri);
+            ValidateValue(() => storyElement.Name.LocalName == BDDocXmlConstants.CStoryElement, bDDocFile);
 
             storyText = storyElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
-            ValidateValue(storyText, uri);
+            ValidateValue(storyText, bDDocFile);
 
             var stringWriter = new StringWriter();
             using (var writer = new HtmlTextWriter(stringWriter))
             {
+                //Story Name
                 writer.RenderBeginTag(HtmlTextWriterTag.H3);
                 writer.RenderBeginTag(HtmlTextWriterTag.B);
                 writer.Write("{0}", storyText);
                 writer.RenderEndTag();
                 writer.RenderEndTag();
+                writer.WriteLine();
 
+                //Story Items
+                ValidateValue(() => storyElement.Elements().Any(), bDDocFile);
                 var itemsElement = storyElement.Elements().ElementAt(0);
-                ValidateValue(() => itemsElement.Name.LocalName == BDDocXmlConstants.CItemElementCollection, uri);
+                ValidateValue(() => itemsElement.Name.LocalName == BDDocXmlConstants.CItemElementCollection, bDDocFile);
                 var itemsElements = itemsElement.Elements();
-                ValidateValue(() => itemsElements != null, uri);
+                ValidateValue(() => itemsElements != null, bDDocFile);
                 foreach (var xElement in itemsElements)
                 {
                     var element = xElement;
-                    ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CItemElement, uri);
+                    ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CItemElement, bDDocFile);
                     var key = element.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
-                    ValidateValue(key, uri);
+                    ValidateValue(key, bDDocFile);
                     var value = element.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
-                    ValidateValue(value, uri);
+                    ValidateValue(value, bDDocFile);
                     writer.RenderBeginTag(HtmlTextWriterTag.P);
+                    
                     writer.RenderBeginTag(HtmlTextWriterTag.B);
                     writer.Write("{0}", key);
                     writer.RenderEndTag();
                     writer.Write("{0}", value);
+                    
                     writer.RenderEndTag();
+
+                    writer.WriteLine();
                 }
 
+                //Scenarios
                 var scenarioCollection = storyElement.Elements().Where(x => !x.Name.LocalName.Equals(BDDocXmlConstants.CItemElementCollection)).AsQueryable();
+                ValidateValue(() => scenarioCollection != null, bDDocFile);
                 var scenarios = scenarioCollection
                     .GroupBy(x => x.Attribute(BDDocXmlConstants.CTextAttribute).Value)
                         .Select(group => new
                         {
                             Scenarios = group.OrderByDescending(x => x.Attribute(BDDocXmlConstants.CTimeStampAttribute).Value).ToArray()
                         });
-                foreach (var scenarioElement in scenarios.Select(scenario => scenario.Scenarios.First()))
+                foreach (var scenarioElement in scenarios.Select(historyScenario => historyScenario.Scenarios.First()))
                 {
+                    writer.WriteLine();
+
                     var element = scenarioElement;
-                    ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CScenarioElement, uri);
+                    ValidateValue(() => element.Name.LocalName == BDDocXmlConstants.CScenarioElement, bDDocFile);
                     var value = scenarioElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
+                    ValidateValue(value, bDDocFile);
+
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel panel-default");
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "panel-body");
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
                     //Scenario title
+                    writer.WriteLine();
+
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
+                    
                     writer.RenderBeginTag(HtmlTextWriterTag.H3);
                     writer.Write("{0}", value);
                     writer.RenderEndTag();
@@ -197,21 +216,28 @@ namespace BDDoc.Core
                     writer.RenderEndTag();
 
                     //Scenario body
+                    writer.WriteLine();
+
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
                     writer.RenderBeginTag(HtmlTextWriterTag.P);
 
                     //Scenario items
+                    writer.WriteLine();
+
                     var scenarioItemsElement = scenarioElement.Elements().ElementAt(0);
-                    ValidateValue(() => scenarioItemsElement != null, uri);
+                    ValidateValue(() => scenarioItemsElement != null, bDDocFile);
+                    ValidateValue(() => scenarioItemsElement.Elements() != null, bDDocFile);
                     foreach (var scenarioItemElement in scenarioItemsElement.Elements())
                     {
+                        writer.WriteLine();
+
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.RenderBeginTag(HtmlTextWriterTag.P);
 
                         var scenarioItemKey = scenarioItemElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
-                        ValidateValue(scenarioItemKey, uri);
+                        ValidateValue(scenarioItemKey, bDDocFile);
                         var scenarioItemValue = scenarioItemElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
-                        ValidateValue(scenarioItemValue, uri);
+                        ValidateValue(scenarioItemValue, bDDocFile);
 
                         writer.RenderBeginTag(HtmlTextWriterTag.B);
                         writer.Write("{0}", scenarioItemKey);
@@ -223,22 +249,28 @@ namespace BDDoc.Core
                     }
 
                     //Scenario steps
+                    writer.WriteLine();
+
                     var scenarioStepsElement = scenarioElement.Elements().ElementAt(1);
-                    ValidateValue(() => scenarioStepsElement != null, uri);
+                    ValidateValue(() => scenarioStepsElement != null, bDDocFile);
+                    ValidateValue(() => scenarioStepsElement.Elements() != null, bDDocFile);
                     var lastStepName = string.Empty;
                     var stepCounter = -20;
                     foreach (var stepElement in scenarioStepsElement.Elements())
                     {
                         var scenarioStepKey = stepElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CKeyAttribute).Select(a => a.Value).First();
-                        ValidateValue(scenarioStepKey, uri);
+                        ValidateValue(scenarioStepKey, bDDocFile);
                         var scenarioStepValue = stepElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
-                        ValidateValue(scenarioStepValue, uri);
+                        ValidateValue(scenarioStepValue, bDDocFile);
 
                         if (string.IsNullOrWhiteSpace(lastStepName) || (!lastStepName.Equals(scenarioStepKey)))
                         {
                             lastStepName = scenarioStepKey;
                             stepCounter += 20;
                         }
+
+                        writer.WriteLine();
+
                         writer.AddAttribute(HtmlTextWriterAttribute.Style, String.Format("margin-left:{0}px;", stepCounter));
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
@@ -248,6 +280,8 @@ namespace BDDoc.Core
                         writer.RenderBeginTag(HtmlTextWriterTag.Div);
                         writer.Write("{0}", scenarioStepKey);
                         writer.RenderEndTag();
+
+                        writer.WriteLine();
 
                         writer.AddStyleAttribute(HtmlTextWriterStyle.MarginLeft, "5px");
                         writer.RenderBeginTag(HtmlTextWriterTag.I);
@@ -314,7 +348,7 @@ namespace BDDoc.Core
             return BDDocTemplates.story;
         }
 
-        protected virtual string[] GetFiles()
+        protected virtual string[] GetBDDocFiles()
         {
             var searchPattern = string.Format("*.{0}", BDDocXmlConstants.CBDDocFileExtension);
             return Directory.GetFiles(InputDir, searchPattern);
@@ -357,16 +391,16 @@ namespace BDDoc.Core
         {
             try
             {
-                var files = GetFiles();
-                if (files.Length == 0)
+                var bDDocFiles = GetBDDocFiles();
+                if (bDDocFiles.Length == 0)
                 {
-                    var message = string.Format("No {0} files found.", BDDocXmlConstants.CBDDocFileExtension);
+                    var message = string.Format("No {0} BDDoc file found.", BDDocXmlConstants.CBDDocFileExtension);
                     Logger.Info(message);
                     return;
                 }
 
                 var indexHtml = GetIndexHtml();
-                var bodyHtml = BuildIndexHtml(files);
+                var bodyHtml = BuildIndexHtml(bDDocFiles);
 
                 BuildHeader(ref indexHtml, ProjectName, ProjectName);
                 BuildBody(ref indexHtml, bodyHtml);
@@ -376,7 +410,7 @@ namespace BDDoc.Core
             }
             catch (Exception ex)
             {
-                var errorMessage = string.Format("An error has occurred during the generation of the HTML files. ERROR: ({0}).", ex.Message);
+                var errorMessage = string.Format("An error has occurred during the generation of the HTML bDDocFile. ERROR: ({0}).", ex.Message);
                 throw new InvalidOperationException(errorMessage);
             }
         }

@@ -25,9 +25,7 @@ namespace BDDoc
 
                 logger.Info("BDDoc HTML documentation generation started.");
 
-                var inputDir = argumentsParser[ArgumentsParser.CInputDir];
-                var outputDir = argumentsParser[ArgumentsParser.COutputDir];
-                var docGenerator = IoC.Resolve<IHtmlDocGenerator>(new[]{ inputDir, outputDir });
+                var docGenerator = IoC.Resolve<IHtmlDocGenerator>(new[] { argumentsParser });
                 
                 docGenerator.Generate();
                 

@@ -13,10 +13,12 @@ namespace BDDoc.Core.Arguments
         public const string CArgPattern = "-{0}:";
         public const string CInputDir = "inputdir";
         public const string COutputDir = "outputdir";
+        public const string CProjectName = "projectname";
 
         //Fields
 
-        private static readonly string[] Arguments = { CInputDir, COutputDir };
+        private static readonly string[] Arguments = { CInputDir, COutputDir, CProjectName };
+        private static readonly string[] MandatoryArguments = { CInputDir, COutputDir };
 
         private readonly Dictionary<string, object> _arguments;
 
@@ -104,6 +106,7 @@ namespace BDDoc.Core.Arguments
                 var inputArg = args.FirstOrDefault(s => s.ToUpper().StartsWith(argName.ToUpper()));
                 if (inputArg  == null)
                 {
+                    if (!MandatoryArguments.Contains(argument)) continue;
                     errorMessage = string.Format("Missing argument {0}.", argName);
                     argumentsParser = IoC.Resolve<IArgumentsParser>(new object[] { errorMessage });
                     return false;

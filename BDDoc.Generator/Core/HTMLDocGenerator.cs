@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using BDDoc.Core.Arguments;
 using BDDoc.Resources;
 using System;
 using System.IO;
@@ -16,14 +17,15 @@ namespace BDDoc.Core
 
         //Constructors
 
-        public HtmlDocGenerator(string inputDir, string outputDir)
+        public HtmlDocGenerator(IArgumentsParser argumentsParser)
         {
-            if ((string.IsNullOrWhiteSpace(inputDir)) || (string.IsNullOrWhiteSpace(outputDir)))
+            if (argumentsParser == null)
             {
                 throw new ArgumentNullException();
             }
-            InputDir = inputDir;
-            OutputDir = outputDir;
+            InputDir = argumentsParser[ArgumentsParser.CInputDir] as string;
+            OutputDir = argumentsParser[ArgumentsParser.COutputDir] as string;
+            ProjectName = argumentsParser[ArgumentsParser.CProjectName] as string ?? "BDDoc";
             _logger = IoC.Resolve<ILogger>();
         }
 
@@ -32,6 +34,8 @@ namespace BDDoc.Core
         public string InputDir { get; private set; }
 
         public string OutputDir { get; private set; }
+
+        public string ProjectName { get; private set; }
 
         //Methods
 
@@ -121,6 +125,7 @@ namespace BDDoc.Core
                 }
             }
 
+            indexHtml = indexHtml.Replace("{ProjectName}", ProjectName);
             indexHtml = indexHtml.Replace("{Stories}", stringWriter.ToString());
             indexHtml = BuildFooter(indexHtml);
             var indexFileName = string.Format(@"{0}\index.html", OutputDir);
@@ -289,6 +294,7 @@ namespace BDDoc.Core
                     storyHtml = storyHtml.Replace("{StoryBody}", stringWriter.ToString());
                 }
 
+                storyHtml = storyHtml.Replace("{ProjectName}", ProjectName);
                 storyHtml = BuildFooter(storyHtml);
 
                 fileName = string.Format(@"{0}.html", Path.GetFileNameWithoutExtension(uri));

@@ -1,7 +1,5 @@
 ﻿
 namespace BDDoc.Core
 {
-    internal interface IHtmlDocGenerator : IDocGenerator
-    {
-    }
+    internal interface IHtmlDocGenerator : IDocGenerator { }
 }

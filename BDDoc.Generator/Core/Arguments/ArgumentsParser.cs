@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BDDoc.Core.Arguments
 {
-    internal class ArgumentsParser : IArgumentsParser, IEnumerable
+    internal sealed class ArgumentsParser : IArgumentsParser, IEnumerable
     {
         //Constants
 

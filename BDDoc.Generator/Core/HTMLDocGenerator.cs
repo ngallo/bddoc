@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections;
+using System.Collections.Generic;
 using BDDoc.Core.Arguments;
 using BDDoc.Resources;
 using System;
@@ -12,10 +13,6 @@ namespace BDDoc.Core
 {
     internal class HtmlDocGenerator : IHtmlDocGenerator
     {
-        //Fields
-
-        private readonly ILogger _logger;
-
         //Constructors
 
         public HtmlDocGenerator(IArgumentsParser argumentsParser)
@@ -27,10 +24,16 @@ namespace BDDoc.Core
             InputDir = argumentsParser[ArgumentsParser.CInputDir] as string;
             OutputDir = argumentsParser[ArgumentsParser.COutputDir] as string;
             ProjectName = argumentsParser[ArgumentsParser.CProjectName] as string ?? "BDDoc";
-            _logger = IoC.Resolve<ILogger>();
+            if ((string.IsNullOrWhiteSpace(InputDir)) || (string.IsNullOrWhiteSpace(OutputDir)))
+            {
+                throw new ArgumentException();
+            }
+            Logger = IoC.Resolve<ILogger>();
         }
 
         //Properties
+
+        protected ILogger Logger { get; private set; }
 
         public string InputDir { get; private set; }
 
@@ -75,33 +78,60 @@ namespace BDDoc.Core
             html = html.Replace("{Body}", bodyHtml);
         }
 
-        protected virtual string BuildIndexBody(string[] files)
+        protected virtual void BuildFooter(ref string html)
         {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                throw new ArgumentNullException();
+            }
+            var assemblyName = typeof(HtmlDocGenerator).Assembly.GetName();
+            var assemblyNameText = string.Format("{0} {1}", assemblyName.Name, assemblyName.Version);
+            html = html.Replace("{BDDocGenerator_Name}", assemblyNameText);
+            html = html.Replace("{BDDocGenerator_DateTime}", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+        }
+
+        protected virtual string BuildIndexHtml(string[] files)
+        {
+            if (files == null)
+            {
+                throw new ArgumentNullException();
+            }
+            var generatedFiles = new List<Tuple<string, string>>();
+            foreach (var file in files)
+            {
+                string storyText;
+                string fileName;
+                GenerateStory(file, out storyText, out fileName);
+                if (storyText.Length > 100)
+                {
+                    storyText = storyText.Remove(100, storyText.Length - 100);
+                    storyText = string.Format("{0}...", storyText);
+                }
+                generatedFiles.Add(new Tuple<string, string>(storyText, fileName));
+            }
+
             var stringWriter = new StringWriter();
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                foreach (var file in files)
+                writer.WriteLine();
+                foreach (var generatedFile in generatedFiles)
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.P);
-                    string storyText;
-                    string fileName;
-                    GenerateStory(file, out storyText, out fileName);
-                    writer.AddAttribute(HtmlTextWriterAttribute.Href, fileName);
+
+                    writer.AddAttribute(HtmlTextWriterAttribute.Href, generatedFile.Item2);
                     writer.RenderBeginTag(HtmlTextWriterTag.A);
-                    if (storyText.Length > 100)
-                    {
-                        storyText = storyText.Remove(100, storyText.Length - 100);
-                        storyText = string.Format("{0}...", storyText);
-                    }
-                    writer.Write(storyText);
+                    writer.Write(generatedFile.Item1);
                     writer.RenderEndTag();
+
                     writer.RenderEndTag();
+
+                    writer.WriteLine();
                 }
             }
             return stringWriter.ToString();
         }
 
-        protected virtual string BuildStoryBody(XDocument xDocument, string uri, out string storyText)
+        protected virtual string BuildStoryHtml(XDocument xDocument, string uri, out string storyText)
         {
             //Get Story Element
             var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
@@ -241,28 +271,20 @@ namespace BDDoc.Core
             return stringWriter.ToString();
         }
 
-        protected virtual void BuildFooter(ref string html)
+        protected virtual void SaveHtml(string fileName, string html)
         {
-            if (string.IsNullOrWhiteSpace(html))
+            string fileNameWithExtension;
+            SaveHtml(fileName, html, out fileNameWithExtension);
+        }
+
+        protected virtual void SaveHtml(string fileName, string html, out string fileNameWithExtension)
+        {
+            if ((string.IsNullOrWhiteSpace(fileName)) || (string.IsNullOrWhiteSpace(html)))
             {
                 throw new ArgumentNullException();
             }
-            var assemblyName = typeof(HtmlDocGenerator).Assembly.GetName();
-            var assemblyNameText = string.Format("{0} {1}", assemblyName.Name, assemblyName.Version);
-            html = html.Replace("{BDDocGenerator_Name}", assemblyNameText);
-            html = html.Replace("{BDDocGenerator_DateTime}", DateTime.Now.ToString(CultureInfo.InvariantCulture));
-        }
-
-        protected virtual void SaveHtml(string outputDir, string fileName, string html)
-        {
-            string fileNameWithExtension;
-            SaveHtml(outputDir, fileName, html, out fileNameWithExtension);
-        }
-
-        protected virtual void SaveHtml(string outputDir, string fileName, string html, out string fileNameWithExtension)
-        {
             fileNameWithExtension = string.Format(@"{0}.html", Path.GetFileNameWithoutExtension(fileName));
-            var fullPath = string.Format(@"{0}\{1}", outputDir, fileNameWithExtension);
+            var fullPath = string.Format(@"{0}\{1}", OutputDir, fileNameWithExtension);
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
@@ -273,7 +295,7 @@ namespace BDDoc.Core
             }
         }
 
-        protected virtual XDocument LoaDocument(string uri)
+        protected virtual XDocument LoadDocument(string uri)
         {
             if (string.IsNullOrWhiteSpace(uri))
             {
@@ -307,22 +329,21 @@ namespace BDDoc.Core
                     throw new ArgumentNullException();
                 }
 
-                //Load XDocument
-                var xDocument = LoaDocument(uri);
+                var xDocument = LoadDocument(uri);
                 if (xDocument == null)
                 {
                     var message = string.Format("File {0} is empty.", uri);
-                    _logger.Info(message);
+                    Logger.Info(message);
                 }
                 
                 var storyHtml = GetStoryHtml();
-                var bodyHtml = BuildStoryBody(xDocument, uri, out storyText);
+                var bodyHtml = BuildStoryHtml(xDocument, uri, out storyText);
 
                 BuildHeader(ref storyHtml, storyText, ProjectName);
                 BuildBody(ref storyHtml, bodyHtml);
                 BuildFooter(ref storyHtml);
 
-                SaveHtml(OutputDir, uri, storyHtml, out fileName);
+                SaveHtml(uri, storyHtml, out fileName);
                 
             }
             catch
@@ -340,18 +361,18 @@ namespace BDDoc.Core
                 if (files.Length == 0)
                 {
                     var message = string.Format("No {0} files found.", BDDocXmlConstants.CBDDocFileExtension);
-                    _logger.Info(message);
+                    Logger.Info(message);
                     return;
                 }
 
                 var indexHtml = GetIndexHtml();
-                var bodyHtml = BuildIndexBody(files);
+                var bodyHtml = BuildIndexHtml(files);
 
                 BuildHeader(ref indexHtml, ProjectName, ProjectName);
                 BuildBody(ref indexHtml, bodyHtml);
                 BuildFooter(ref indexHtml);
 
-                SaveHtml(OutputDir, "index", indexHtml);
+                SaveHtml("index", indexHtml);
             }
             catch (Exception ex)
             {

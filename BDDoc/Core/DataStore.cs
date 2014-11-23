@@ -26,26 +26,31 @@ namespace BDDoc.Core
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, item.Item2));
         }
 
+        internal static void SetStoryAttributes(XElement storyElement, StoryDocument storyDocument)
+        {
+            if ((storyElement == null) || (storyDocument == null))
+            {
+                throw new ArgumentNullException();
+            }
+            storyElement.SetAttributeValue(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion);
+            if (!string.IsNullOrWhiteSpace(storyDocument.GroupName))
+            {
+                storyElement.SetAttributeValue(BDDocXmlConstants.CGroupNameAttribute, storyDocument.GroupName);
+            }
+            storyElement.SetAttributeValue(BDDocXmlConstants.CTextAttribute, storyDocument.Text);
+        }
+
         internal static XElement CreateStory(StoryDocument storyDocument)
         {
             if (storyDocument == null)
             {
                 throw new ArgumentNullException();
             }
-            if (!string.IsNullOrWhiteSpace(storyDocument.GroupName))
-            {
-                return new XElement(BDDocXmlConstants.CStoryElement
-                    , new XAttribute(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion)
-                    , new XAttribute(BDDocXmlConstants.CGroupNameAttribute, storyDocument.GroupName)
-                    , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)
+            var xElement = new XElement(BDDocXmlConstants.CStoryElement
                     , new XElement(BDDocXmlConstants.CItemElementCollection, from item in storyDocument
-                                                                             select CreateItemElement(item)));             
-            }
-            return new XElement(BDDocXmlConstants.CStoryElement
-                , new XAttribute(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion)
-                , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)
-                , new XElement(BDDocXmlConstants.CItemElementCollection, from item in storyDocument
-                                                                         select CreateItemElement(item)));
+                                                                             select CreateItemElement(item)));
+            SetStoryAttributes(xElement, storyDocument);
+            return xElement;
         }
 
         internal static XElement CreateScenario(ScenarioDocument scenarioDocument)
@@ -112,31 +117,15 @@ namespace BDDoc.Core
                         storyXElement = BDDocXmlHelper.GetStoryElement(document);
                         if (storyXElement != null)
                         {
-                            //Sets the story text.
-                            var textAElement = (from attrib in storyXElement.Attributes()
-                                                where attrib.Name == BDDocXmlConstants.CTextAttribute
-                                                select attrib).FirstOrDefault();
-                            if (textAElement != null)
-                            {
-                                textAElement.Value = storyDocument.Text;
-                            }
+                            //Set story's attributes.
+                            SetStoryAttributes(storyXElement, storyDocument);
 
                             //Gets list of items
                             var items = BDDocXmlHelper.GetItemsElement(storyXElement);
+                            items.RemoveAll();
                             foreach (Tuple<string, string> item in storyDocument)
                             {
-                                var contains = (from itemElement in items.Elements()
-                                                where (itemElement.Name == BDDocXmlConstants.CItemElement) 
-                                                let key = (from x in itemElement.Attributes()
-                                                           where ((x.Name.LocalName.Equals(BDDocXmlConstants.CKeyAttribute)) && (x.Value == item.Item1)) 
-                                                           select x).Any() let value = (from x in itemElement.Attributes()
-                                                                                        where ((x.Name.LocalName.Equals(BDDocXmlConstants.CTextAttribute)) && (x.Value == item.Item2)) 
-                                                                                        select x).Any() where key && value select value).Any();
-                                if (!contains)
-                                {
-                                    //Add missing items
-                                    items.Add(CreateItemElement(item));
-                                }
+                                items.Add(CreateItemElement(item));
                             }
                         }
                     }

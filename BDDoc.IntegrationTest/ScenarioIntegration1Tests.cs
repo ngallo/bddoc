@@ -1,6 +1,6 @@
-﻿using System;
-using BDDoc.Core;
+﻿using BDDoc.Core;
 using NUnit.Framework;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;

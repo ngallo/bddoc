@@ -186,7 +186,11 @@ namespace BDDoc.Core
                     writer.RenderBeginTag(HtmlTextWriterTag.B);
                     writer.Write("{0}", key);
                     writer.RenderEndTag();
+
+                    writer.AddStyleAttribute(HtmlTextWriterStyle.MarginLeft, "5px");
+                    writer.RenderBeginTag(HtmlTextWriterTag.I);
                     writer.Write("{0}", value);
+                    writer.RenderEndTag();
                     
                     writer.RenderEndTag();
 
@@ -257,7 +261,12 @@ namespace BDDoc.Core
                         writer.RenderBeginTag(HtmlTextWriterTag.B);
                         writer.Write("{0}", scenarioItemKey);
                         writer.RenderEndTag();
+
+                        writer.AddStyleAttribute(HtmlTextWriterStyle.MarginLeft, "5px");
+                        writer.RenderBeginTag(HtmlTextWriterTag.I);
                         writer.Write("{0}", scenarioItemValue);
+                        writer.RenderEndTag();
+                    
 
                         writer.RenderEndTag();
                         writer.RenderEndTag();

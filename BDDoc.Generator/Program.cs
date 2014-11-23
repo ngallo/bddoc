@@ -1,16 +1,32 @@
 ﻿using BDDoc.Core;
 using BDDoc.Core.Arguments;
 using System;
+using System.Threading;
 
 namespace BDDoc
 {
     class Program
     {
-        static void Main(string[] args)
+        //Fields
+
+        private static int _isInitialized;
+
+        //Methods
+
+        internal static void Initialize()
         {
+            if (Interlocked.Exchange(ref _isInitialized, 1) == 1)
+            {
+                return;
+            }
             IoC.Map<ILogger, ConsoleLogger>();
             IoC.Map<IHtmlDocGenerator, HtmlDocGenerator>();
             IoC.Map<IArgumentsParser, ArgumentsParser>();
+        }
+
+        static void Main(string[] args)
+        {
+            Initialize();
 
             var logger = IoC.Resolve<ILogger>();
 

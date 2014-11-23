@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Arguments\ArgumentParserTests.cs" />
+    <Compile Include="Core\ConsoleLoggerTests.cs" />
     <Compile Include="Core\HtmlDocGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -26,6 +26,10 @@ namespace BDDoc.Core.Arguments
 
         internal ArgumentsParser(string errorMessage)
         {
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                throw new ArgumentNullException();
+            }
             ErrorMessage = errorMessage;
         }
 

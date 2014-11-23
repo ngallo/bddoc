@@ -66,6 +66,7 @@
     <Compile Include="Core\Documents\ScenarioDocumentTests.cs" />
     <Compile Include="Core\Documents\StepDocumentTests.cs" />
     <Compile Include="Core\Documents\StoryDocumentTests.cs" />
+    <Compile Include="Core\IoCTests.cs" />
     <Compile Include="Core\ScenarioFactoryTests.cs" />
     <Compile Include="Core\ScenarioStepTests.cs" />
     <Compile Include="CustomExceptionTests.cs" />

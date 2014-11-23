@@ -58,17 +58,16 @@ namespace BDDoc.Core
 
         public static T Resolve<T>(object[] parameters)
         {
-            var fromType = typeof(T);
-            if (!MappedTypes.ContainsKey(fromType))
+            var type = typeof(T);
+            if (MappedTypes.ContainsKey(type))
             {
-                return default(T);
+                type = MappedTypes[type];
             }
-            var toType = MappedTypes[fromType];
             if ((parameters != null) && (parameters.Any()))
             {
-                return (T)CreateInstance(toType, parameters);
+                return (T)CreateInstance(type, parameters);
             }
-            var instance = (T)Activator.CreateInstance(toType);
+            var instance = (T)Activator.CreateInstance(type);
             return instance;
         }
     }

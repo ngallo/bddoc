@@ -130,7 +130,7 @@ namespace BDDoc.Core
             }
 
             var storyAttrib = StoryAttributes.First(a => a is StoryAttribute);
-            var storyDocument = new StoryDocument(StoryInfoAttribute.StoryId, storyAttrib.Text);
+            var storyDocument = new StoryDocument(StoryInfoAttribute.StoryId, storyAttrib.Text, StoryInfoAttribute.GroupName);
             var orderedStoryAttrib = StoryAttributes.Where((a) => a != storyAttrib).OrderBy((a) => a.Order);
             foreach (var attrib in orderedStoryAttrib)
             {

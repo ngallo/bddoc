@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using BDDoc.Core.Arguments;
+﻿using BDDoc.Core.Arguments;
 using BDDoc.Resources;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -97,42 +96,56 @@ namespace BDDoc.Core
                 throw new ArgumentNullException();
             }
 
-            var generatedFiles = new List<Tuple<string, string>>();
+            var generatedFiles = new List<Tuple<string, string, string>>();
             foreach (var bDDocFile in bDDocFiles)
             {
                 string storyText;
                 string fileName;
-                GenerateStory(bDDocFile, out storyText, out fileName);
+                string groupName;
+                GenerateStory(bDDocFile, out storyText, out fileName, out groupName);
                 if (storyText.Length > 100)
                 {
                     storyText = storyText.Remove(100, storyText.Length - 100);
                     storyText = string.Format("{0}...", storyText);
                 }
-                generatedFiles.Add(new Tuple<string, string>(storyText, fileName));
+                generatedFiles.Add(new Tuple<string, string, string>(storyText, fileName, groupName));
             }
+
+            var generatedFilesByGroup = generatedFiles.GroupBy(x => x.Item3).OrderBy((x) => x.Key);
 
             var stringWriter = new StringWriter();
             using (var writer = new HtmlTextWriter(stringWriter))
             {
-                writer.WriteLine();
-                foreach (var generatedFile in generatedFiles)
+                foreach (var group in generatedFilesByGroup)
                 {
-                    writer.RenderBeginTag(HtmlTextWriterTag.P);
-
-                    writer.AddAttribute(HtmlTextWriterAttribute.Href, generatedFile.Item2);
-                    writer.RenderBeginTag(HtmlTextWriterTag.A);
-                    writer.Write(generatedFile.Item1);
+                    //Story Name
+                    writer.RenderBeginTag(HtmlTextWriterTag.H4);
+                    writer.RenderBeginTag(HtmlTextWriterTag.B);
+                    writer.Write("{0}", group.Key);
                     writer.RenderEndTag();
-
                     writer.RenderEndTag();
-
                     writer.WriteLine();
+
+                    foreach (var generatedFile in group)
+                    {
+                        writer.RenderBeginTag(HtmlTextWriterTag.P);
+
+                        writer.AddAttribute(HtmlTextWriterAttribute.Href, generatedFile.Item2);
+                        writer.RenderBeginTag(HtmlTextWriterTag.A);
+                        writer.Write(generatedFile.Item1);
+                        writer.RenderEndTag();
+
+                        writer.RenderEndTag();
+
+                        writer.WriteLine();
+                    }
                 }
+                writer.WriteLine();
             }
             return stringWriter.ToString();
         }
 
-        protected virtual string BuildStoryHtml(XDocument xDocument, string bDDocFile, out string storyText)
+        protected virtual string BuildStoryHtml(XDocument xDocument, string bDDocFile, out string storyText, out string groupName)
         {
             //Get Story Element
             var storyElement = BDDocXmlHelper.GetStoryElement(xDocument);
@@ -140,6 +153,8 @@ namespace BDDoc.Core
 
             storyText = storyElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CTextAttribute).Select(a => a.Value).First();
             ValidateValue(storyText, bDDocFile);
+
+            groupName = storyElement.Attributes().Where(a => a.Name == BDDocXmlConstants.CGroupNameAttribute).Select(a => a.Value).FirstOrDefault();
 
             var stringWriter = new StringWriter();
             using (var writer = new HtmlTextWriter(stringWriter))
@@ -354,7 +369,7 @@ namespace BDDoc.Core
             return Directory.GetFiles(InputDir, searchPattern);
         }
 
-        protected virtual void GenerateStory(string uri, out string storyText, out string fileName)
+        protected virtual void GenerateStory(string uri, out string storyText, out string fileName, out string groupName)
         {
             try
             {
@@ -371,7 +386,7 @@ namespace BDDoc.Core
                 }
                 
                 var storyHtml = GetStoryHtml();
-                var bodyHtml = BuildStoryHtml(xDocument, uri, out storyText);
+                var bodyHtml = BuildStoryHtml(xDocument, uri, out storyText, out groupName);
 
                 BuildHeader(ref storyHtml, storyText, ProjectName);
                 BuildBody(ref storyHtml, bodyHtml);

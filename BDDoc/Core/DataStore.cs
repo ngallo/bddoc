@@ -32,6 +32,15 @@ namespace BDDoc.Core
             {
                 throw new ArgumentNullException();
             }
+            if (!string.IsNullOrWhiteSpace(storyDocument.GroupName))
+            {
+                return new XElement(BDDocXmlConstants.CStoryElement
+                    , new XAttribute(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion)
+                    , new XAttribute(BDDocXmlConstants.CGroupNameAttribute, storyDocument.GroupName)
+                    , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)
+                    , new XElement(BDDocXmlConstants.CItemElementCollection, from item in storyDocument
+                                                                             select CreateItemElement(item)));             
+            }
             return new XElement(BDDocXmlConstants.CStoryElement
                 , new XAttribute(BDDocXmlConstants.CVersionAttribute, CurrentXmlVersion)
                 , new XAttribute(BDDocXmlConstants.CTextAttribute, storyDocument.Text)

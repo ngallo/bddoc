@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
-    [StoryInfo("NUnit-ReturnsGoToStockStory2")]
+    [StoryInfo("NUnit-ReturnsGoToStockStory2", GroupName = "Component2")]
     [Story("Returns go to stock 2")]
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]

@@ -19,5 +19,7 @@ namespace BDDoc
         //Properties
 
         public string StoryId { get; private set; }
+
+        public string GroupName { get; set; }
     }
 }

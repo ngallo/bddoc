@@ -63,17 +63,17 @@ namespace BDDoc.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html lang=&quot;en&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;utf-8&quot;&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        ///    &lt;title&gt;{ProjectText}&lt;/title&gt;
-        ///&lt;/head&gt;
-        ///&lt;body&gt;
-        ///    &lt;nav class=&quot;navbar navbar-default navbar-static-top&quot; role=&quot;navigation&quot;&gt;
-        ///        &lt;div class=&quot;container&quot;&gt;
-        ///            &lt;div class=&quot;navbar-header&quot;&gt;
-        ///                &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot; [rest of string was truncated]&quot;;.
+        ///    &lt;head&gt;
+        ///        &lt;meta charset=&quot;utf-8&quot;&gt;
+        ///        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        ///        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        ///        &lt;title&gt;{Title}&lt;/title&gt;
+        ///    &lt;/head&gt;
+        ///    &lt;body&gt;
+        ///        &lt;nav class=&quot;navbar navbar-default navbar-static-top&quot; role=&quot;navigation&quot;&gt;
+        ///            &lt;div class=&quot;container&quot;&gt;
+        ///                &lt;div class=&quot;navbar-header&quot;&gt;
+        ///                    &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {
@@ -84,17 +84,17 @@ namespace BDDoc.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
         ///&lt;html lang=&quot;en&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;utf-8&quot;&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
-        ///    &lt;title&gt;{StoryText}&lt;/title&gt;
-        ///&lt;/head&gt;
-        ///&lt;body&gt;
-        ///    &lt;nav class=&quot;navbar navbar-default navbar-static-top&quot; role=&quot;navigation&quot;&gt;
-        ///        &lt;div class=&quot;container&quot;&gt;
-        ///            &lt;div class=&quot;navbar-header&quot;&gt;
-        ///                &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed&quot; data-toggle=&quot;collapse&quot; data-target=&quot;#n [rest of string was truncated]&quot;;.
+        ///    &lt;head&gt;
+        ///        &lt;meta charset=&quot;utf-8&quot;&gt;
+        ///        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+        ///        &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+        ///        &lt;title&gt;{Title}&lt;/title&gt;
+        ///    &lt;/head&gt;
+        ///    &lt;body&gt;
+        ///        &lt;nav class=&quot;navbar navbar-default navbar-static-top&quot; role=&quot;navigation&quot;&gt;
+        ///            &lt;div class=&quot;container&quot;&gt;
+        ///                &lt;div class=&quot;navbar-header&quot;&gt;
+        ///                    &lt;button type=&quot;button&quot; class=&quot;navbar-toggle collapsed [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string story {
             get {

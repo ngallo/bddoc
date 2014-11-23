@@ -65,7 +65,7 @@
       <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <Exec Command="$(NUnitEXE) /framework:net-4.5 @(TestsAssemblies , ' ')"/>
+    <Exec Command="$(NUnitEXE) /framework:net-4.0 @(TestsAssemblies , ' ')"/>
   </Target>
 
   <!-- Nunit continuous integration tests with code coverage -->
@@ -74,7 +74,7 @@
       <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <PropertyGroup>
-      <OpenCoverCommand>$(OpenCoverEXE) -register:user -target:$(NUnitEXE) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.5 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverCommand>
+      <OpenCoverCommand>$(OpenCoverEXE) -register:user -target:$(NUnitEXE) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.0 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverCommand>
       <ReportGenCommand>$(ReportGeneratorEXE) -reports:$(CoverageOutput) -targetdir:$(CoverageOutputDir)</ReportGenCommand>
     </PropertyGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>

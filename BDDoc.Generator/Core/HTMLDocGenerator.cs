@@ -111,7 +111,7 @@ namespace BDDoc.Core
                 generatedFiles.Add(new Tuple<string, string, string>(storyText, fileName, groupName));
             }
 
-            var generatedFilesByGroup = generatedFiles.GroupBy(x => x.Item3).OrderBy((x) => x.Key);
+            var generatedFilesByGroup = generatedFiles.GroupBy(x => x.Item3).OrderBy(x => x.Key);
 
             var stringWriter = new StringWriter();
             using (var writer = new HtmlTextWriter(stringWriter))

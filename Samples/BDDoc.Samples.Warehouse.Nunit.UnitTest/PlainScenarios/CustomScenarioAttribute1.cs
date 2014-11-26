@@ -1,7 +1,7 @@
 ﻿using BDDoc.Core;
 using System;
 
-namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
+namespace BDDoc.Samples.Warehouse.Nunit.UnitTest.PlainScenarios
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class CustomScenarioAttribute1 : BDDocAttribute, IScenarioAttrib

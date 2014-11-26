@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BDDoc.Samples.MSTest.UnitTest")]
+[assembly: AssemblyTitle("BDDoc.Samples.Warehouse.Nunit.UnitTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nicola Gallo")]
-[assembly: AssemblyProduct("BDDoc.Samples.MSTest.UnitTest")]
+[assembly: AssemblyProduct("BDDoc.Samples.Warehouse.Nunit.UnitTest")]
 [assembly: AssemblyCopyright("Copyright © Nicola Gallo 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("72b88f0e-1d4c-4d12-89ac-5d0137ed74a9")]
+[assembly: Guid("1fec9069-0d2b-4fdb-88a0-4f3e4944862f")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BDDoc.Samples.MSTest.UnitTest.PlainScenarios
+namespace BDDoc.Samples.Warehouse.MSTest.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
     [StoryInfo("MSTest-ReturnsGoToStockStory")]

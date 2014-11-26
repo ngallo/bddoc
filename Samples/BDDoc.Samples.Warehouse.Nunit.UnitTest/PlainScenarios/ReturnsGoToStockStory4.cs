@@ -1,15 +1,15 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
+namespace BDDoc.Samples.Warehouse.Nunit.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
-    [StoryInfo("NUnit-ReturnsGoToStockStory3")]
-    [Story("Returns go to stock 3")]
+    [StoryInfo("NUnit-ReturnsGoToStockStory4", GroupName = "Component2")]
+    [Story("Returns go to stock 4")]
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]
     [IWantTo("add items back to stock when they're returned")]
-    public class ReturnsGoToStockStory3 : IStory
+    public class ReturnsGoToStockStory4 : IStory
     {
         [Test]
         [Scenario("Refunded items should be returned to stock", Order = 5)]

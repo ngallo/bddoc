@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BDDoc.Samples.Nunit.UnitTest.PlainScenarios
+namespace BDDoc.Samples.Warehouse.Nunit.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
     [StoryInfo("NUnit-ReturnsGoToStockStory2", GroupName = "Component2")]

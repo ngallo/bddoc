@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputDir>$(CheckoutDir)\output</OutputDir>
-    <NuGetDir>$(CheckoutDir)\packages</NuGetDir>
+    <NuGetDir>$(SourceDir)\packages</NuGetDir>
     <NUnitEXE>$(NuGetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnitEXE>
     <OpenCoverEXE>$(NuGetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCoverEXE>
     <CoverageFilter>"+[BDDoc*]* -[*BDDoc.Samples.*]* -[*UnitTest*]* -[*IntegrationTest*]*"</CoverageFilter>
@@ -20,11 +20,11 @@
     <ItemGroup>
       <BDDocFilesToDelete Include="$(BDDocLibFolder)\**\*"/>
       <BDDocFilesToDelete Include="$(BDDocGeneratorLibFolder)\**\*"/>
-      <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.dll" />
-      <BDDocLibFiles Include="$(CheckoutDir)\BDDoc\bin\$(SolutionConfiguration)\*.pdb" />
-      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.exe" />
-      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.dll" />
-      <BDDocGeneratorLibFiles Include="$(CheckoutDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.pdb" />
+      <BDDocLibFiles Include="$(SourceDir)\BDDoc\bin\$(SolutionConfiguration)\*.dll" />
+      <BDDocLibFiles Include="$(SourceDir)\BDDoc\bin\$(SolutionConfiguration)\*.pdb" />
+      <BDDocGeneratorLibFiles Include="$(SourceDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.exe" />
+      <BDDocGeneratorLibFiles Include="$(SourceDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.dll" />
+      <BDDocGeneratorLibFiles Include="$(SourceDir)\BDDoc.Generator\bin\$(SolutionConfiguration)\*.pdb" />
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)"/>
     <Copy SourceFiles="@(BDDocLibFiles)" DestinationFolder="$(BDDocLibFolder)\" ContinueOnError="false" />

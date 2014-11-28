@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputDir>$(CheckoutDir)\output-samples</OutputDir>
     <BDDocOutputDir>$(CheckoutDir)\output</BDDocOutputDir>
-    <NuGetDir>$(CheckoutDir)\packages</NuGetDir>
+    <NuGetDir>$(SourceDir)\packages</NuGetDir>
     <NUnitEXE>$(NuGetDir)\NUnit.Runners.2.6.3\tools\nunit-console.exe</NUnitEXE>
     <OpenCoverEXE>$(NuGetDir)\OpenCover.4.5.3207\OpenCover.Console.exe</OpenCoverEXE>
     <ReportGeneratorEXE>$(NuGetDir)\ReportGenerator.2.0.0.0\ReportGenerator.exe</ReportGeneratorEXE>
@@ -23,7 +23,7 @@
   <!-- Clean BDDoc files -->
   <Target Name="CleanBDDocFiles">
     <ItemGroup>
-      <BDDocFilesToDelete Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc"/>
+      <BDDocFilesToDelete Include="$(SourceDir)\**\bin\$(SolutionConfiguration)\*.bddoc"/>
     </ItemGroup>
     <Delete Files="@(BDDocFilesToDelete)" ContinueOnError="false"/>
   </Target>
@@ -40,7 +40,7 @@
   <!-- Copy BDDoc files to documentation directory -->
   <Target Name="CopyBDDocFilesToOutput">
     <ItemGroup>
-      <BDDocFiles Include="$(CheckoutDir)\Samples\**\bin\$(SolutionConfiguration)\*.bddoc" />
+      <BDDocFiles Include="$(SourceDir)\**\bin\$(SolutionConfiguration)\*.bddoc" />
     </ItemGroup>
     <Copy SourceFiles="@(BDDocFiles)" DestinationFolder="$(BDDocDocumentationDir)\" ContinueOnError="false" />
   </Target>

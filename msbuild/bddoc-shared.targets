@@ -1,14 +1,14 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <SolutionFullPath>$(CheckoutDir)\$(SolutionRelativePath)</SolutionFullPath>
+    <SolutionFullPath>$(SourceDir)\$(SolutionRelativePath)</SolutionFullPath>
     <CoverageOutputDir>$(OutputDir)\coverage</CoverageOutputDir>
     <CoverageOutput>$(CoverageOutputDir)\BDDocCoverageReport.xml</CoverageOutput>
   </PropertyGroup>
 
   <!--  Setup (EnvironmentValidation) -->
   <Target Name="EnvironmentValidation">
-    <Error Condition="'$(CheckoutDir)' == ''" Text="Invalid %CheckoutDir% variable."/>
+    <Error Condition="'$(SourceDir)' == ''" Text="Invalid %SourceDir% variable."/>
     <Error Condition="'$(OutputDir)' == ''" Text="Invalid %OutputDir% variable."/>
     <Error Condition="'$(NuGetDir)' == ''" Text="Invalid %NuGetDir% variable."/>
     <Error Condition="'$(NUnitEXE)' == ''" Text="Invalid %NUnitEXE% variable."/>
@@ -24,7 +24,7 @@
   <!-- NuGet -->
   <Target Name="NuGet">
     <CallTarget  Targets="EnvironmentValidation;"/>
-    <Exec Command="$(NuGetEXE) restore $(CheckoutDir)$(SolutionRelativePath)"/>
+    <Exec Command="$(NuGetEXE) restore $(SourceDir)$(SolutionRelativePath)"/>
   </Target>
 
   <!-- Clean NuGet -->
@@ -62,7 +62,7 @@
   <!-- Nunit continuous integration tests -->
   <Target Name="NunitCITests">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
+      <TestsAssemblies Include="$(SourceDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <CallTarget  Targets="EnvironmentValidation;"/>
     <Exec Command="$(NUnitEXE) /framework:net-4.0 @(TestsAssemblies , ' ')"/>
@@ -71,7 +71,7 @@
   <!-- Nunit continuous integration tests with code coverage -->
   <Target Name="NunitCITestsCoverage">
     <ItemGroup>
-      <TestsAssemblies Include="$(CheckoutDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
+      <TestsAssemblies Include="$(SourceDir)\**\bin\$(SolutionConfiguration)\*.dll"/>
     </ItemGroup>
     <PropertyGroup>
       <OpenCoverCommand>$(OpenCoverEXE) -register:user -target:$(NUnitEXE) -targetargs:"/nologo @(TestsAssemblies, ' ') /framework:net-4.0 /noshadow" -filter:$(CoverageFilter) -output:$(CoverageOutput)</OpenCoverCommand>

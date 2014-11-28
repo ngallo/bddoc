@@ -1,6 +1,7 @@
 ECHO OFF
 SET CheckoutDir=%~dp0
 SET CheckoutDir=%CheckoutDir:~0,-1%
+SET SourceDir=%CheckoutDir%\samples
 SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
 SET SolutionRelativePath=\BDDoc.Samples.sln
 SET SolutionConfiguration=Release

@@ -44,3 +44,7 @@ if "%_buildarguments%" EQU "" (
 )
 
 %_build% /t:%_buildarguments%
+
+if "%1" EQU "-samples" (
+	start %CheckoutDir%\output-samples\Documentation\HTML\index.html
+)

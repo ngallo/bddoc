@@ -85,6 +85,7 @@ namespace BDDoc.Core
             }
             var scenarioStep = new ScenarioStep(stepType, stepIndex, text);
             _steps.Add(scenarioStep);
+            Console.WriteLine("{0} {1}", Enum.GetName(typeof(ScenarioStepType), stepType), text);
         }
 
         protected void SetInvalidState()

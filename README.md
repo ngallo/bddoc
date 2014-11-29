@@ -2,9 +2,11 @@
 Write your tests using BDD, generate your documentation running your tests and keep it tied with your code
 
 ##Intro
+
+![ScreenShot](https://github.com/ngallo/BDDoc/blob/master/docs/images/BDDocImg1.png)
 ..
 
-##How to use BDDoc
+##Usage
 
 ####Create a BDDoc Test
 ..
@@ -19,7 +21,7 @@ Write your tests using BDD, generate your documentation running your tests and k
 ..
 
 
-##BDDoc Source Code
+##Source Code
 BDDoc has been developed using VisualStudio 2013, c# and .NET Framework 4.0
 
 ####Solution

@@ -16,7 +16,7 @@ The only requirements to be satisfied by the story implementation are three:
 
 ##Usage
 
-####Create Stories using BDDoc
+####Createaastory using BDDoc
 ..
 
 
@@ -51,7 +51,6 @@ build -samples
 ```
 
 *RELEASE CONFIGURATION*
-
 ```
 build -r
 build -samples -r
@@ -71,15 +70,12 @@ build -samples clean
 ```
 
 *RELEASE Configuration*
-
 ```
 build clean
 build -samples clean
 ```
 
-**NOTE**: Build.sh file can be used via Git Bash instead of the build.cmd file.
-
-*For instance:*
+**NOTE**: **Build.sh** *file can be used via Git Bash instead of the build.cmd file.*
 ```
 bash build.sh -r
 bash build.sh -samples -r

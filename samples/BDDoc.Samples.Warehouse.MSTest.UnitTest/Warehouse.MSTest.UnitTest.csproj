@@ -59,6 +59,12 @@
     <Compile Include="PlainScenarios\ReturnsGoToStockStory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BDDoc.Samples.Warehouse\Warehouse.csproj">
+      <Project>{f302229e-7f66-4a38-a349-7bf7d217282d}</Project>
+      <Name>Warehouse</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

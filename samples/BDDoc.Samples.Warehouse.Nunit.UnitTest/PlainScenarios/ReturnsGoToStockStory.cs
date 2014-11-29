@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BDDoc.Samples.Warehouse.Nunit.UnitTest.PlainScenarios
 {
     [ExcludeFromCodeCoverage]
-    [StoryInfo("NUnit-ReturnsGoToStockStory1", GroupName = "Component1")]
+    [StoryInfo("NUnit-ReturnsGoToStockStory", GroupName = "Warehouse")]
     [Story("Returns go to stock")]
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]
@@ -12,7 +12,7 @@ namespace BDDoc.Samples.Warehouse.Nunit.UnitTest.PlainScenarios
     public class ReturnsGoToStockStory : IStory
     {
         [Test]
-        [Scenario("Refunded items should be returned to stock", Order = 5)]
+        [Scenario("Refunded items should be returned to stock")]
         public void RefundedItemsReturnedToStockTest()
         {
             var scenario = this.CreateScenario();

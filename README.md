@@ -51,32 +51,34 @@ Project contains a Build.cmd which build the BDDoc solution by mean of the BDDoc
 In order to compile execute the following commands via command line:
 
 *DEBUG CONFIGURATION*
-'''
+```
 build
 build -samples
-'''
+```
 
 *RELEASE CONFIGURATION*
-'''
+
+```
 build -r
 build -samples -r
-'''
+```
 
 Once executed two folder will be created:
-- **output/Libs**: *This folder contains the BDDoc Dll and BDDocGenerator Utility*
-- **output-samples/Documentation/HTML**: This folder contains the HTML documentation generated automatically
+- **output/libs**: *This folder contains the BDDoc Dll and BDDocGenerator Utility*
+- **output-samples/documentation/html**: This folder contains the HTML documentation generated automatically
 
 ######Clean
-In order to clean execute the following commands via command line:
+In order to clean the solution and artifacts created, execute the following commands via command line:
 
 *DEBUG Configuration*
-'''
+```
 build clean
 build -samples clean
-'''
+```
 
 *RELEASE Configuration*
-'''
+
+```
 build clean
 build -samples clean
-'''
+```

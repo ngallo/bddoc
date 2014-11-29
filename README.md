@@ -16,11 +16,11 @@ The only requirements to be satisfied by the story implementation are three:
 
 ##Usage
 
-####Create a BDDoc Test
+####Create Stories using BDDoc
 ..
 
 
-####Generate documentation using BDDocGenerator
+####Generate HTML Documentation using BDDocGenerator
 ..
 
 ##Source Code
@@ -77,7 +77,8 @@ build clean
 build -samples clean
 ```
 
-**NOTE**: Build.sh file can be used via Git Bash instead of the build.cmd file
+**NOTE**: Build.sh file can be used via Git Bash instead of the build.cmd file.
+
 *For instance:*
 ```
 bash build.sh -r

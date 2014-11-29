@@ -6,7 +6,7 @@ SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
 SET SolutionPlatform=Any CPU
 SET SolutionConfiguration=Debug
 
-if EXIST %SystemCheckoutDir%\Microsoft.NET\Framework64 (
+if EXIST %SystemRoot%\Microsoft.NET\Framework64 (
     SET msbuild=%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
 )else (
     SET msbuild=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe

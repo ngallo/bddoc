@@ -7,9 +7,9 @@ Having either a documentation file or textual DSL may lead to scenario where the
 
 BDDoc can be used with any testing framework (Currently tested with MSTest and NUnit). Using BDDoc a story is implemented as a class whilst the scenarios of the story are implemented as methods. 
 The only requirements to be satisfied by the story implementation are three:
-* ***IStory Interface:** Story has to implement IStory interface*
-* ***BDDoc Attributes:** Story and the scenario methods have to be decorated using the BDDoc attributes*
-* ***Code your steps:** The scenario implementation has to create a BDDoc's scenario instance and to code steps (Given/And/When/Then)*
+* IStory Interface: *Story has to implement IStory interface*
+* BDDoc Attributes: *Story and the scenario methods have to be decorated using the BDDoc attributes*
+* Code your steps: *The scenario implementation has to create a BDDoc's scenario instance and to code steps (Given/And/When/Then)*
 
 ![ScreenShot](https://github.com/ngallo/BDDoc/blob/master/docs/images/BDDocImg1.png)
 

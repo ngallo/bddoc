@@ -1,25 +1,46 @@
 ECHO OFF
+
 SET CheckoutDir=%~dp0
 SET CheckoutDir=%CheckoutDir:~0,-1%
-SET SourceDir=%CheckoutDir%\src
 SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
-SET SolutionRelativePath=\BDDoc.sln
-SET SolutionConfiguration=Release
 SET SolutionPlatform=Any CPU
+SET SolutionConfiguration=Debug
 
 if EXIST %SystemCheckoutDir%\Microsoft.NET\Framework64 (
-	set msbuild=%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
+    SET msbuild=%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe
 )else (
-	set msbuild=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe
+    SET msbuild=%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\msbuild.exe
 )
 
-set bddocbuild=%msbuild% /nologo msbuild\bddoc.targets
-if "%1" EQU "" (
-	%bddocbuild% /t:Compile
+SET _build=
+SET _buildarguments=
+SET SourceDir=
+SET SolutionRelativePath=
+
+if "%1" EQU "-samples" (
+    SET SourceDir=%CheckoutDir%\samples
+    SET SolutionRelativePath=\BDDoc.Samples.sln
+    SET _build=%msbuild% /nologo msbuild\bddoc-samples.targets
+	if "%2" EQU "-r" (
+		SET SolutionConfiguration=Release
+		for /f "tokens=1-2*" %%a in ("%*") do set _buildarguments=%%c
+	) else (
+		for /f "tokens=1-2*" %%a in ("%*") do set _buildarguments=%%b
+	)	
 )else (
-	%bddocbuild% /t:%*
+    SET SourceDir=%CheckoutDir%\src
+    SET SolutionRelativePath=\BDDoc.sln
+    SET _build=%msbuild% /nologo msbuild\bddoc.targets
+	if "%1" EQU "-r" (
+		SET SolutionConfiguration=Release
+		for /f "tokens=1-1*" %%a in ("%*") do set _buildarguments=%%b
+	) else (
+		for /f "tokens=1-1*" %%a in ("%*") do set _buildarguments=%%a
+	)	
 )
 
-if "%1" EQU "coverage" (
-	start %CheckoutDir%\output\coverage\index.htm
+if "%_buildarguments%" EQU "" (
+	SET _buildarguments=Compile
 )
+
+%_build% /t:%_buildarguments%

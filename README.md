@@ -1,5 +1,5 @@
 # BDDoc - BDD Documentation  
-*Writing test cases for BDD, generate the documentation running your tests and keep it tied to your code*
+*Write test cases for BDD, generate the documentation running your tests and keep it tied to your code*
 
 ##Intro
 The idea of developing **BDDoc** comes from the need to write test cases for BDD using an easy approach and keep the documentation and the source code closely tied.

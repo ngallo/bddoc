@@ -16,11 +16,11 @@ The only requirements to be satisfied by the story implementation are three:
 
 ##Usage
 
-####Createaastory using BDDoc
+####BDDoc
 ..
 
 
-####Generate HTML Documentation using BDDocGenerator
+####BDDocGenerator
 ..
 
 ##Source Code

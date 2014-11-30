@@ -170,7 +170,7 @@ The utility BDDocGenerator.exe generates the HTML documentation by parsing the b
 
 Below an example how to use BDDocGenerator via command line:
 ```
-c:\..> BDDocGenerator.exe -projectname:"My project name" -inputdir:"c:\Teamp\Documentation" -outputdir:"C:\Temp\MyProjectDocumentation"
+c:\..> BDDocGenerator.exe -projectname:"My project name" -inputdir:"c:\Temp\Documentation" -outputdir:"C:\Temp\MyProjectDocumentation"
 BDDoc HTML documentation generation started.
 BDDoc HTML documentation generation completed.
 ```

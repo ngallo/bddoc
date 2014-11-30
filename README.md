@@ -2,7 +2,7 @@
 *Writing test cases for BDD, generate your documentation running your tests and keep it tied to your code*
 
 ##Intro
-The idea to develop **BDDoc** comes from the need to write tests for BDD using an easy approach and keep the documentation tied to the source code. 
+The idea to develop **BDDoc** comes from the need to write test cases for BDD using an easy approach and keep the documentation tied to the source code. 
 Having either a documentation file or textual DSL may lead to cases where the documentation and source code are out of sync.
 
 BDDoc can be used with *any testing framework* (currently tested with MSTest and NUnit).
@@ -28,13 +28,13 @@ Each story needs to be decorated with BDDoc's attributes. Attributes to be used 
 
 - **Configuration Attributes**
     - **StoryInfoAttribute:** *Attribute used to configure the persistence of the story. Two properties can be configured:*
-        - ** *GroupName:* ** *Can be any string and it is used for grouping stories in the documentation. Input text is used as title of the group*
-        - ** *StoryId:* ** *It is used to identify the Story as well as used as name of the bddoc file generated*
+        - **GroupName:** *Can be any string and it is used for grouping stories in the documentation. Input text is used as title of the group.*
+        - **StoryId:** *It is used to identify the Story as well as used as name of the bddoc file generated.*
 - **Documentation Attributes** *(Order property can be used to decide in which the order attributes will presented in documentation)*
-    - **StoryAttribute:** *Represents the story description. Its constructor requires to get in input a textual description of the story (It is used as title in the generated documentation)*
-    - **InOrderToAttribute:** *Its constructor requires to get in input a textual description which will bepart of the documentation*
-    - **AsAttribute:** *Its constructor requires to get in input a textual description which will be part of the documentation*
-    - **IWantToAttribute:** *Its constructor requires to get in input a textual description which will be part of the documentation*
+    - **StoryAttribute:** *Represents the story description. Its constructor requires in input a textual description of the story (It is used as title in the generated documentation)*
+    - **InOrderToAttribute:** *Its constructor requires in input a textual description which will bepart of the documentation*
+    - **AsAttribute:** *Its constructor requires in input a textual description which will be part of the documentation*
+    - **IWantToAttribute:** *Its constructor requires in input a textual description which will be part of the documentation*
 
 ```csharp
     [StoryInfo("NUnit-ReturnsGoToStockStory", GroupName = "Warehouse")]
@@ -42,9 +42,8 @@ Each story needs to be decorated with BDDoc's attributes. Attributes to be used 
     [InOrderTo("keep track of stock")]
     [AsA("store owner")]
     [IWantTo("add items back to stock when they're returned")]
-    public class ReturnsGoToStockStory : IStory
+    public class ReturnsGoToStockStory : IStory 
     {
-        
     }
 ```
 
@@ -60,6 +59,79 @@ Custom attributes have to inherit BDDocAttribute and implement the IStoryAttrib 
         public CustomStoryAttribute(string text)
             : base(text, 10) { }
     }
+```
+Once created the custom attribute, it can be used to decorate the story.
+
+```csharp
+    [StoryInfo("NUnit-ReturnsGoToStockStory", GroupName = "Warehouse")]
+    [Story("Returns go to stock")]
+    [InOrderTo("keep track of stock")]
+    [AsA("store owner")]
+    [IWantTo("add items back to stock when they're returned")]
+    [CustomStory("here my text")]
+    public class ReturnsGoToStockStory : IStory
+    {
+    }
+```
+
+######Create a Scenario
+A new method to the scenario class has to be created for each scenario. Each of them has to be marked with a ScenarioAttribute. The constructor of the ScenarioAttribute requires in input a textual description of the scenario.
+
+**NOTE:** *The scenarios have to be executed by the testing framework, so they have to be marked as test method (for instance using NUnit a Test attribute is required by each scenario method.).*
+
+The scenario code implementation needs to create a new instance of the scenario class by means of the CreateScenario method, and define the steps (When/And/Given/Then) as shown in the code below. The text passed in input to each attribute will be part of the documentation generated.
+
+```csharp
+        [Test]
+        [Scenario("Refunded items should be returned to stock")]
+        public void RefundedItemsReturnedToStockTest()
+        {
+            var scenario = this.CreateScenario();
+            scenario.Given("a customer previously bought a black sweater from me");
+            //---------------------------------------------------------------------//
+            // Here test code
+
+            scenario.And("I currently have three black sweaters left in stock");
+            //---------------------------------------------------------------------//
+            // Here test code
+
+            scenario.When("he returns the sweater for a refund");
+            //---------------------------------------------------------------------//
+            // Here test code
+
+            scenario.Then("I should have four black sweaters in stock");
+            //---------------------------------------------------------------------//
+            // Here test code
+
+            scenario.Complete();
+        }
+```
+
+BDDoc defines one scenario attribute, however the framework can be extended by creating custom attributes. 
+
+Custom attributes have to inherit BDDocAttribute and implement the IScenarioAttrib interface.
+
+```csharp
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public class CustomScenarioAttribute : BDDocAttribute, IScenarioAttrib
+    {
+        //Constructors
+
+        public CustomScenarioAttribute(string text)
+            : base(text, 10) { }
+    }
+```
+
+Once created the custom attribute, it can be used to decorate the story.
+
+```csharp
+        [Test]
+        [Scenario("Refunded items should be returned to stock")]
+        [CustomScenario("here my text")]
+        public void RefundedItemsReturnedToStockTest()
+        {
+            ...
+        }
 ```
 
 ####BDDocGenerator
@@ -82,6 +154,15 @@ BDDoc.Samples solution depend by BDDoc, as its projects are referencing the
 BDDoc dll which is in the output folder (Output folder is generated by using the MSBuild file named BDDoc.targets).
 
 The project contains a **build.cmd** file which compile the BDDoc solution and generate the application's artifacts (such as output folder etc) by means of the BDDoc.targets file.
+
+######Configure the build.cmd file
+The Build.cmd file restores NuGet packages that are referenced by the solution. In order to accomplish it, the build.cmd file requires nuget has to be installed in the machine. 
+Open the Build.cmd file and assign to the NuGetExe variable the right path of NuGet.exe.
+
+The default value is: 
+```
+SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
+```
 
 ######Compile
 Execute following commands via command line in order to compile both solutions:

@@ -51,7 +51,7 @@ BDDoc defines four documentation attributes, however the framework can be extend
 Custom attributes have to inherit the BDDocAttribute class and implement the IStoryAttrib interface.
 
 ```csharp
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class CustomStoryAttribute : BDDocAttribute, IStoryAttrib
     {
         //Constructors
@@ -112,7 +112,7 @@ BDDoc defines one scenario attribute, however the framework can be extended by c
 Custom attributes have to inherit the BDDocAttribute class and implement the IScenarioAttrib interface.
 
 ```csharp
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class CustomScenarioAttribute : BDDocAttribute, IScenarioAttrib
     {
         //Constructors

@@ -163,10 +163,17 @@ Each bddoc file contains the documentation in xml format.
 ######Use BDDocGenerator to generate the HTML documentation
 The utility BDDocGenerator.exe generates the HTML documentation by parsing the bddoc files in the folder passed in input.
 
-**BDDocGenerator inputs**
-- **-inputdir:** *Directory which contains bddoc files*
-- **-outputdir:** *Directory which is used to generate the HTML version of the documentation*
-- **-projectname:** *Name of the project, which will be presented on the top of each HTML file*
+- **BDDocGenerator inputs**
+    - **-inputdir:** *Directory which contains bddoc files*
+    - **-outputdir:** *Directory which is used to generate the HTML version of the documentation*
+    - **-projectname:** *Name of the project, which will be presented on the top of each HTML file*
+
+Below an example how to use BDDocGenerator via command line:
+```
+c:\..> BDDocGenerator.exe -projectname:"My project name" -inputdir:"c:\Teamp\Documentation" -outputdir:"C:\Temp\MyProjectDocumentation"
+BDDoc HTML documentation generation started.
+BDDoc HTML documentation generation completed.
+```
 
 ######Using an MSBUild Targets file
 The BDDoc sample solution implements an MSBuild targets file which copy all bddoc files generated into the *output-samples\Documentation* folder. Once done it executes the BDDocGenerator utility providing the *output-samples\Documentation\HTML* folder as the  output folder.

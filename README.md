@@ -200,6 +200,7 @@ The project contains a **build.cmd** file which by means of the BDDoc.targets fi
 ######Configure the build.cmd file
 The Build.cmd file restores NuGet packages that are referenced by the
 solution. In order to accomplish it, NuGet has to be installed and the path set into the build.cmd file.
+
 **Amend the Build.cmd file by setting the right path of the NuGet.exe file.**
 
 By default value set is: 

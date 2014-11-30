@@ -122,7 +122,7 @@ Custom attributes have to inherit the BDDocAttribute class and implement the ISc
     }
 ```
 
-Once created the custom attribute, it can be used to decorate the story.
+Once created the custom attribute, it can be used to decorate the scenario.
 
 ```csharp
         [Test]

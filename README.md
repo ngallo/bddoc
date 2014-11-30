@@ -5,7 +5,7 @@
 The idea to develop **BDDoc** comes from the need to write tests for BDD using an easy approach and keep the documentation tied to the source code. 
 Having either a documentation file or textual DSL may lead to cases where the documentation and source code are out of sync.
 
-BDDoc can be used with *any testing framework* (Currently tested with MSTest and NUnit).
+BDDoc can be used with *any testing framework* (currently tested with MSTest and NUnit).
 A story is implemented as a class whilst the scenarios of the story are implemented as methods.
 The only requirements to be satisfied by the story implementation are three:
 * **IStory Interface:** *Story has to implement IStory interface*
@@ -17,8 +17,50 @@ The only requirements to be satisfied by the story implementation are three:
 ##Usage
 
 ####BDDoc
-..
 
+######Setup the unit test project
+First of all create a new unit test project using the testing framework preferred such as NUnit, MSTest and so on.
+Once done the only step left is to add BDDoc.dll to the project's references.
+
+######Create a story
+First create a new class for each story (any name convention can be used), and once done, just implement the interface IStory (namespace BDDoc.IStory).
+Each story needs to be decorated with BDDoc's attributes. Attributes to be used are listed below:
+
+- **Configuration Attributes**
+    - **StoryInfoAttribute:** *Attribute used to configure the persistence of the story. Two properties can be configured:*
+        - ** *GroupName:* ** *Can be any string and it is used for grouping stories in the documentation. Input text is used as title of the group*
+        - ** *StoryId:* ** *It is used to identify the Story as well as used as name of the bddoc file generated*
+- **Documentation Attributes** *(Order property can be used to decide in which the order attributes will presented in documentation)*
+    - **StoryAttribute:** *Represents the story description. Its constructor requires to get in input a textual description of the story (It is used as title in the generated documentation)*
+    - **InOrderToAttribute:** *Its constructor requires to get in input a textual description which will bepart of the documentation*
+    - **AsAttribute:** *Its constructor requires to get in input a textual description which will be part of the documentation*
+    - **IWantToAttribute:** *Its constructor requires to get in input a textual description which will be part of the documentation*
+
+```csharp
+    [StoryInfo("NUnit-ReturnsGoToStockStory", GroupName = "Warehouse")]
+    [Story("Returns go to stock")]
+    [InOrderTo("keep track of stock")]
+    [AsA("store owner")]
+    [IWantTo("add items back to stock when they're returned")]
+    public class ReturnsGoToStockStory : IStory
+    {
+        
+    }
+```
+
+BDDoc defines four documentation attributes, however the framework can be extended by creating custom attributes. 
+Custom attributes have to inherit BDDocAttribute and implement the IStoryAttrib interface.
+
+```csharp
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    public class CustomStoryAttribute : BDDocAttribute, IStoryAttrib
+    {
+        //Constructors
+
+        public CustomStoryAttribute(string text)
+            : base(text, 10) { }
+    }
+```
 
 ####BDDocGenerator
 ..

@@ -213,19 +213,19 @@ Execute following commands via command line in order to compile both solutions:
 
 *DEBUG CONFIGURATION*
 ```batch
-Compile BDDoc.sln
+#Compile BDDoc.sln
 cmd> build
 
-Compile BDDoc.Samples.sln
+#Compile BDDoc.Samples.sln
 cmd> build -samples
 ```
 
 *RELEASE CONFIGURATION*
 ```batch
-Compile BDDoc.sln
+#Compile BDDoc.sln
 cmd> build -r
 
-Compile BDDoc.Samples.sln
+#Compile BDDoc.Samples.sln
 cmd> build -samples -r
 ```
 
@@ -237,20 +237,20 @@ Two folders will be created once executed the commands listed above:
 Execute following commands via command line in order to clean both solutions as well as artifacts created:
 
 *DEBUG Configuration*
-```batcj
-Clean BDDoc.sln
+```batch
+#Clean BDDoc.sln
 cmd> build clean
 
-Clean BDDoc.Samples.sln
+#Clean BDDoc.Samples.sln
 cmd> build -samples clean
 ```
 
 *RELEASE Configuration*
 ```batch
-Clean BDDoc.sln
+#Clean BDDoc.sln
 cmd> build clean
 
-Clean BDDoc.Samples.sln
+#Clean BDDoc.Samples.sln
 cmd> build -samples clean
 ```
 

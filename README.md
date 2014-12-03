@@ -213,19 +213,19 @@ Execute following commands via command line in order to compile both solutions:
 
 *DEBUG CONFIGURATION*
 ```batch
-#Compile BDDoc.sln
+# Compile BDDoc.sln
 cmd> build
 
-#Compile BDDoc.Samples.sln
+# Compile BDDoc.Samples.sln
 cmd> build -samples
 ```
 
 *RELEASE CONFIGURATION*
 ```batch
-#Compile BDDoc.sln
+# Compile BDDoc.sln
 cmd> build -r
 
-#Compile BDDoc.Samples.sln
+# Compile BDDoc.Samples.sln
 cmd> build -samples -r
 ```
 
@@ -238,19 +238,19 @@ Execute following commands via command line in order to clean both solutions as 
 
 *DEBUG Configuration*
 ```batch
-#Clean BDDoc.sln
+# Clean BDDoc.sln
 cmd> build clean
 
-#Clean BDDoc.Samples.sln
+# Clean BDDoc.Samples.sln
 cmd> build -samples clean
 ```
 
 *RELEASE Configuration*
 ```batch
-#Clean BDDoc.sln
+# Clean BDDoc.sln
 cmd> build clean
 
-#Clean BDDoc.Samples.sln
+# Clean BDDoc.Samples.sln
 cmd> build -samples clean
 ```
 

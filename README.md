@@ -169,8 +169,8 @@ The utility BDDocGenerator.exe generates the HTML documentation by parsing the b
     - **-projectname:** *Name of the project, which will be presented on the top of each HTML file*
 
 Below an example how to use BDDocGenerator via command line:
-```
-c:\..> BDDocGenerator.exe -projectname:"My project name" -inputdir:"c:\Temp\BDDocFiles" -outputdir:"C:\Temp\MyProjectDocumentation"
+```batch
+cmd> BDDocGenerator.exe -projectname:"My project name" -inputdir:"c:\Temp\BDDocFiles" -outputdir:"C:\Temp\MyProjectDocumentation"
 BDDoc HTML documentation generation started.
 BDDoc HTML documentation generation completed.
 ```
@@ -212,21 +212,21 @@ SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
 Execute following commands via command line in order to compile both solutions:
 
 *DEBUG CONFIGURATION*
-```
-REM Compile BDDoc.sln
-build
+```batch
+Compile BDDoc.sln
+cmd> build
 
-REM Compile BDDoc.Samples.sln
-build -samples
+Compile BDDoc.Samples.sln
+cmd> build -samples
 ```
 
 *RELEASE CONFIGURATION*
-```
-REM Compile BDDoc.sln
-build -r
+```batch
+Compile BDDoc.sln
+cmd> build -r
 
-REM Compile BDDoc.Samples.sln
-build -samples -r
+Compile BDDoc.Samples.sln
+cmd> build -samples -r
 ```
 
 Two folders will be created once executed the commands listed above:
@@ -237,25 +237,25 @@ Two folders will be created once executed the commands listed above:
 Execute following commands via command line in order to clean both solutions as well as artifacts created:
 
 *DEBUG Configuration*
-```
-REM Clean BDDoc.sln
-build clean
+```batcj
+Clean BDDoc.sln
+cmd> build clean
 
-REM Clean BDDoc.Samples.sln
-build -samples clean
+Clean BDDoc.Samples.sln
+cmd> build -samples clean
 ```
 
 *RELEASE Configuration*
-```
-REM Clean BDDoc.sln
-build clean
+```batch
+Clean BDDoc.sln
+cmd> build clean
 
-REM Clean BDDoc.Samples.sln
-build -samples clean
+Clean BDDoc.Samples.sln
+cmd> build -samples clean
 ```
 
 **NOTE**: *When using* **Git bash**, *the* **Build.sh** *file has to be used instead of the build.cmd file.*
-```
-bash build.sh -r
-bash build.sh -samples -r
+```batch
+gitbash> bash build.sh -r
+gitbash> bash build.sh -samples -r
 ```

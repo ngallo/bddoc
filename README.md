@@ -10,7 +10,7 @@ A story is implemented as a class whilst the scenarios of the story are implemen
 The only requirements to be satisfied by the story implementation are three:
 * **IStory Interface:** *The story has to implement IStory interface*
 * **BDDoc Attributes:** *The story and the scenarios have to be decorated using the BDDoc attributes*
-* **Code the steps:** *The scenario implementation has to create a BDDoc's scenario instance and coding the steps (Given/And/When/Then)*
+* **Coding of the steps:** *The scenario implementation has to create a BDDoc's scenario instance and coding the steps (Given/And/When/Then)*
 
 Here is an example of generated documentation:
 * **Index**: [www.ngallo.it/bddoc/html/](http://www.ngallo.it/bddoc/html/index.html)

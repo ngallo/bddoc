@@ -137,7 +137,7 @@ Once created the custom attribute, it can be used to decorate the scenario.
 ####BDDocGenerator
 
 ###### BDDoc files
-Files with '**bddoc extension**' will be generated in the execution folder after running the scenarios. 
+Files with `**bddoc extension**` will be generated in the execution folder after running the scenarios. 
 Each bddoc file contains the documentation in an xml format.
 
 ```xml
@@ -163,11 +163,12 @@ Each bddoc file contains the documentation in an xml format.
 ######Use BDDocGenerator to generate the HTML documentation
 The utility BDDocGenerator.exe generates the HTML documentation by parsing the bddoc files in the directory passed in input.
 
-Usage of the 'BDDocGenerator.exe' is as follows:
+Usage of the `BDDocGenerator.exe` is as follows:
 
 ```text
 -inputdir               Directory which contains bddoc files
 -outputdir              Directory which is used to save the HTML documentation
+
 Options:
 -projectname:           Name of the project, which will be presented on the top of each HTML file
 ```

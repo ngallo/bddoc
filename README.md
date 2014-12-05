@@ -137,7 +137,7 @@ Once created the custom attribute, it can be used to decorate the scenario.
 ####BDDocGenerator
 
 ###### BDDoc files
-Files with `**bddoc extension**` will be generated in the execution folder after running the scenarios. 
+Files with `bddoc extension` will be generated in the execution folder after running the scenarios. 
 Each bddoc file contains the documentation in an xml format.
 
 ```xml

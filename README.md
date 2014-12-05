@@ -13,7 +13,7 @@ The only requirements to be satisfied by the story implementation are three:
 * **Code the steps:** *The scenario implementation has to create a BDDoc's scenario instance and coding the steps (Given/And/When/Then)*
 
 Here is an example of generated documentation:
-* **Index**: [www.ngallo.it/bddoc/html](http://www.ngallo.it/bddoc/html/index.html)
+* **Index**: [www.ngallo.it/bddoc/html/](http://www.ngallo.it/bddoc/html/index.html)
 * **Story**: [www.ngallo.it/bddoc/html/NUnit-ReturnsGoToStockStory.html](http://www.ngallo.it/bddoc/html/NUnit-ReturnsGoToStockStory.html)
 
 ![ScreenShot](https://github.com/ngallo/BDDoc/blob/master/docs/images/BDDocImg1.png)

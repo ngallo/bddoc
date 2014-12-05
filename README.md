@@ -12,7 +12,15 @@ The only requirements to be satisfied by the story implementation are three:
 * **BDDoc Attributes:** *The story and the scenarios have to be decorated using the BDDoc attributes*
 * **Code the steps:** *The scenario implementation has to create a BDDoc's scenario instance and coding the steps (Given/And/When/Then)*
 
+Here is an example of generated documentation:
+* `Index`: [www.ngallo.it/bddoc/html](http://www.ngallo.it/bddoc/html/index.html)
+* `Story`: [http://www.ngallo.it/bddoc/html/NUnit-ReturnsGoToStockStory.html](http://www.ngallo.it/bddoc/html/NUnit-ReturnsGoToStockStory.html)
+
 ![ScreenShot](https://github.com/ngallo/BDDoc/blob/master/docs/images/BDDocImg1.png)
+
+##NuGet Packages
+* `Index`: [www.nuget.org/packages/BDDoc/](https://www.nuget.org/packages/BDDoc/)
+* `Index`: [www.nuget.org/packages/BDDocGenerator/](https://www.nuget.org/packages/BDDocGenerator/)
 
 ##Usage
 
@@ -186,7 +194,7 @@ The BDDoc sample solution implements an MSBuild targets file which copy all bddo
 Following steps listed below to compile the BDDoc.samples solution the HTML Documentation will be available opening the file *output-samples\Documentation\HTML\index.html*
 
 ##Source Code
-BDDoc has been developed using VisualStudio 2013, c# and .NET Framework 4.0
+BDDoc has been developed using `VisualStudio 2013`, `c#` and `.NET Framework 4.0`
 
 ####Solution
 The project contains two Visual Studio Solutions:

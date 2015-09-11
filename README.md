@@ -210,17 +210,6 @@ BDDoc.Samples solution depend by BDDoc, as its projects are referencing the BDDo
 
 The project contains a **build.cmd** file which by means of the BDDoc.targets file first compile the BDDoc solution and then generates the application's artifacts (such as output folder etc).
 
-######Configure the build.cmd file
-The Build.cmd file restores NuGet packages that are referenced by the
-solution. In order to accomplish it, NuGet has to be installed and the path set into the build.cmd file.
-
-**Amend the Build.cmd file by setting the right path of the NuGet.exe file.**
-
-By default value set is: 
-```
-SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
-```
-
 ######Compile
 Execute following commands via command line in order to compile both solutions:
 

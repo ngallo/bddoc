@@ -1,8 +1,20 @@
 ECHO OFF
 
+SET CACHED_NUGET=%LocalAppData%\NuGet\NuGet.exe
+IF EXIST %CACHED_NUGET% goto copynuget
+echo Downloading latest version of NuGet.exe...
+IF NOT EXIST %LocalAppData%\NuGet md %LocalAppData%\NuGet
+@powershell -NoProfile -ExecutionPolicy unrestricted -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest 'https://www.nuget.org/nuget.exe' -OutFile '%CACHED_NUGET%'"
+
+:copynuget
+IF EXIST .nuget\nuget.exe goto build
+md .nuget
+copy %CACHED_NUGET% .nuget\nuget.exe > nul
+
+:build
 SET CheckoutDir=%~dp0
 SET CheckoutDir=%CheckoutDir:~0,-1%
-SET NuGetEXE=C:\temp\tools\NuGet.CommandLine.2.8.3\tools\NuGet.exe
+SET NuGetEXE=%CheckoutDir%\.nuget\nuget.exe
 SET SolutionPlatform=Any CPU
 SET SolutionConfiguration=Debug
 
